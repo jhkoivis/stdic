@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/2/trunk/testsuite
+END
+test_stdic.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/2/trunk/testsuite/test_stdic.pyc
+END
+test_deformdata.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/2/trunk/testsuite/test_deformdata.pyc
+END
+test_masterdata.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/2/trunk/testsuite/test_masterdata.py
+END
+test_stdic.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/2/trunk/testsuite/test_stdic.py
+END
+test_deformdata.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/2/trunk/testsuite/test_deformdata.py
+END
+test_masterdata.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/2/trunk/testsuite/test_masterdata.pyc
+END
