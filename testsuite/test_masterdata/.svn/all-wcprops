@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/2/trunk/testsuite/test_masterdata
+END
+test_masterdata1.dicconf
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/2/trunk/testsuite/test_masterdata/test_masterdata1.dicconf
+END
+test_masterdata2.dicconf
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/2/trunk/testsuite/test_masterdata/test_masterdata2.dicconf
+END
