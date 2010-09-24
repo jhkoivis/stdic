@@ -8,6 +8,7 @@
 import diccore
 import os
 import masterdata
+import configparser
 
 from PIL import Image
 from numpy import array
@@ -18,15 +19,12 @@ from numpy import array
 class DeformationData:
 	
 	def __init__(self, firstPictureName, secondPictureName, configfile):
-
-		self.masterdata = masterdata.MasterData(configfile)
-
+		configParser = configparser.ConfigParser(configfile)
+		self.masterdata = masterdata.MasterData(configparser)
 		self.set('FirstPictureName', firstPictureName)
 		self.set('SecondPictureName', secondPictureName)
-		
 		imsize = Image.open(firstPictureName).size
-		self.set('PictureSize', [imsize[0],imsize[1]])
-		
+		self.set('PictureSize', [imsize[0],imsize[1]])		
 		try:
 			parameters = dict(verbose = self.get('Verbose'), xtol = self.get('Xtol'), degf = self.get('DegF'), degc = self.get('DegC'), crate = self.get('CrateTuple'))
 		except KeyError:
