@@ -7,8 +7,8 @@
 
 from diccore import Dic
 import os
-import masterdata
-import configparser
+from masterdata import MasterData
+from configparser import ConfigParser
 
 from PIL import Image
 from numpy import array
@@ -20,8 +20,8 @@ class DeformationData:
 	
 	def __init__(self, firstPictureName, secondPictureName, configfile):
 		dic = Dic()
-		parser = configparser.ConfigParser(configfile)
-		self.masterdata = masterdata.MasterData(parser)
+		parser = ConfigParser(configfile)
+		self.masterdata = MasterData(parser)
 		self.set('FirstPictureName', firstPictureName)
 		self.set('SecondPictureName', secondPictureName)
 		imsize = Image.open(firstPictureName).size
@@ -33,10 +33,10 @@ class DeformationData:
 		try:
 			if self.get('Crop') == 'True':
 				crop = [self.get('CropXStart'), self.get('CropXEnd'), self.get('CropYStart'), self.get('CropYEnd')]
-				self.set('DefFunction', dic.register(firstPictureName, secondPictureName, parameters,crop))
+				self.deformationCtx =  dic.register(firstPictureName, secondPictureName, parameters,crop)
 				self.set('Crop', crop)
 			else:
-				self.set('DefFunction', dic.register(firstPictureName, secondPictureName, parameters))
+				self.deformationCtx = dic.register(firstPictureName, secondPictureName, parameters)
 				self.set('Crop', [0,imsize[0],0,imsize[1]])
 		except KeyError:
 			raise KeyError("[deformdata.py]:Crop must be defined.")
@@ -62,13 +62,12 @@ class DeformationData:
 		reversedpoints = []
 		for a in points:
 			reversedpoints.append((a[1],a[0]))
-		reversedendpoints = self.get('DefFunction').getDeformationAtPoints(array(reversedpoints, float))
+		reversedendpoints = self.deformationCtx.getDeformationAtPoints(array(reversedpoints, float))
 		endpoints = []
 		for a in reversedendpoints:
 			endpoints.append((a[1], a[0]))
 
 		return endpoints
 		
-	def getCoefs(self):
-		
-		return self.get('DefFunction').getCAsArray()
+	def getCoefs(self):		
+		return self.deformationCtx.getCAsArray()
