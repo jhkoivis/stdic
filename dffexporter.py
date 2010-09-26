@@ -12,7 +12,10 @@ class DffExportParameters:
 		self.diccoreParameters = diccoreParameters
 
 class DffExporter(Exporter):
-
+	""" exports a deformation using single ASCII format as an output. 
+	
+		Describe format here.
+	"""
 	def __init__(self, deformation, exportparameters, outputfilename):
 		self.deformation = deformation
 		self.exportparameters = exportparameters
