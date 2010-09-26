@@ -18,14 +18,12 @@ class CreepExperimentTest(unittest.TestCase):
 		self.assertAlmostEqual(deformation, 180.944640, 4)
 		
 	def getDffDeformation(self, folder, config):
-		
 		time1 = time.clock()
 		experiment = stdic.CreepExperiment(folder,folder, config)
 		time2 = time.clock()
 		timetaken = time2 - time1
 		if self.showtimes:
 			print "Time taken: %s seconds." % timetaken
-		
 		dffFilename	= glob.glob(path.join(folder,"*.dff"))[0]
 		dffFile 	= open(dffFilename,'r')
 		for line in dffFile:

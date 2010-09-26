@@ -1,22 +1,23 @@
 
-import configparser
-import masterdata
-import unittest
+from configparser import ConfigParser
+from masterdata import MasterData
+from unittest import TestCase
+
 import os
 import inspect
 
-class mock_MasterData(masterdata.MasterData):
+class mock_MasterData(MasterData):
 
 	def __init__(self):
 		self.masterdata = dict()
 		self.caller = "test_masterdata.py"
 
-class test_configparser(unittest.TestCase):
+class test_configparser(TestCase):
 	
 	def setUp(self):
 		folder	= os.path.join("testsuite","test_masterdata")
 		self.mockmaster = mock_MasterData()
-		self.configparser = configparser.ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"))
+		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"))
 		self.configparser.setMasterdata(self.mockmaster)
 		self.configparser.parse()
 
