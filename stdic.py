@@ -214,32 +214,24 @@ class CreepExperiment:
 		return chosenPictures
 
 	def writeDff(self, deformation, filename):
-		
-		# Writes .dff-files for every deformation analysis.
-
 		outputfile		= open(filename, 'w')
 		picturedata1	= deformation.get("PictureData1")
 		picturedata2	= deformation.get("PictureData2")
 		parameters		= deformation.get("Parameters")
-
 		outputfile.write("%% picture1 filename: %s\n" % deformation.get("FirstPictureName"))
 		for key in picturedata1:
 			outputfile.write("%% picture2 %s: %s\n" % (key, picturedata1[key]))
 		outputfile.write("\n")
-
 		outputfile.write("%% picture2 filename: %s\n" % deformation.get("SecondPictureName"))
 		for key in picturedata2:
 			outputfile.write("%% picture2 %s: %s\n" % (key, picturedata2[key]))
 		outputfile.write("\n")
-		
 		outputfile.write("% analysis parameters:\n")
 		for key in parameters:
 			outputfile.write("%% %s: %s\n" % (key, str(parameters[key])))
 		outputfile.write("\n")
-	
 		crop = deformation.get("Crop")
 		size = deformation.get("PictureSize")
-
 		outputfile.write("%% picture size x: %d\n" % size[0])
 		outputfile.write("%% picture size y: %d\n" % size[1])
 		outputfile.write("%% crop start   x: %d\n" % crop[0])
@@ -247,11 +239,7 @@ class CreepExperiment:
 		outputfile.write("%% crop start   y: %d\n" % crop[2])
 		outputfile.write("%% crop end     y: %d\n" % crop[3])
 		outputfile.write("\n")
-
-		try:
-			step = self.get("DffStep")
-		except KeyError:
-			raise KeyError("[stdic.py]:DffStep must be defined.")
+		step = self.get("DffStep")
 		pointarray = []
 		rangex = xrange(0, crop[1] - crop[0], step)
 		rangey = xrange(0, crop[3] - crop[2], step)
@@ -267,8 +255,7 @@ class CreepExperiment:
 			outputfile.write("%d %d %lf %lf \n" % (x, y, xd, yd))
 		outputfile.close()
 
-	def writeCoefs(self, deformation, filename):
-		
+	def writeCoefs(self, deformation, filename):	
 		coefsArray = deformation.getCoefs()
 		npsave(filename,coefsArray)
 		
