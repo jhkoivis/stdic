@@ -10,6 +10,9 @@ class mock_ConfigParser:
 	def parse(self):
 		self.parseCalled = True
 
+	def setMasterdata(self, null):
+		pass
+
 
 class test_masterdata(unittest.TestCase):
 

@@ -16,7 +16,8 @@ class test_configparser(unittest.TestCase):
 	def setUp(self):
 		folder	= os.path.join("testsuite","test_masterdata")
 		self.mockmaster = mock_MasterData()
-		self.configparser = configparser.ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"), self.mockmaster)
+		self.configparser = configparser.ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"))
+		self.configparser.setMasterdata(self.mockmaster)
 		self.configparser.parse()
 
 	def testIntegers(self):
@@ -32,7 +33,8 @@ class test_configparser(unittest.TestCase):
 	def testTuples(self):
 		self.assertEquals(self.mockmaster.get("tuple"), (3.14,1))
 		self.assertEquals(self.mockmaster.get("tupleWithWhitespace"), (42.11322,32))
-		self.assertEquals(self.mockmaster.get("tupleWithComment"), (11,27))
+		self.assertEquals(self.mockmaster.get("tupleWithComment"), (11
+																    ,27))
 
 	def testStrings(self):
 		self.assertEquals(self.mockmaster.get("string"), "3.14 = about pii")

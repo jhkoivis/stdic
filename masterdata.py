@@ -15,6 +15,7 @@ class MasterData:
 	def __init__(self, configparser):
 		self.masterdata = dict()
 		self.caller = os.path.split(inspect.stack()[1][1])[1]
+		configparser.setMasterdata(self)
 		configparser.parse()
 		
 	def get(self, key):

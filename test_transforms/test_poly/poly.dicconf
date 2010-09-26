@@ -9,6 +9,7 @@ WriteCoefs			= "False"
 Verbose				= 4
 
 Step				= 10
+DffStep				= 10
 
 [deformdata.py]
 
@@ -23,6 +24,7 @@ Verbose				= 0
 Xtol				= 0.05
 DegF				= 3
 DegC				= 3
+
 
 [all]
 

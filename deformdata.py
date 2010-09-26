@@ -19,8 +19,8 @@ from numpy import array
 class DeformationData:
 	
 	def __init__(self, firstPictureName, secondPictureName, configfile):
-		configParser = configparser.ConfigParser(configfile)
-		self.masterdata = masterdata.MasterData(configparser)
+		parser = configparser.ConfigParser(configfile)
+		self.masterdata = masterdata.MasterData(parser)
 		self.set('FirstPictureName', firstPictureName)
 		self.set('SecondPictureName', secondPictureName)
 		imsize = Image.open(firstPictureName).size

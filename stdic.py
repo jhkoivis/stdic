@@ -21,8 +21,8 @@ class CreepExperiment:
 			raise Exception("Invalid path: " + pathname)
 		if not os.path.exists(dffpath):
 			os.mkdir(dffpath)
-		configparser = configparser.ConfigParser(configfile)
-		self.masterdata = masterdata.MasterData(configparser)
+		parser = configparser.ConfigParser(configfile)
+		self.masterdata = masterdata.MasterData(parser)
 		self.set('Pathname', pathname)
 		self.set('DffPathname', dffpath)
 		if self.check('Verbose'):

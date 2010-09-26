@@ -64,9 +64,11 @@ class ExpressionFactory:
 	
 class ConfigParser:
 	
-	def __init__(self, configfilename, masterdata):
-		self.masterdata = masterdata
+	def __init__(self, configfilename):
 		self.configfilename = configfilename
+
+	def setMasterdata(self, masterdata):
+		self.masterdata = masterdata
 
 	def parse(self):
 		self.masterdata.set("ConfigFile", self.configfilename)
