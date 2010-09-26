@@ -16,6 +16,8 @@
 				Program requires installation of Python 2.4 or Python 2.6. Development packages are
 				needed as Python.h must be present. In addition NumPy must be installed (version 
 				needed unknown, latest recommended).
+				
+				The python packages PIL and numpy are required.
 		
 			Compiling:
 		
