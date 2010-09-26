@@ -2,7 +2,7 @@ import re
 import os
 
 class Expression:
-	
+	""" abstract class for an expression """
 	def __init__(self, value, match):
 		self.value = value
 		self.match = match
@@ -17,24 +17,24 @@ class Expression:
 
 
 class NumberExpression(Expression):
-	
+	""" the configuration expression is either an integer or a float """
 	def getValue(self):
 		return self.__makeNumber__(self.match.group('float'))
 
 class StringExpression(Expression):
-	
+	""" the configuration expression is a string """
 	def getValue(self):
 		return self.match.group('string')
 		
 class TupleExpression(Expression):
-	
+	""" the configuration is a tuple """
 	def getValue(self):
 		value1 = self.match.group('number1')
 		value2 = self.match.group('number2')
 		return (self.__makeNumber__(value1), self.__makeNumber__(value2))		
 		
 class RegExpression(Expression):
-	
+	""" configuration is a replacing expression (not regular) """
 	def getValue(self):	
 		return self.__formatReg__(self.match.group('reg'))
 
@@ -47,7 +47,7 @@ class RegExpression(Expression):
 
 
 class ExpressionFactory:
-
+	""" based on an expression match, this instantiates an expression type """
 	def __init__(self):
 		numbermatch = re.compile('(?P<float>[0-9.]+)$')
 		stringmatch = re.compile('\"(?P<string>.+)\"$')
@@ -63,7 +63,7 @@ class ExpressionFactory:
 
 	
 class ConfigParser:
-	
+	""" reads a configuration file, and uses a masterdata to store the values """
 	def __init__(self, configfilename):
 		self.configfilename = configfilename
 
