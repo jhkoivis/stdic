@@ -1,11 +1,13 @@
 
-import unittest
-import deformdata
-import glob
+from unittest import TestCase
+import deformdata  
 from os import path
+
+
+import glob
 import time
 
-class DeformDataTest(unittest.TestCase):
+class DeformDataTest(TestCase):
 
 	showtimes		= False
 	rootfolder		= "testsuite"

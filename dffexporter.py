@@ -5,10 +5,11 @@ import os
 
 class DffExportParameters:
 
-	def __init__(self, overwrite=False, dffstep=10, writeCoefs=False):
+	def __init__(self, overwrite=False, dffstep=10, writeCoefs=False, diccoreParameters=dict()):
 		self.overwrite = overwrite
 		self.dffstep = dffstep
 		self.writeCoefs = writeCoefs
+		self.diccoreParameters = diccoreParameters
 
 class DffExporter(Exporter):
 
@@ -24,7 +25,6 @@ class DffExporter(Exporter):
 			self.size = self.deformation.get("PictureSize")
 			self.picturedata1	= self.deformation.get("PictureData1")
 			self.picturedata2	= self.deformation.get("PictureData2")
-			self.parameters		= self.deformation.get("Parameters")
 			self.firstpicturename = self.deformation.get("FirstPictureName")
 			self.secondpicturename = self.deformation.get("SecondPictureName")
 			return True
@@ -44,9 +44,8 @@ class DffExporter(Exporter):
 		for key in self.picturedata2:
 			self.outputfile.write("%% picture2 %s: %s\n" % (key, self.picturedata2[key]))
 		self.outputfile.write("\n")
-		self.outputfile.write("% analysis parameters:\n")
-		for key in self.parameters:
-			self.outputfile.write("%% %s: %s\n" % (key, str(self.parameters[key])))
+		for key in self.exportparameters.diccoreParameters:
+			self.outputfile.write("%% %s: %s\n" % (key, self.exportparameters.diccoreParameters[key]))
 		self.outputfile.write("\n")
 		self.outputfile.write("%% picture size x: %d\n" % self.size[0])
 		self.outputfile.write("%% picture size y: %d\n" % self.size[1])

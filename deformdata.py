@@ -19,28 +19,25 @@ from numpy import array
 class DeformationData:
 	
 	def __init__(self, firstPictureName, secondPictureName, configfile):
-		dic = Dic()
 		parser = ConfigParser(configfile)
 		self.masterdata = MasterData(parser)
+		# XXX: this execution and initialization logic DOES NOT belong here
+		self.dic = Dic(verbose = self.get('Verbose'), xtol = self.get('Xtol'), degf = self.get('DegF'), degc = self.get('DegC'), crate = self.get('CrateTuple'))
 		self.set('FirstPictureName', firstPictureName)
 		self.set('SecondPictureName', secondPictureName)
 		imsize = Image.open(firstPictureName).size
 		self.set('PictureSize', [imsize[0],imsize[1]])		
 		try:
-			parameters = dict(verbose = self.get('Verbose'), xtol = self.get('Xtol'), degf = self.get('DegF'), degc = self.get('DegC'), crate = self.get('CrateTuple'))
-		except KeyError:
-			raise KeyError("[deformdata.py]:{Verbose, Xtol, DegF, DegC, CrateTuple} must be defined.")		
-		try:
 			if self.get('Crop') == 'True':
 				crop = [self.get('CropXStart'), self.get('CropXEnd'), self.get('CropYStart'), self.get('CropYEnd')]
-				self.deformationCtx =  dic.register(firstPictureName, secondPictureName, parameters,crop)
+				self.deformationCtx =  self.dic.register(firstPictureName, secondPictureName,crop)
 				self.set('Crop', crop)
 			else:
-				self.deformationCtx = dic.register(firstPictureName, secondPictureName, parameters)
+				# XXX: when you refactor this, please remember to remove copy-paste below
+				self.deformationCtx = self.dic.register(firstPictureName, secondPictureName)
 				self.set('Crop', [0,imsize[0],0,imsize[1]])
 		except KeyError:
 			raise KeyError("[deformdata.py]:Crop must be defined.")
-		self.set('Parameters',parameters) 
 
 	def get(self, key):
 		return self.masterdata.get(key)

@@ -1,17 +1,18 @@
 
 from unittest import TestCase
 from dffexporter import DffExportParameters, DffExporter
+from diccore import Dic
 
 import os
 
 class MockDeformationData:
-	# XXX: mock tells us that we are VERY coupled to the deformationdata
+	# XXX: mock tells us that we are VERY coupled to the deformationdata internal structure
 	def __init__(self):
+		self.dic = Dic()
 		self.data = {"Crop" : (100,100,120,120), 
 					 "PictureSize" : (100,100), 
 					 "PictureData1":{"key":"in","key":"is"}, 
 					 "PictureData2":{"complicated":"stuff"}, 
-					 "Parameters":{"complicated":"stuff"}, 
 					 "FirstPictureName":"name1",
 					 "SecondPictureName":"name2"}
 	def get(self, key):
@@ -28,7 +29,6 @@ class test_DffExporter(TestCase):
 		self.exportparameters = DffExportParameters(overwrite=True)
 		# XXX: dependency from fs resource
 		self.testfilename = 'test.dff'
-
 
 	def testInit(self):
 		exporter = DffExporter(self.mockdeformation, 

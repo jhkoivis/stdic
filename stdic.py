@@ -83,7 +83,8 @@ class CreepExperiment:
 					exporter = DffExporter(deformation, 
 											  DffExportParameters(overwrite=overwrite, 
 												dffstep=self.masterdata.get("DffStep"),
-												writeCoefs=writeCoefs), 
+												writeCoefs=writeCoefs,
+												diccoreParameters=deformation.dic.parameters), 
 											filename + ".dff")
 					if exporter.export() == False:
 					   analyzesSkipped += 1

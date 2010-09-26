@@ -16,7 +16,14 @@ import bigoptimize
 
 class Dic:
 
-	def register(self, firstImg, secondImg, parameters, crop=None):
+	def __init__(self, verbose=3, xtol=0.05, degf=3, degc=3, crate=(32,32)):
+		self.parameters = {"verbose": verbose, "xtol":xtol, 
+						   "degf":degf, "degc":degc, 
+						   "crate":crate}
+
+	
+
+	def register(self, firstImg, secondImg, crop=None):
 		""" Returns the deformation from the firsImg to secondImg. """
 		try:
 			if crop == None:
@@ -27,7 +34,7 @@ class Dic:
 				secondImg = bigtools.ImageToArrayWithCrop(secondImg, crop)
 		except:
 			raise Exception("Could not read images.")
-		par = bigtools.Parameters(parameters, override={'refimg':firstImg,
+		par = bigtools.Parameters(self.parameters, override={'refimg':firstImg,
 												'testimg':secondImg})
 		warpingProblem = bigfelreg.MultigridableWarpingProblemBase(par=par)
 		mrs = bigoptimize.MROptimizerState(warpingProblem, par=par)
