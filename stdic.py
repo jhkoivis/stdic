@@ -9,6 +9,8 @@ from folderanalyzer import FolderAnalyzer
 from configparser import ConfigParser
 from masterdata import MasterData
 
+import sys
+
 class Stdic:
 	""" Analyzes series of images in a folder. The purpose of this class is to initialize 
 	the objects and their dependices, and offer a method to run the analysis """
