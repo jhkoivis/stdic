@@ -5,7 +5,7 @@ from diccore import Dic
 class test_diccore(TestCase):
 	
 	def testInit(self):
-		""" default constructor should initialize at least these values """
+		""" Assert minimal set of values that the default constructor initializes """
 		dic = Dic()
 		self.assertTrue(dic.parameters)
 		self.assertTrue(dic.parameters['verbose'])
@@ -13,5 +13,3 @@ class test_diccore(TestCase):
 		self.assertTrue(dic.parameters['degf'] > 1)
 		self.assertTrue(dic.parameters['degc'] > 1)
 		self.assertTrue(dic.parameters['crate'])
-		
-		

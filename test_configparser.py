@@ -6,19 +6,12 @@ from unittest import TestCase
 import os
 import inspect
 
-class mock_MasterData(MasterData):
-
-	def __init__(self):
-		self.masterdata = dict()
-		self.caller = "test_masterdata.py"
-
 class test_configparser(TestCase):
 	
 	def setUp(self):
 		folder	= os.path.join("testsuite","test_masterdata")
-		self.mockmaster = mock_MasterData()
-		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"))
-		self.configparser.setMasterdata(self.mockmaster)
+		self.mockmaster = MasterData()
+		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"), self.mockmaster, 'test_masterdata.py')
 		self.configparser.parse()
 
 	def testIntegers(self):

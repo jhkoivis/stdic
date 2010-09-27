@@ -11,12 +11,10 @@ import os
 import configparser
 
 class MasterData:
-
-	def __init__(self, configparser):
+	""" initializes the configuration of /caller/ """
+	
+	def __init__(self):
 		self.masterdata = dict()
-		self.caller = os.path.split(inspect.stack()[1][1])[1]
-		configparser.setMasterdata(self)
-		configparser.parse()
 		
 	def get(self, key):
 		""" Get's data from dictionary."""

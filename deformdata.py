@@ -18,9 +18,8 @@ from numpy import array
 
 class DeformationData:
 	
-	def __init__(self, firstPictureName, secondPictureName, configfile):
-		parser = ConfigParser(configfile)
-		self.masterdata = MasterData(parser)
+	def __init__(self, firstPictureName, secondPictureName, deformdataconfig):
+		self.masterdata = deformdataconfig
 		# XXX: this execution and initialization logic DOES NOT belong here
 		self.dic = Dic(verbose = self.get('Verbose'), xtol = self.get('Xtol'), degf = self.get('DegF'), degc = self.get('DegC'), crate = self.get('CrateTuple'))
 		self.set('FirstPictureName', firstPictureName)

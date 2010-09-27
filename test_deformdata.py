@@ -1,14 +1,14 @@
 
+from os import path
+from configparser import ConfigParser
+from masterdata import MasterData
 from unittest import TestCase
 import deformdata  
-from os import path
-
-
 import glob
 import time
 
 class DeformDataTest(TestCase):
-
+	""" XXX: not an unit test, since testes actual deformations """
 	showtimes		= False
 	rootfolder		= "testsuite"
 
@@ -24,6 +24,9 @@ class DeformDataTest(TestCase):
 	folder3			= path.join(rootfolder, "test3")
 	filename3		= "*.png"
 	config3			= path.join(folder3,"test3.dicconf")
+
+
+
 
 	def testDeformData1(self):
 	
@@ -46,16 +49,15 @@ class DeformDataTest(TestCase):
 		self.assertAlmostEqual(deformation, 180.708853, 4)
 
 	def getDeformation(self, folder, filename, config):
-	
 		pictures = glob.glob(path.join(folder, "%s" % filename))
 		pictures.sort()
-		
+		configdata = MasterData()
+		ConfigParser(config, configdata, 'deformdata.py').parse()
 		time1 = time.clock()
-		defData = deformdata.DeformationData(pictures[0], pictures[1], config)
+		defData = deformdata.DeformationData(pictures[0], pictures[1], configdata)
 		time2 = time.clock()
 		timetaken = time2 - time1
 		if self.showtimes:
 			print "Time taken: %s seconds." % timetaken
-		
 		deformation = defData.getDeformationAtPoints([(10,180)])
 		return deformation[0][1]

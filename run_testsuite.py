@@ -1,17 +1,8 @@
-import sys
-from os import path
-import unittest
-sys.path.append(path.join(path.dirname(sys.argv[0]), "testsuite"))
-import test_masterdata
-import test_deformdata
-import test_stdic
-		
-if __name__=="__main__":
-	masterdata_suite	= unittest.defaultTestLoader.loadTestsFromModule(test_masterdata)
-	unittest.TextTestRunner().run(masterdata_suite)
-	
-	deformdata_suite	= unittest.defaultTestLoader.loadTestsFromModule(test_deformdata)
-	unittest.TextTestRunner().run(deformdata_suite)
+import glob, trace, unittest, sys
 
-	stdic_suite			= unittest.defaultTestLoader.loadTestsFromModule(test_stdic)
-	unittest.TextTestRunner().run(stdic_suite)
+""" Runs all tests """
+
+if __name__=="__main__":
+	modules = map(trace.fullmodname, glob.glob('test_*.py'))
+	suite = unittest.TestLoader().loadTestsFromNames(modules)
+	unittest.TextTestRunner().run(suite)

@@ -64,15 +64,14 @@ class ExpressionFactory:
 	
 class ConfigParser:
 	""" reads a configuration file, and uses a masterdata to store the values """
-	def __init__(self, configfilename):
+	def __init__(self, configfilename, masterdata, caller):
 		self.configfilename = configfilename
-
-	def setMasterdata(self, masterdata):
+		self.caller = caller
 		self.masterdata = masterdata
 
 	def parse(self):
 		self.masterdata.set("ConfigFile", self.configfilename)
-		self.masterdata.set("Caller", self.masterdata.caller)
+		self.masterdata.set("Caller", self.caller)
 		configExpression	= re.compile('\[(?P<configparagraph>.+)\]$')									#[<configparagraph>]												#<<regular expression group>>
 		configparagraph = None
 		configfile = open(self.configfilename, 'r')
