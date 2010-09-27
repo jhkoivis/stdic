@@ -6,4 +6,5 @@ if __name__=="__main__":
 	for g in sys.argv[1:]:
 		modules = map(trace.fullmodname, glob.glob(g))
 		suite = unittest.TestLoader().loadTestsFromNames(modules)
+		print "Running a test (globbing): " + g
 		unittest.TextTestRunner().run(suite)
