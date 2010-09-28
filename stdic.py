@@ -13,7 +13,7 @@ import sys
 
 class Stdic:
 	""" Analyzes series of images in a folder. The purpose of this class is to initialize 
-	the objects and their dependices, and offer a method to run the analysis """
+		the objects and their dependices, and offer a method to run the analysis """
 	# XXX: bit rigid, but on purpose
 	def __init__(self, imagefolder,dfffolder, configfile):
 		masterdata = MasterData()
