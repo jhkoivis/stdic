@@ -11,7 +11,8 @@ class test_configparser(TestCase):
 	def setUp(self):
 		folder	= os.path.join("testsuite","test_masterdata")
 		self.configurationdata = MasterData()
-		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"), self.configurationdata, 'test_masterdata.py')
+		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"), 
+										 self.configurationdata, 'test_masterdata.py')
 		self.configparser.parse()
 
 	def testIntegers(self):
