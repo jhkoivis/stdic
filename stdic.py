@@ -25,6 +25,13 @@ class Stdic:
 	def run(self):
 		self.analyzer.analyze()
 
+def usage():
+	print "Usage: imagefolder dfffolder configfile"
+	sys.exit()
+	
 if __name__ == "__main__":
-	stdic = Stdic(*sys.argv[1:])
+	arglist = sys.argv[1:]
+	if len(arglist) != 3:
+		usage()
+	stdic = Stdic(*arglist)
 	stdic.run()
