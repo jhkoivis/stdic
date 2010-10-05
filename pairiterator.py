@@ -2,20 +2,20 @@ from filefilter import *
 from glob import glob
 from os import path
 
-class PairHolderFactory:
+class PairIteratorFactory:
     
     def __init__(self):
-        self.pairHolderPropertyList = [
-                                     (set(["First"]), ToFirstPairHolder),
-                                     (set(["Previous"]), ToPreviousPairHolder),
+        self.PairIteratorPropertyList = [
+                                     (set(["First"]), ToFirstPairIterator),
+                                     (set(["Previous"]), ToPreviousPairIterator),
                                      ]
 
-    def getPairHolder(self, properties=None, folder=None, filters=None):
-        for pairHolderProperty in self.pairHolderPropertyList:
-            if (pairHolderProperty[0] & properties) == pairHolderProperty[0]:
-                return pairHolderProperty[1](folder, filters)
+    def getPairIterator(self, properties, configuration, filters=None):
+        for PairIteratorProperty in self.PairIteratorPropertyList:
+            if (PairIteratorProperty[0] & properties) == PairIteratorProperty[0]:
+                return PairIteratorProperty[1](configuration, filters)
             
-class PairHolder:
+class PairIterator:
     
     def __init__(self, folder):
         self.folder = folder
@@ -32,15 +32,15 @@ class PairHolder:
             filelist = filter.filter(filelist)
         return filelist
     
-class ToFirstPairHolder(PairHolder):
+class ToFirstPairIterator(PairIterator):
 
-    def __init__(self, folder, filters):
+    def __init__(self, configuration, filters):
         self.filters = filters
-        PairHolder.__init__(self, folder)
+        PairIterator.__init__(self, configuration.pop("Folder"))
         
-class ToPreviousPairHolder(PairHolder):
+class ToPreviousPairIterator(PairIterator):
 
-    def __init__(self, folder, filters):
+    def __init__(self, configuration, filters):
         self.filters = filters
-        PairHolder.__init__(self, folder)
+        PairIterator.__init__(self, configuration.pop("Folder"))
         
