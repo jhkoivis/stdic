@@ -2,30 +2,41 @@
 class FileFilterFactory:
     
     def __init__(self):
-        self.fileFilterCollection = [
-                                     (set(["FirstPictureNumber"]), FirstPictureNumberFilter),
-                                     (set(["LastPictureNumber"]), LastPictureNumberFilter),
-                                     (set(["FirstPictureOrdinal"]), FirstPictureOrdinalFilter),
-                                     (set(["LastPictureOrdinal"]), LastPictureOrdinalFilter)
-                                     ]
+        self.fileFilterDictionary = dict({
+                                     "FirstPictureNumber":FirstPictureNumberFilter,
+                                     "LastPictureNumber":LastPictureNumberFilter,
+                                     "FirstPictureOrdinal":FirstPictureOrdinalFilter,
+                                     "LastPictureOrdinal":LastPictureOrdinalFilter
+                                     })
 
-    def getFileFilters(self, properties):
+    def getFileFilters(self, configuration):
+        keys = set(configuration.keys())
         filters = []
-        for fileFilter in self.fileFilterCollection:
-            if (fileFilter[0] & properties) == fileFilter[0]:
-                filters.append(fileFilter[1])
+        for key in keys:
+            filters.append(self.fileFilterDictionary[key](configuration[key]))
         return filters
-        
 
 class FileFilter:
     
     def __init__(self):
         pass
     
-class FirstPictureFilter(FileFilter):
+class FirstPictureNumberFilter(FileFilter):
     
-    def __init__(self, filenumber):
+    def __init__(self, configuration):
         pass
     
-    def filterFiles(self, filelist):
+class LastPictureNumberFilter(FileFilter):
+    
+    def __init__(self, configuration):
+        pass
+    
+class FirstPictureOrdinalFilter(FileFilter):
+    
+    def __init__(self, configuration):
+        pass
+    
+class LastPictureOrdinalFilter(FileFilter):
+    
+    def __init__(self, configuration):
         pass
