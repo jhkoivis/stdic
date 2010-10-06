@@ -2,14 +2,14 @@ from glob import glob
 from os import path
 import re
 
-class ImageFolder:
+class ExpressionFolder:
     
     def __init__(self, folder):
         self.folder = folder
-        self.imageNameList = []
-        self.imageFileList = []
+        self.fileNameList = []
+        self.fileList = []
         
-    def findImagesExpression(self, regexpression):
+    def findWithExpression(self, regexpression):
         
         filelist = glob(path.join(self.folder, '*'))
         
@@ -19,13 +19,13 @@ class ImageFolder:
         
         for item in filenamelist:
             if pattern.match(item) != None:
-                self.imageNameList.append(item)
-                self.imageFileList.append(path.join(self.folder,item))
+                self.fileNameList.append(item)
+                self.fileList.append(path.join(self.folder,item))
 
-    def getImageNames(self):
+    def getFileNames(self):
         
-        return self.imageNameList
+        return self.fileNameList
     
-    def getImageFiles(self):
+    def getFiles(self):
         
-        return self.imageFileList
+        return self.fileList
