@@ -1,5 +1,5 @@
 import unittest
-import stdic
+from stdic import Stdic
 from os import path
 from math import *
 from glob import glob
@@ -21,7 +21,7 @@ class TestPoly(unittest.TestCase):
 		step		= 10
 		
 		if analyze:
-			stdic.CreepExperiment(folder, folder, config)
+			Stdic(folder, folder, config)
 		
 		dfflist = glob(path.join(folder, "*.dff"))
 		dfflist.sort()
@@ -94,4 +94,4 @@ class TestPoly(unittest.TestCase):
 		averagefile	= open(path.join(folder,"averages.txt"), 'w')
 		for average in averages:
 			averagefile.write("%f\n" % error)
-		errorfile.close()
+
