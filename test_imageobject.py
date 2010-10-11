@@ -15,12 +15,13 @@ class test_ImageObject(TestCase):
         imageobject1 = ImageObject(imagefile)
         imageobject2 = ImageObject(imagefile, '^.*-(?P<key1>\w+)-(?P<key2>\w+)-(?P<picturenumber>\d+)\.tiff$')
         
-        resultdictionary1 = dict({'Filename':imagefile})
-        resultdictionary2 = dict({'Filename':imagefile, 'key1':'parameter1', 'key2':'parameter2', 'picturenumber':'0001'})
+        resultdictionary1 = dict({'filename':imagefile})
+        resultdictionary2 = dict({'filename':imagefile, 'key1':'parameter1', 'key2':'parameter2', 'picturenumber':'0001'})
         
         self.assertTrue(isinstance(imageobject1.getImage(), TiffImageFile))
         
-        self.assertEquals(imageobject1.getImageDataValue('Filename'), imagefile)
-        
-        self.assertEquals(imageobject1.getImageData(), resultdictionary1)
-        self.assertEquals(imageobject2.getImageData(), resultdictionary2)
+        for key in resultdictionary1:
+            self.assertEquals(getattr(imageobject1,key), resultdictionary1[key])
+            
+        for key in resultdictionary2:
+            self.assertEquals(getattr(imageobject2,key), resultdictionary2[key])

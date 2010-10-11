@@ -1,24 +1,30 @@
 
 from expressionfolder import ExpressionFolder
+from pairiterator import *
 from imageorderer import *
-from filefilter import *
+from imagefilter import *
+from sequencefilter import *
 
 class mock_stdic:
     
-    def __init__(self, folder, regexp, filter_properties):
+    def __init__(self, folder, configurationfile):
+        
+        configuration = ParseConfig(configurationfile)
+        
+        filtconfig  = configuration.filter_configuration
+        seqconfig   = configuration.sequence_configuration
+        regexp      = configuration.regular_expression
         
         folder_object = ExpressionFolder(folder)
         folder_object.findWithExpression(regexp)
         
-        orderfactory = ImageOrdererFactory()
-        order = ImageOrdererFactory().getImageOrderer(parameter)
-        
-        filterfactory = FileFilterFactory()
-        filters = FileFilterFactory().getFileFilters(parameter)
+        sequencefilter = SequenceFilterFactory().getSequenceFilter(seqconfig)
 
-        imageList = ImageList(folder_object, order, filters)
+        imagefilters = ImageFilterFactory().getImageFilters(filtconfig)
         
-        pairIterator = PairIterator(ImageList)
+        imagelist = ImageList(folder_object, sequencefilter, imagefilters)
+        
+        pairIterator = PairIterator(imagelist)
         
         exporter = DffExporter()
         
