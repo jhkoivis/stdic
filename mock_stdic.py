@@ -12,15 +12,18 @@ class mock_stdic:
         configuration = ParseConfig(configurationfile)
         
         filtconfig  = configuration.filter_configuration
+        orderconfig = configuration.order_configuration
         seqconfig   = configuration.sequence_configuration
         regexp      = configuration.regular_expression
         
         folder_object = ExpressionFolder(folder)
         folder_object.findWithExpression(regexp)
-        
-        sequencefilter = SequenceFilterFactory().getSequenceFilter(seqconfig)
 
         imagefilters = ImageFilterFactory().getImageFilters(filtconfig)
+        
+        orderer = ImageOrdererFactory().getImageOrderer(orderconfig)
+        
+        sequencefilter = SequenceFilterFactory().getSequenceFilter(seqconfig)
         
         imagelist = ImageList(folder_object, sequencefilter, imagefilters)
         
