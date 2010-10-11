@@ -20,19 +20,16 @@ class test_ExpressionFolder(TestCase):
         test_ExpressionFolder1.findWithExpression(test_expression1)
         test_ExpressionFolder2.findWithExpression(test_expression2)
         test_ExpressionFolder3.findWithExpression(test_expression3)
-        
-        result1 = 'expressionfolder.py'
-        result2 = 'test_expressionfolder.py'
-        result3 = [result1, result2]
-        
-        self.assertEquals(test_ExpressionFolder1.getFileNames()[0], result1)
-        self.assertEquals(test_ExpressionFolder2.getFileNames()[0], result2)
-        self.assertTrue(set(test_ExpressionFolder3.getFileNames()) == set(result3))
-        
+                
         result1 = path.join(pathname, 'expressionfolder.py')
         result2 = path.join(pathname, 'test_expressionfolder.py')
         result3 = [result1, result2]
         
-        self.assertEquals(test_ExpressionFolder1.getFiles()[0], result1)
-        self.assertEquals(test_ExpressionFolder2.getFiles()[0], result2)
-        self.assertTrue(set(test_ExpressionFolder3.getFiles()) == set(result3))
+        self.assertEquals(test_ExpressionFolder1.filelist[0], result1)
+        self.assertEquals(test_ExpressionFolder2.filelist[0], result2)
+        self.assertTrue(set(test_ExpressionFolder3.filelist) == set(result3))
+        
+        test_ExpressionIterator = iter(test_ExpressionFolder3)
+        self.assertEquals(test_ExpressionIterator.next(), result1)
+        self.assertEquals(test_ExpressionIterator.next(), result2)
+        

@@ -1,42 +1,42 @@
 
-class FileFilterFactory:
+class ImageFilterFactory:
     
     def __init__(self):
-        self.fileFilterDictionary = dict({
+        self.imageFilterDictionary = dict({
                                      "FirstPictureNumber":FirstPictureNumberFilter,
                                      "LastPictureNumber":LastPictureNumberFilter,
                                      "FirstPictureOrdinal":FirstPictureOrdinalFilter,
                                      "LastPictureOrdinal":LastPictureOrdinalFilter
                                      })
 
-    def getFileFilters(self, configuration):
+    def getImageFilters(self, configuration):
         keys = set(configuration.keys())
         filters = []
         for key in keys:
-            filters.append(self.fileFilterDictionary[key](configuration[key]))
+            filters.append(self.imageFilterDictionary[key](configuration[key]))
         return filters
 
-class FileFilter:
+class ImageFilter:
     
     def __init__(self):
         pass
     
-class FirstPictureNumberFilter(FileFilter):
+class FirstPictureNumberFilter(ImageFilter):
     
     def __init__(self, configuration):
         pass
     
-class LastPictureNumberFilter(FileFilter):
+class LastPictureNumberFilter(ImageFilter):
     
     def __init__(self, configuration):
         pass
     
-class FirstPictureOrdinalFilter(FileFilter):
+class FirstPictureOrdinalFilter(ImageFilter):
     
     def __init__(self, configuration):
         pass
     
-class LastPictureOrdinalFilter(FileFilter):
+class LastPictureOrdinalFilter(ImageFilter):
     
     def __init__(self, configuration):
         pass

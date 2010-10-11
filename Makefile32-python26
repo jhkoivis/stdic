@@ -5,7 +5,7 @@
 #
 # Edited by Simo Tuomisto, 2010
 
-PREFIX=/usr/
+PREFIX=/usr
 INCLUDES= -I$(PREFIX)/include/python2.6 -I$(PREFIX)/lib/python2.6/dist-packages/numpy/core/include/numpy
 LDFLAGS= -lm
 LDSHARED= ld -G
