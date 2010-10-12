@@ -1,1 +1,7 @@
-__all__=["sequencefilter", "linearsequence"]
+__all__=[
+         "sequencefilter",
+         "linearsequence",
+         "imageorder",
+         "filenameorder",
+         "picturenumberorder"
+         ]

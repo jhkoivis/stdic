@@ -1,10 +1,8 @@
+
 class SequenceFilter:
     
-    def __init__(self, orderer=None):
-        self.orderFunction = orderer.order
-        
-    def _sort(self, listing):
-        return sorted(listing, cmp=self.orderFunction)
+    def __init__(self, orderer):
+        self.orderer = orderer
 
 class SequenceFilterFactory:
     

@@ -9,7 +9,7 @@ class LinearSequence(SequenceFilter):
         
     def filter(self, objectlist):
         
-        sortedlist = self._sort(objectlist)
+        sortedlist = self.orderer.order(objectlist)
 
         skippedlist = []
         index = 0

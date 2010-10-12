@@ -4,12 +4,8 @@ from sequencefilters import *
 
 class mock_orderer:
 
-    def order(self, value1, value2):
-        if value1 < value2:
-            return -1
-        elif value1 == value2:
-            return 0
-        return 1
+    def order(self, imagelist):
+        return imagelist
 
 class test_sequencefilters(TestCase):
     
