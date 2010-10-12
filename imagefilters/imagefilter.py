@@ -1,20 +1,23 @@
 
 class ImageFilter:
     
-    def __init__(self):
-        pass
+    pass
 
-from firstpicturenumberfilter import *
 
 class ImageFilterFactory:
-    
+   
     def __init__(self):
-        self.imageFilterDictionary = ["FirstPictureNumber",FirstPictureNumberFilter]
+    
+        from firstpicturenumberfilter import FirstPictureNumberFilter
+    
+        self.imageFilterDictionary = dict({
+                                       "FirstPictureNumber":FirstPictureNumberFilter
+                                      
+                                      })
         
     def getImageFilters(self, configuration_dict):
         keys = configuration_dict.keys()
         filters = []
-        for imageFilter in imageFilterClasses:
-            if imageFilter.parameterKey in configuration_dict:
-                filters.append(imageFilter(imageFilter.parameterKey))
+        for key in keys:
+            filters.append(self.imageFilterDictionary[key](configuration_dict[key]))
         return filters
