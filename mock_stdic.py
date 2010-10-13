@@ -1,37 +1,65 @@
 
 from expressionfolder import ExpressionFolder
-from pairiterator import *
-from imageorderer import *
-from imagefilter import *
-from sequencefilter import *
+from pairiterators.pairiterator import PairIteratorFactory
+from imagefilters.imagefilter import ImageFilterFactory
+from sequencefilters.sequencefilter import SequenceFilterFactory
+from sequencefilters.imageorder import ImageOrderFactory
+from imagelist import ImageList
+from imageobject import ImageObject
+from dic import Dic
+from dffexporter2 import *
+from generatedffname import GenerateDffName
 
 class mock_stdic:
     
-    def __init__(self, folder, configurationfile):
+    def __init__(self, folder, dfffolder, configurationfile=None):
         
+        """
         configuration = ParseConfig(configurationfile)
         
-        filtconfig  = configuration.filter_configuration
-        orderconfig = configuration.order_configuration
-        seqconfig   = configuration.sequence_configuration
-        regexp      = configuration.regular_expression
+        filtconfig      = configuration.filter_configuration
+        dicconfig       = configuration.dic_configuration
         
-        folder_object = ExpressionFolder(folder)
+        ordername        = configuration.order_name        
+        seqname          = configuration.sequence_name
+        pairiteratorname = configuration.pairiterator_name
+        
+        regexp          = configuration.regular_expression
+        """
+        filtconfig      = dict()
+        
+        ordername           = 'Filename'
+        seqname             = 'Linear'
+        seqconf             = None
+        pairiteratorname    = 'First'
+        
+        regexp          = '.*-(?P<picturenumber>\d+)\.tiff'
+        
+        folder_object   = ExpressionFolder(folder)
         folder_object.findWithExpression(regexp)
+        
+        if len(folder_object.filelist) < 2:
+            raise Exception("Could not find two pictures from folder: %s" % folder)
 
-        imagefilters = ImageFilterFactory().getImageFilters(filtconfig)
+        imagefilters    = ImageFilterFactory().getImageFilters(filtconfig)
+        order           = ImageOrderFactory().getImageOrder(ordername)        
+        sequencefilter  = SequenceFilterFactory(order).getSequenceFilter(seqname, seqconf)
+        imageclass      = ImageObject
         
-        orderer = ImageOrdererFactory().getImageOrderer(orderconfig)
+        imagelist = ImageList(folder_object, imageclass, sequencefilter, imagefilters, regexp)
         
-        sequencefilter = SequenceFilterFactory().getSequenceFilter(seqconfig)
+        pairIterator = PairIteratorFactory(imagelist).getPairIterator(pairiteratorname)
         
-        imagelist = ImageList(folder_object, sequencefilter, imagefilters)
+        exportparameters    = DffExportParameters(overwrite=True)
+        exporter            = DffExporter2
+        namegenerator       = GenerateDffName(dfffolder)
+        dic                 = Dic()
         
-        pairIterator = PairIterator(imagelist)
-        
-        exporter = DffExporter()
-        
-        for pair in pairIterator:
+        for (image1, image2) in pairIterator:
             
-            deformation = dic.analyze(pair)
-            exporter(pair.getData(), deformation)
+            dic.analyze(image1.getImage(), image2.getImage())
+            exporterinstance = exporter(image1, image2, dic, exportparameters, namegenerator.generatename(image1, image2))
+            exporterinstance.export()
+            
+if __name__=="__main__":
+    mock_stdic('testsuite/test1','testsuite/test1')

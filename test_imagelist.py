@@ -38,13 +38,13 @@ class test_imagelist(TestCase):
         mock_seq    = mock_sequencefilter()
         mock_img    = mock_imagefilter()
         
-        imagelist = ImageList(testlist, mock_seq, [mock_img], mock_imageobject)
+        imagelist = ImageList(testlist, mock_imageobject, mock_seq, [mock_img])
                             
         for image, filename in zip(iter(imagelist),iter(testlist)):
             self.assertTrue(isinstance(image, mock_imageobject))
             self.assertEquals(image.filename, filename)
             
-        imagelist2 = ImageList(testlist, mock_seq, [mock_img], mock_imageobject, 'test_regexp')
+        imagelist2 = ImageList(testlist, mock_imageobject, mock_seq, [mock_img], 'test_regexp')
                             
         for image, filename in zip(iter(imagelist2),iter(testlist)):
             self.assertTrue(isinstance(image, mock_imageobject))
