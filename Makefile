@@ -34,7 +34,7 @@ shortTests:
 
 longTests:
 	python run_globtests.py test_deformdata.py
-	python run_globtests.py test_transforms/test*
+	python run_globtests.py test_transforms/test*.py
 
 
 
