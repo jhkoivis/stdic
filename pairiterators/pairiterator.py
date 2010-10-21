@@ -15,5 +15,5 @@ class PairIteratorFactory:
                                      "Previous":ToPreviousIterator,
                                      })
 
-    def getPairIterator(self, name, imagelistobject):
-        return self.PairIteratorDictionary[name](imagelistobject)
+    def getPairIterator(self, name, imagelistobject, configdict):
+        return self.PairIteratorDictionary[name](imagelistobject, **configdict)

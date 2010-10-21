@@ -11,7 +11,8 @@ class test_imagefilters(TestCase):
     
     def _checkInstance(self, instance):
         filterclasses = [
-                         firstpicturenumberfilter.FirstPictureNumberFilter
+                         firstpicturenumberfilter.FirstPictureNumberFilter,
+                         imagefilter.TrueFilter
                          ]
         
         for filterclass in filterclasses:

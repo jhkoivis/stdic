@@ -45,6 +45,14 @@ def ImageToArray(iname):
 
     return a
 
+def OpenedImageToArray(i):
+    """ converts greyscale or color image to (byte) array """
+
+    a=fromstring(i.tostring(),'B')
+    a.shape=i.im.size[1], i.im.size[0]
+
+    return a
+
 def ImageToArrayWithCrop(iname, crop):
     """ converts greyscale or color image to (byte) array with crop """
 

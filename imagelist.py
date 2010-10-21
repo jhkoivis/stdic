@@ -1,11 +1,7 @@
-from sequencefilters.sequencefilter import *
-from imagefilters.imagefilter import *
-from imageobject import *
-from expressionfolder import ExpressionFolder
 
 class ImageList:
     
-    def __init__(self, folderobject, seqFilter,  imgFilters, imageClass, regExpression=None):
+    def __init__(self, folderobject, imageClass, seqFilter,  imgFilters, regExpression=None):
         unorderedList = self._getFilteredFolder(folderobject, imgFilters, imageClass, regExpression)
         self.imagelist = seqFilter.filter(unorderedList)
         
