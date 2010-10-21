@@ -20,10 +20,10 @@ class ImageFilterFactory:
                                       
                                            })
         
-    def getImageFilters(self, configuration_dict):
-        keys = configuration_dict.keys()
+    def getImageFilters(self, configdict):
+        keys = configdict.keys()
         filters = []
         filters.append(self.imageFilterDictionary["True"]())
         for key in keys:
-            filters.append(self.imageFilterDictionary[key](configuration_dict[key]))
+            filters.append(self.imageFilterDictionary[key](configdict[key]))
         return filters

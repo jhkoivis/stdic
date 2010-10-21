@@ -5,13 +5,11 @@ import os
 
 class DffExportParameters:
 
-	def __init__(self, overwrite=False, dffstep=10, writeCoefs=False, diccoreParameters=dict()):
-		self.overwrite = overwrite
+	def __init__(self, dffstep=10, dicconfig=dict()):
 		self.dffstep = dffstep
-		self.writeCoefs = writeCoefs
-		self.diccoreParameters = diccoreParameters
+		self.dicconfig = dicconfig
 
-class DffExporter2(Exporter):
+class DffExporter(Exporter):
 	""" 
 		Exports a deformation using single ASCII format as an output. 
 	
@@ -25,14 +23,12 @@ class DffExporter2(Exporter):
 		self.outputfilename = outputfilename
 
 	def initialize(self):
-		if not os.path.exists(self.outputfilename) or self.exportparameters.overwrite:
-			self.outputfile = open(self.outputfilename, 'w')
-			return True
-		return False
+		self.outputfile = open(self.outputfilename, 'w')
+		return True
 
 	def writeVersion(self):
 		""" Deformation file version identification """
-		self.outputfile.write('% version: 2.0')
+		self.outputfile.write('% version: 2.0\n')
 	
 	def writeMetadata(self):
 		""" Deformation metadata """
@@ -42,29 +38,26 @@ class DffExporter2(Exporter):
 			self.outputfile.write("%% image1 %s : %s\n" % (key, imagedata1[key]))
 			self.outputfile.write("%% image2 %s : %s\n" % (key, imagedata2[key]))
 		self.outputfile.write("\n")
+		for key in self.exportparameters.dicconfig:
+			self.outputfile.write("%% %s: %s\n" % (key, self.exportparameters.dicconfig[key]))
+		self.outputfile.write("\n")
 	
 	def writeDeformationData(self):
 		""" deformation data """
+		pointarray = []
 		step = self.exportparameters.dffstep
-		deformationarray = self.deformation.getDeformation(step)
-		arrayshape = deformationarray.shape
-		for xindex in xrange(0, arrayshape[1]):
-			for yindex in xrange(0, deformationarray.shape[0]):
-				x  = xindex*step
-				y  = yindex*step
-				xd = deformationarray[yindex,xindex]
-				yd = deformationarray[yindex,xindex]
-				self.outputfile.write("%d %d %lf %lf \n" % (x,y,xd,yd))
+		for x in xrange(0, self.deformation.shape[1], step):
+			for y in xrange(0, self.deformation.shape[0], step):
+				pointarray.append([y,x])
+		deformedpointarray = self.deformation.getDeformationAtPoints(pointarray)
+		for index in xrange(0, len(pointarray)):
+			x = pointarray[index][1]
+			y = pointarray[index][0]
+			xd = deformedpointarray[index][1]
+			yd = deformedpointarray[index][0]
+			self.outputfile.write("%d %d %lf %lf \n" % (x, y, xd, yd))
 		
 	def finalize(self):
 		self.outputfile.close()
-		if self.exportparameters.writeCoefs:
-			self.__writeCoefs__()
 		return True
-
-	def __writeCoefs__(self):
-		""" what is the point of this??? """
-		# XXX: NOT TESTED. WRITE
-		coefsArray = self.deformation.getCoefs()
-		npsave(self.outputfilename + ".coefs", coefsArray)
 	

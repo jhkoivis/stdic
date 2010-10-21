@@ -6,14 +6,13 @@ class SequenceFilter:
 
 class SequenceFilterFactory:
     
-    def __init__(self, order):
+    def __init__(self):
         from linearsequence import LinearSequence
         
-        self.order = order
         self.sequenceFilterDictionary = dict({
                                               "Linear":LinearSequence
                                               })
 
-    def getSequenceFilter(self, name, configuration):
+    def getSequenceFilter(self, name, order, configdict):
         
-        return self.sequenceFilterDictionary[name](self.order, configuration)
+        return self.sequenceFilterDictionary[name](order, **configdict)

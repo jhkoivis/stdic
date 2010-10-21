@@ -6,9 +6,7 @@ class PairIterator:
 
 class PairIteratorFactory:
     
-    def __init__(self, imagelistobject):
-        
-        self.imagelistobject = imagelistobject
+    def __init__(self):
     
         from tofirstiterator import ToFirstIterator
         from topreviousiterator import ToPreviousIterator
@@ -17,5 +15,5 @@ class PairIteratorFactory:
                                      "Previous":ToPreviousIterator,
                                      })
 
-    def getPairIterator(self, name):
-        return self.PairIteratorDictionary[name](self.imagelistobject)
+    def getPairIterator(self, name, imagelistobject, configdict):
+        return self.PairIteratorDictionary[name](imagelistobject, **configdict)

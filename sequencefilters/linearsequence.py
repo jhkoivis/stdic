@@ -2,11 +2,8 @@ from sequencefilter import SequenceFilter
     
 class LinearSequence(SequenceFilter):
     
-    def __init__(self, orderer, skip=None):
-        
-        if skip==None:
-            skip = 1
-        
+    def __init__(self, orderer, skip=1):
+                
         self.skip = skip
         SequenceFilter.__init__(self, orderer)
         
