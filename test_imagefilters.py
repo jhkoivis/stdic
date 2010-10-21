@@ -7,6 +7,24 @@ class mock_imageobject:
     def __init__(self):
         self.picturenumber = 100
         
+class mock_configsub:
+    
+    def __init__(self, name, configdict):
+        self.configDict = dict({'name':name})
+        self.configDict.update(configdict)
+    
+    def getValues(self):
+        return self.configDict
+        
+class mock_configobject:
+    
+    def __init__(self):
+        sub1 = mock_configsub('FirstPictureNumber', dict({'picturenumber':50}))
+        self.subs = dict({'sub1':sub1})
+    
+    def getSubs(self):
+        return self.subs
+        
 class test_imagefilters(TestCase):
     
     def _checkInstance(self, instance):
@@ -21,7 +39,7 @@ class test_imagefilters(TestCase):
         return False
     
     def testImageFilterFactory(self):
-        testconfig = dict({"FirstPictureNumber":1})
+        testconfig = mock_configobject()
         
         test_factory = imagefilter.ImageFilterFactory()
         filters = test_factory.getImageFilters(testconfig)

@@ -37,7 +37,6 @@ class ConfigObject:
     
     def __init__(self, name):
         self._name = name
-            
         
     def sub(self, name):
         setattr(self, name, ConfigObject(name))
@@ -59,3 +58,12 @@ class ConfigObject:
             else:
                 valuedict[fullname + key] = value
         return valuedict
+    
+    def getSubs(self):
+        
+        selfvaluedict   = self.__dict__
+        subdict = dict()
+        for key, value in selfvaluedict.iteritems():
+            if isinstance(value, ConfigObject):
+                subdict[key] = value
+        return subdict

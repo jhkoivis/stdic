@@ -59,9 +59,9 @@ class FolderAnalyzer:
         self.regexp             = configuration.regularexpression._value
         
         try:
-            self.filtconfig     = configuration.filters.getValues()
+            self.filtconfig     = configuration.filters
         except AttributeError:
-            self.filtconfig     = dict()
+            self.filtconfig     = ConfigObject('null')
         
         self.orderconfig        = configuration.order.getValues()
         self.ordername          = self.orderconfig.pop('name')

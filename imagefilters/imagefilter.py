@@ -17,13 +17,14 @@ class ImageFilterFactory:
         self.imageFilterDictionary = dict({
                                            "True":TrueFilter,
                                            "FirstPictureNumber":FirstPictureNumberFilter
-                                      
                                            })
         
-    def getImageFilters(self, configdict):
-        keys = configdict.keys()
+    def getImageFilters(self, configobject):
+        filterconfigs = configobject.getSubs()
         filters = []
         filters.append(self.imageFilterDictionary["True"]())
-        for key in keys:
-            filters.append(self.imageFilterDictionary[key](configdict[key]))
+        for filterconfig in filterconfigs.values():
+            configdict = filterconfig.getValues()
+            filtername = configdict.pop('name')
+            filters.append(self.imageFilterDictionary[filtername](configdict))
         return filters

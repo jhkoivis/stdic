@@ -29,6 +29,22 @@ class test_ConfigObject(TestCase):
         
         for key, value in resultdict.iteritems():
             self.assertEquals(valuedict[key], value)
+            
+    def test_getSubs(self):
+    
+        root = ConfigObject('root')
+        root.sub('sub1')
+        root.sub('sub2')
+        
+        resultdict = dict({
+                           'sub1':root.sub1,
+                           'sub2':root.sub2
+                           })
+        
+        subdict = root.getSubs()
+        
+        for key, value in resultdict.iteritems():
+            self.assertEquals(subdict[key], value)
 
 class test_ConfigObjectParser(TestCase):        
     
@@ -45,7 +61,9 @@ class test_ConfigObjectParser(TestCase):
                       'tuples.tuple1' : (1,2),
                       'tuples.tuple2' : (1,2.1),
                       'regexps.reg1' : "*\\.txt",
-                      'regexps.reg2' : "(?P<jotain>\\w+)-(?P<jotain>\\w+)\\.picture"
+                      'regexps.reg2' : "(?P<jotain>\\w+)-(?P<jotain>\\w+)\\.picture",
+                      'boolean.true' : True,
+                      'boolean.false' : False
                       }
         
         resultdict2 = {
