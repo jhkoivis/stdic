@@ -2,8 +2,8 @@ from os import path
 
 class PictureNumberDffname:
 
-	def __init__(self, folder):
-		self.string = path.join(folder,"dff-%s-%s.dff")
+	def __init__(self, folder, format):
+		self.string = path.join(folder,format)
 	
 	def generatename(self, image1, image2):
 		return self.string % (image1.picturenumber, image2.picturenumber)

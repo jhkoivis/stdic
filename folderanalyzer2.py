@@ -17,75 +17,92 @@ class FolderAnalyzer:
     
     def __init__(self, folder, dfffolder, configurationfile):
         
-        self.initialize(configurationfile)
-        
-        folder_object = ExpressionFolder(folder)
-        folder_object.findWithExpression(self.regexp)
-        
-        if len(folder_object.filelist) < 2:
-            raise Exception("Could not find two pictures from folder: %s" % folder)
-
-        imagefilters        = ImageFilterFactory().getImageFilters(self.filtconfig)
-        order               = ImageOrderFactory().getImageOrder(self.ordername, self.orderconfig)
-        sequencefilter      = SequenceFilterFactory().getSequenceFilter(self.seqname, order, self.seqconfig)
-        imageclass          = ImageObject
-        
-        imagelist           = ImageList(folder_object, imageclass, sequencefilter, imagefilters, self.regexp)
-        
-        pairIterator        = PairIteratorFactory().getPairIterator(self.pairiteratorname, imagelist, self.pairiteratorconfig)
-        
-        exportparameters    = DffExportParameters(dicconfig = self.dicconfig, **self.dffconfig)
-        exporterfactory     = ExporterClassFactory()
-        exporter            = exporterfactory.getExporterClass(self.dffname)
-        
-        namegenerator       = PictureNumberDffname(dfffolder)
-        dffchecker          = CheckDffExistence()
-        dic                 = Dic(**self.dicconfig)
-        
-        for (image1, image2) in pairIterator:
-            self.dffname = namegenerator.generatename(image1, image2)
-            if not self.overwrite:
-                if dffchecker.checkExistence(self.dffname):
-                    continue
-            dic.analyze(image1.getImage(), image2.getImage())
-            exporterinstance = exporter(image1, image2, dic, exportparameters, self.dffname)
-            exporterinstance.export()
-            
-    def initialize(self, configurationfile):
+        #--------------------------------------------------------
+        # Configuration parsing
+        #--------------------------------------------------------
         
         configurationparser     = ConfigObjectParser(configurationfile)
         configuration           = configurationparser.parse('configuration')
         
-        self.regexp             = configuration.regularexpression._value
+        regexp                  = configuration.regularexpression._value
         
         try:
-            self.filtconfig     = configuration.filters
+            outputconfig        = configuration.output.getValues()
+            outputformat        = outputconfig.pop('format')
+        except:
+            outputformat        = "dff-%s-%s.dff"
+        
+        try:
+            filtconfig          = configuration.filters
         except AttributeError:
-            self.filtconfig     = ConfigObject('null')
+            filtconfig          = ConfigObject('null')
         
-        self.orderconfig        = configuration.order.getValues()
-        self.ordername          = self.orderconfig.pop('name')
+        orderconfig             = configuration.order.getValues()
+        ordername               = orderconfig.pop('name')
         
-        self.seqconfig          = configuration.sequence.getValues()
-        self.seqname            = self.seqconfig.pop('name')
+        seqconfig               = configuration.sequence.getValues()
+        seqname                 = seqconfig.pop('name')
         
         self.pairiteratorconfig = configuration.pairiterator.getValues()
-        self.pairiteratorname   = self.pairiteratorconfig.pop('name')
+        pairiteratorname        = self.pairiteratorconfig.pop('name')
             
         try:
-            self.dicconfig      = configuration.dic.getValues()
+            dicconfig           = configuration.dic.getValues()
         except AttributeError:
-            self.dicconfig      = dict()
+            dicconfig           = dict()
         
         try:
-            self.dffconfig      = configuration.dff.getValues()
+            exporterconfig      = configuration.dff.getValues()
         except AttributeError:
-            self.dffconfig      = dict({'name':'DffExporter'})
+            exporterconfig      = dict({'name':'DffExporter'})
             
-        self.dffname            = self.dffconfig.pop('name')
+        exportername            = exporterconfig.pop('name')
         
         self.overwrite          = configuration.overwrite._value
+        
+        #--------------------------------------------------------
+        # Creation of pairiterator
+        #--------------------------------------------------------
+                
+        folder_object = ExpressionFolder(folder)
+        folder_object.findWithExpression(regexp)
+        
+        if len(folder_object.filelist) < 2:
+            raise Exception("Could not find two pictures from folder: %s" % folder)
+
+        imagefilters            = ImageFilterFactory().getImageFilters(filtconfig)
+        order                   = ImageOrderFactory().getImageOrder(ordername, orderconfig)
+        sequencefilter          = SequenceFilterFactory().getSequenceFilter(seqname, order, seqconfig)
+        imageclass              = ImageObject
+        
+        imagelist               = ImageList(folder_object, imageclass, sequencefilter, imagefilters, regexp)
+                
+        self.pairIterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, self.pairiteratorconfig)
+        
+        #--------------------------------------------------------
+        # Creation of other objects and classes
+        #--------------------------------------------------------
+        
+        self.exportparameters   = DffExportParameters(dicconfig = dicconfig, **exporterconfig)
+        
+        self.exporter           = ExporterClassFactory().getExporterClass(exportername)
+        
+        self.namegenerator      = PictureNumberDffname(dfffolder, outputformat)
+        self.dffchecker         = CheckDffExistence()
+        self.dic                = Dic(**dicconfig)
+        
+    def analyze(self):
+        
+        for (image1, image2) in self.pairIterator:
+            dffname = self.namegenerator.generatename(image1, image2)
+            if not self.overwrite:
+                if self.dffchecker.checkExistence(dffname):
+                    continue
+            self.dic.analyze(image1.getImage(), image2.getImage())
+            exporterinstance = self.exporter(image1, image2, self.dic, self.exportparameters, dffname)
+            exporterinstance.export()
             
 if __name__=="__main__":
     
-    FolderAnalyzer(*argv[1:])
+    analyzer = FolderAnalyzer(*argv[1:])
+    analyzer.analyze()
