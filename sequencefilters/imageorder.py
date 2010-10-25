@@ -19,7 +19,7 @@ class ImageOrderFactory:
                                             "Filename":FilenameOrder
                                             })
     
-    def getImageOrder(self, name, configdict):
+    def getImageOrder(self, name, configdict=dict()):
         
         return self.imageOrderDictionary[name](**configdict)
     

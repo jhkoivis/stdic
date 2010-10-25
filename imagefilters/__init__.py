@@ -1,2 +1,2 @@
 
-__all__=["imagefilter", "firstpicturenumberfilter"]
+__all__=["imagefilter", "picturenumberfilter"]

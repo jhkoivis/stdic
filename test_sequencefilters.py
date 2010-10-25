@@ -1,6 +1,7 @@
 
 from unittest import TestCase
 from sequencefilters import *
+from itertools import izip
 
 class mock_orderer:
 
@@ -20,15 +21,27 @@ class test_sequencefilters(TestCase):
         self.assertTrue(isinstance(filter1, linearsequence.LinearSequence))
         
     def test_LinearSequence(self):
+        
         orderer = mock_orderer()
-        config1 = [orderer, 1]
-        config2 = [orderer, 2]
-        test_sequence1 = linearsequence.LinearSequence(*config1)
-        test_sequence2 = linearsequence.LinearSequence(*config2)
+        configs = [
+            dict(skip=1),
+            dict(skip=2),
+            dict(start=1),
+            dict(end=9),
+            dict(start=1, end=9),
+            dict(start=1, end=9, skip=3),
+        ]
         
         numberlist = range(10)
-        result1 = numberlist
-        result2 = range(0,10,2)
+        results = [
+                   range(10),
+                   range(0,10,2),
+                   range(1,10),
+                   range(0,9),
+                   range(1,9),
+                   range(1,9,3),
+                   ]
         
-        self.assertEquals(test_sequence1.filter(numberlist), result1)
-        self.assertEquals(test_sequence2.filter(numberlist), result2)
+        for config,result in izip(configs, results):
+            test_sequence = linearsequence.LinearSequence(orderer, **config)
+            self.assertEquals(test_sequence.filter(numberlist), result)

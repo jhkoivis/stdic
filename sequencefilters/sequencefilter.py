@@ -13,6 +13,6 @@ class SequenceFilterFactory:
                                               "Linear":LinearSequence
                                               })
 
-    def getSequenceFilter(self, name, order, configdict):
+    def getSequenceFilter(self, name, order, configdict=dict()):
         
         return self.sequenceFilterDictionary[name](order, **configdict)

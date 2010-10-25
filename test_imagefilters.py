@@ -4,8 +4,8 @@ from imagefilters import *
 
 class mock_imageobject:
     
-    def __init__(self):
-        self.picturenumber = 100
+    def __init__(self, number):
+        self.picturenumber = number
         
 class mock_configsub:
     
@@ -19,7 +19,7 @@ class mock_configsub:
 class mock_configobject:
     
     def __init__(self):
-        sub1 = mock_configsub('FirstPictureNumber', dict({'picturenumber':50}))
+        sub1 = mock_configsub('PictureNumber', dict({'picturenumber':50}))
         self.subs = dict({'sub1':sub1})
     
     def getSubs(self):
@@ -29,7 +29,7 @@ class test_imagefilters(TestCase):
     
     def _checkInstance(self, instance):
         filterclasses = [
-                         firstpicturenumberfilter.FirstPictureNumberFilter,
+                         picturenumberfilter.PictureNumberFilter,
                          imagefilter.TrueFilter
                          ]
         
@@ -46,12 +46,17 @@ class test_imagefilters(TestCase):
         for filter in filters:
             self.assertTrue(self._checkInstance(filter))
         
-    def test_FirstPictureNumberFilter(self):
+    def test_PictureNumberFilter(self):
         
-        test_filter1 = firstpicturenumberfilter.FirstPictureNumberFilter(1)
-        test_filter2 = firstpicturenumberfilter.FirstPictureNumberFilter(101)
+        test_filter = picturenumberfilter.PictureNumberFilter(analyzepicturenumber = 0, firstpicturenumber = 2, lastpicturenumber = 3)
         
-        mock_image = mock_imageobject()
+        resultarray = [
+                       True,
+                       False,
+                       True,
+                       True,
+                       False,
+                       ]
         
-        self.assertTrue(test_filter1.filter(mock_image))
-        self.assertFalse(test_filter2.filter(mock_image))
+        for i in range(5):
+            self.assertEquals(resultarray[i], test_filter.filter(mock_imageobject(i)))

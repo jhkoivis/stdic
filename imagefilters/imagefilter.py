@@ -12,11 +12,11 @@ class ImageFilterFactory:
    
     def __init__(self):
     
-        from firstpicturenumberfilter import FirstPictureNumberFilter
+        from picturenumberfilter import PictureNumberFilter
     
         self.imageFilterDictionary = dict({
                                            "True":TrueFilter,
-                                           "FirstPictureNumber":FirstPictureNumberFilter
+                                           "PictureNumber":PictureNumberFilter
                                            })
         
     def getImageFilters(self, configobject):
