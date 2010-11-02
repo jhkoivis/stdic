@@ -51,15 +51,3 @@ class DffReader:
 			self.origY[ycoord,xcoord]	= y
 			self.defX[ycoord,xcoord]	= dx
 			self.defY[ycoord,xcoord]	= dy
-
-	def getOrigs(self):
-	
-		return (self.origY, self.origX)
-
-	def getDefs(self):
-	
-		return (self.defY, self.defX)
-		
-	def getStep(self):
-	
-		return self.step
