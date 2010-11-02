@@ -32,7 +32,7 @@ class test_imagelist(TestCase):
     def test_imagelist(self):
         
         cwd         = getcwd()
-        test_folder = path.join(cwd, path.join('testsuite','test_imagelist'))
+        test_folder = path.join(cwd, path.join('testsuite','testimages'))
         testlist    = glob(path.join(test_folder, '*.tiff'))
         
         mock_seq    = mock_sequencefilter()

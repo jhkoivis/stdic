@@ -77,7 +77,7 @@ class FolderAnalyzer:
         
         imagelist               = ImageList(folder_object, imageclass, sequencefilter, imagefilters, regexp)
                 
-        self.pairIterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, self.pairiteratorconfig)
+        self.pairiterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, self.pairiteratorconfig)
         
         #--------------------------------------------------------
         # Creation of other objects and classes
@@ -93,7 +93,7 @@ class FolderAnalyzer:
         
     def analyze(self):
         
-        for (image1, image2) in self.pairIterator:
+        for (image1, image2) in self.pairiterator:
             dffname = self.namegenerator.generatename(image1, image2)
             if not self.overwrite:
                 if self.dffchecker.checkExistence(dffname):

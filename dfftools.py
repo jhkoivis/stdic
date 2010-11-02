@@ -1,4 +1,5 @@
 from os import path
+from os import makedirs
 
 class PictureNumberDffname:
 
@@ -11,6 +12,8 @@ class PictureNumberDffname:
 class CheckDffExistence:
 		
 	def checkExistence(self, dffname):
-		if os.exists(name):
+		if not path.exists(path.dirname(dffname)):
+			makedirs(path.dirname(dffname))
+		elif path.exists(dffname):
 			return True
 		return False

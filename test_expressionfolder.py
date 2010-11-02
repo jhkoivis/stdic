@@ -20,7 +20,7 @@ class test_ExpressionFolder(TestCase):
         test_ExpressionFolder1.findWithExpression(test_expression1)
         test_ExpressionFolder2.findWithExpression(test_expression2)
         test_ExpressionFolder3.findWithExpression(test_expression3)
-                
+        
         result1 = path.join(pathname, 'expressionfolder.py')
         result2 = path.join(pathname, 'test_expressionfolder.py')
         result3 = [result1, result2]

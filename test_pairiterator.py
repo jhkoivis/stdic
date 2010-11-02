@@ -22,13 +22,13 @@ class test_pairiterators(TestCase):
         
         imagelist = mock_imagelist(0)
         
-        config1 = 'First'
-        config2 = 'Previous'
+        name1 = 'First'
+        name2 = 'Previous'
 
-        factory = pairiterator.PairIteratorFactory(imagelist)
+        factory = pairiterator.PairIteratorFactory()
         
-        iterator1 = factory.getPairIterator(config1)
-        iterator2 = factory.getPairIterator(config2)
+        iterator1 = factory.getPairIterator(name1,imagelist)
+        iterator2 = factory.getPairIterator(name2,imagelist)
         
         self.assertTrue(isinstance(iterator1, tofirstiterator.ToFirstIterator))
         self.assertTrue(isinstance(iterator2, topreviousiterator.ToPreviousIterator))
