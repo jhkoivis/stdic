@@ -9,10 +9,11 @@ class PictureNumberFilter(ImageFilter):
         self.lastpicturenumber = lastpicturenumber
         
     def filter(self, image):
-        if (image.picturenumber == self.analyzepicturenumber) and self.analyzepicturenumber != -1:
+        picturenumber = int(image.picturenumber)
+        if (picturenumber == self.analyzepicturenumber) and (self.analyzepicturenumber != -1):
             return True
-        if (image.picturenumber < self.firstpicturenumber) and self.firstpicturenumber != -1:
+        if (picturenumber < self.firstpicturenumber) and (self.firstpicturenumber != -1):
             return False
-        if (image.picturenumber > self.lastpicturenumber) and self.lastpicturenumber != -1:
+        if (picturenumber > self.lastpicturenumber) and (self.lastpicturenumber != -1):
             return False
         return True
