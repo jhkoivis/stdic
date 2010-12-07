@@ -18,9 +18,7 @@ class LinearSequence(SequenceFilter):
         sortedlist = sortedlist[self.start:self.end]
 
         skippedlist = []
-        index = 0
-        while index < len(sortedlist):
+        for index in xrange(self.start, self.end, self.skip):
             skippedlist.append(sortedlist[index])
-            index += self.skip
         
         return skippedlist
