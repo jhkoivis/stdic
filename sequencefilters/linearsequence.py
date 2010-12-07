@@ -14,8 +14,6 @@ class LinearSequence(SequenceFilter):
         
         if self.end <= self.start:
             self.end = len(sortedlist)
-            
-        sortedlist = sortedlist[self.start:self.end]
 
         skippedlist = []
         for index in xrange(self.start, self.end, self.skip):
