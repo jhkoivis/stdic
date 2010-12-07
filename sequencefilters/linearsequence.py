@@ -6,7 +6,7 @@ class LinearSequence(SequenceFilter):
                 
         self.skip = skip
         self.start = start
-        self.end = end
+        self.end = end*skip
         SequenceFilter.__init__(self, orderer)
         
     def filter(self, objectlist):
