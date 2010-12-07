@@ -12,8 +12,8 @@ class PictureNumberFilter(ImageFilter):
         picturenumber = int(image.picturenumber)
         if (picturenumber == self.analyzepicturenumber) and (self.analyzepicturenumber != -1):
             return True
-        if (picturenumber < self.firstpicturenumber) and (self.firstpicturenumber != -1):
+        if (picturenumber <= self.firstpicturenumber) and (self.firstpicturenumber != -1):
             return False
-        if (picturenumber > self.lastpicturenumber) and (self.lastpicturenumber != -1):
+        if (picturenumber >= self.lastpicturenumber) and (self.lastpicturenumber != -1):
             return False
         return True
