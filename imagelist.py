@@ -10,11 +10,13 @@ class ImageList:
         imagelist = []
         for filename in folderobject:
             imageObject = imageClass(filename, regExpression)
+            appendBoolean = True
             for imageFilter in imgFilters:
                 if not imageFilter.filter(imageObject):
+                    appendBoolean = False
                     break
-                    continue
-            imagelist.append(imageObject)
+            if appendBoolean:
+                imagelist.append(imageObject)
         return imagelist
             
     def next(self):
