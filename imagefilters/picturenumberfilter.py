@@ -3,17 +3,25 @@ from imagefilter import ImageFilter
 
 class PictureNumberFilter(ImageFilter):
     
-    def __init__(self, analyzepicturenumber = -1, firstpicturenumber = -1, lastpicturenumber = -1):
-        self.analyzepicturenumber = analyzepicturenumber
-        self.firstpicturenumber = firstpicturenumber
-        self.lastpicturenumber = lastpicturenumber
+    def __init__(self, configdict):
+        if 'analyzepicturenumber' in configdict:
+            self.analyzepicturenumber = configdict['analyzepicturenumber']
+        else:
+            self.analyzepicturenumber = 1e100
+        if 'firstpicturenumber' in configdict:
+            self.firstpicturenumber = configdict['firstpicturenumber']
+        else:
+            self.firstpicturenumber = 1e100
+        if 'lastpicturenumber' in configdict:
+            self.lastpicturenumber = configdict['lastpicturenumber']
+        else:
+            self.lastpicturenumber = -1e100
         
     def filter(self, image):
         picturenumber = int(image.picturenumber)
-        if (picturenumber == self.analyzepicturenumber) and (self.analyzepicturenumber != -1):
+        if (picturenumber == self.analyzepicturenumber):
             return True
-        if (picturenumber >= self.firstpicturenumber) and (self.firstpicturenumber != -1):
+        elif ((picturenumber >= self.firstpicturenumber) and (picturenumber <= self.lastpicturenumber)):
             return True
-        if (picturenumber <= self.lastpicturenumber) and (self.lastpicturenumber != -1):
-            return True
-        return False
+        else:
+            return False

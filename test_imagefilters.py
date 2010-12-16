@@ -5,7 +5,7 @@ from imagefilters import *
 class mock_imageobject:
     
     def __init__(self, number):
-        self.picturenumber = number
+        self.picturenumber = "%04d" % number
         
 class mock_configsub:
     
@@ -19,7 +19,7 @@ class mock_configsub:
 class mock_configobject:
     
     def __init__(self):
-        sub1 = mock_configsub('PictureNumber', dict({'picturenumber':50}))
+        sub1 = mock_configsub('PictureNumber', dict({'firstpicturenumber':50}))
         self.subs = dict({'sub1':sub1})
     
     def getSubs(self):
@@ -48,7 +48,7 @@ class test_imagefilters(TestCase):
         
     def test_PictureNumberFilter(self):
         
-        test_filter = picturenumberfilter.PictureNumberFilter(analyzepicturenumber = 0, firstpicturenumber = 2, lastpicturenumber = 3)
+        test_filter = picturenumberfilter.PictureNumberFilter(dict({'analyzepicturenumber':0, 'firstpicturenumber':2, 'lastpicturenumber':3}))
         
         resultarray = [
                        True,
@@ -58,5 +58,5 @@ class test_imagefilters(TestCase):
                        False,
                        ]
         
-        for i in range(5):
+        for i in xrange(0,5):
             self.assertEquals(resultarray[i], test_filter.filter(mock_imageobject(i)))
