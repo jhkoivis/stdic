@@ -6,7 +6,10 @@ all:
 	@echo "      32-bit, python 2.4:      make -f Makefile32"
 	@echo "      64-bit, python 2.4:      make -f Makefile64"
 	@echo "      32-bit, python 2.6:      make -f Makefile32-python26"
-	@echo "      64-bit, python 2.6:      make -f Makefile64-python26"                   
+	@echo "      64-bit, python 2.6:      make -f Makefile64-python26"       
+	@echo ""
+	@echo "Edit the variables (prefix, includes, etc) in MakefileXX"
+	@echo "to match your system"
  
 clean:
 	rm -f *.pyc

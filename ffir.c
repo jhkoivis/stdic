@@ -14,7 +14,12 @@
 
 #include <math.h>
 #include <unistd.h> /* for ptrdiff_t */
-#include <malloc.h> /* for ptrdiff_t */
+#ifndef DARWIN
+	#include <malloc.h> /* for ptrdiff_t */
+#else
+	#include <sys/malloc.h>
+	#include <stddef.h> /* for ptrdiff_t */
+#endif
 #include "BIGsplines.h"
 
 
