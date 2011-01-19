@@ -60,7 +60,7 @@ class FolderAnalyzer:
 		if self.get("Analyze") == 'True':		
 			for picture in pictures:
 				if picture != analysispicture:
-					filename = os.path.join(self.get('DffPathname'),"%s-%s-%s" % (self.get('Name'), analysispicture[0], picture[0]))
+					filename = os.path.join(self.get('DffPathname'),"%s-%06d-%06d" % (self.get('Name'), int(analysispicture[0]), int(picture[0])))
 					if self.verbose > 1:
 						print "Registrations left: " + str(analyzesLeft)
 					if self.verbose > 3:

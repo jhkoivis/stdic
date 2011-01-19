@@ -11,7 +11,7 @@ import os
 import configparser
 
 class MasterData:
-	""" initializes the configuration of /caller/ """
+	""" XXX: to be removed """
 	
 	def __init__(self):
 		self.masterdata = dict()

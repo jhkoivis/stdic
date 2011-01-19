@@ -42,7 +42,7 @@ class DffExporter(Exporter):
 		""" Deformation metadata """
 		self.outputfile.write("%% picture1 filename: %s\n" % self.firstpicturename)
 		for key in self.picturedata1:
-			self.outputfile.write("%% picture2 %s: %s\n" % (key, self.picturedata1[key]))
+			self.outputfile.write("%% picture1 %s: %s\n" % (key, self.picturedata1[key]))
 		self.outputfile.write("\n")
 		self.outputfile.write("%% picture2 filename: %s\n" % self.secondpicturename)
 		for key in self.picturedata2:

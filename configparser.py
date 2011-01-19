@@ -41,6 +41,7 @@ class RegExpression(Expression):
 	def __formatReg__(self, regExpression):
 		regExpression = regExpression.replace(".", "\.")
 		regExpression = regExpression.replace("<ignore>", ".+")
+		regExpression = regExpression.replace("<Ignore>", ".+")
 		regExpression = regExpression.replace("<","(?P<")
 		regExpression = regExpression.replace(">", ">\w+)")
 		return regExpression
