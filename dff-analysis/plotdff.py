@@ -15,15 +15,13 @@ class PlotDff:
 		self.imageName 	= imageName
 		self.savestring = savestring
 		
-		print "edit __init__ to use this"
-		
 		########################################	
-		#diffX, diffY = self.readData(filename)
-		#self.plotDisplacement(	diffX, 
-		#						diffY, 
-		#						filename, 
-		#						imageName, 
-		#						savestring)
+		diffX, diffY = self.readData(filename)
+		self.plotDisplacement(	diffX, 
+								diffY, 
+								filename, 
+								imageName, 
+								savestring)
 		########################################
 		#lag = 10
 		#print diffY.shape
