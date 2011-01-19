@@ -137,5 +137,6 @@ if __name__=="__main__":
 	if len(sys.argv) < 2:
 		print "usage: dff-plotter, see __init__ for details"
 		print "       python plotdff.py file.dff"
+		sys.exit()
 	
 	plot = PlotDff(*sys.argv[1:])
