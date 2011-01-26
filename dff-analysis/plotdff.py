@@ -8,38 +8,53 @@ class PlotDff:
 
 	def __init__(	self, 
 					filename, 
-					imageName 	= None, 
-					savestring	= None):
+					saveString	= None,
+			                datString       = None):
 		
 		self.filename 	= filename
-		self.imageName 	= imageName
-		self.savestring = savestring
+		self.saveString = saveString
+		self.datString  = datString
 		
 		########################################	
 		diffX, diffY = self.readData(filename)
-		self.plotDisplacement(	diffX, 
-								diffY, 
-								filename, 
-								imageName, 
-								savestring)
+		#self.plotDisplacement(	diffX, 
+		#						diffY, 
+		#						self.filename, 
+		#						self.imageName, 
+		#						self.saveString)
 		########################################
-		#lag = 10
+		lag = 10
 		#print diffY.shape
-		#strainYY = diffY[lag:,:] - diffY[:-lag,:]
-		#strainXY = diffY[lag:,X] - diffY[:,:-lag]
+		strainYY = diffY[:,lag:] - diffY[:,:-lag]
+		strainXX = diffY[lag:,:] - diffY[:-lag,:]
+		file = open(datString, 'a')
+		file.write("%f, %f, %f, %f, %f, %f\n" % (strainYY[51,10],
+    			                                 strainYY[51,20],
+							 strainYY[51,30],
+							 strainYY[51,40],
+							 strainYY[51,50],
+							 strainYY[51,60]))
+		file.close()
+		
 		#for i in range(1,93,10):
 		#	print strainYY[i,38], " ",
 		#print ""
 		###########################################
+		self.plotDisplStrain( diffX,
+				      diffY,
+				      strainXX,
+				      strainYY,
+				      self.filename,
+				      self.saveString)
 		
-	def plotDisplacement(self, diffX, diffY, filename, imageName, savestring):
+	def plotDisplStrain(self, diffX, diffY, strainXX, strainYY, filename, savestring):
 		"""
 			plots u and v (diffX and diffY retruned by readData) as contourplots.
 		"""
-		
+		#print savestring
 		mpl.figure(1)
 		
-		mpl.subplot(2,1,1)
+		mpl.subplot(2,2,1)
 		mpl.contourf(diffX.T,50)
 		mpl.axis("image")
 		mpl.xlabel("X-directional displacement")
@@ -48,26 +63,84 @@ class PlotDff:
 	
 		mpl.title(filename.split('/')[-1])
 	
-		mpl.subplot(2,1,2)
+		mpl.subplot(2,2,2)
+		mpl.contourf(diffY.T,50)
+		mpl.axis("image")
+		mpl.xlabel("Y-directional displacement")
+		mpl.colorbar()
+		mpl.gca().invert_yaxis()
+
+		mpl.subplot(2,2,3)
+		mpl.contourf(strainXX.T,50)
+		mpl.axis("image")
+		mpl.xlabel("X-directional strain")
+		mpl.colorbar()
+		mpl.gca().invert_yaxis()
+
+		mpl.subplot(2,2,4)
+		strainYY2 = strainYY
+		strainYY2[strainYY >= 5] = 5
+		strainYY2[strainYY <= -20] = -20
+		strainYY2[0,0] = -20
+		strainYY2[0,1] = 5
+		mpl.contourf(strainYY.T,50,vmin=-20,vmax=5)
+		mpl.clim(-20,5)		
+		c = mpl.colorbar(ticks = [-20,-15,-10,-5,0,5])
+
+		mpl.plot([51,51,51,51,51,51],[10,20,30,40,50,60],'ko',markersize=5)
+		mpl.axis("image")
+		mpl.xlabel("Y-directional strain")
+		mpl.gca().invert_yaxis()		
+		
+		if savestring == None:
+			mpl.show()
+		else:
+			mpl.figure(1)
+			mpl.savefig(savestring)
+
+
+
+	def plotDisplacement(self, diffX, diffY, filename, imageName, savestring):
+		"""
+			plots u and v (diffX and diffY retruned by readData) as contourplots.
+		"""
+		print savestring
+		mpl.figure(1)
+		
+		mpl.subplot(2,2,1)
+		mpl.contourf(diffX.T,50)
+		mpl.axis("image")
+		mpl.xlabel("X-directional displacement")
+		mpl.colorbar()
+		mpl.gca().invert_yaxis()
+	
+		mpl.title(filename.split('/')[-1])
+	
+		mpl.subplot(2,2,2)
 		mpl.contourf(diffY.T,50)
 		mpl.axis("image")
 		mpl.xlabel("Y-directional displacement")
 		mpl.colorbar()
 		mpl.gca().invert_yaxis()
 		
-		#if not imageName == None:
-			#mpl.subplot(4,2,1)
-			#mpl.figure(2)
-			#mpl.axis("image")
-			#a = mpl.imread(imageName)
-			#mpl.imshow(a)
+		if not imageName == None:
+			mpl.subplot(2,2,4)
+			mpl.figure(2)
+			mpl.axis("image")
+			a = mpl.imread(imageName)
+			a = np.array(a, dtype='float32')
+			a = a - np.min(a)
+			a = a/np.max(a)
+			#a = np.array(a, dtype='float32')
+			mpl.contourf(a, 100)
+			print a
 			#mpl.show()
 		
 		if savestring == None:
 			mpl.show()
 		else:
 			mpl.figure(1)
-			mpl.savefig(savestring + "-XYdiff.png")
+			mpl.savefig(savestring)
 	
 
 	
@@ -134,7 +207,7 @@ if __name__=="__main__":
 	
 	if len(sys.argv) < 2:
 		print "usage: dff-plotter, see __init__ for details"
-		print "       python plotdff.py file.dff"
+		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat"
 		sys.exit()
 	
-	plot = PlotDff(*sys.argv[1:])
+	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3])
