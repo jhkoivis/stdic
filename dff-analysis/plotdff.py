@@ -55,38 +55,64 @@ class PlotDff:
 		mpl.figure(1)
 		
 		mpl.subplot(2,2,1)
-		mpl.contourf(diffX.T,50)
+		diffX2 = diffX
+		diffX2[diffX >= 1] = 1
+		diffX2[diffX <= -5] = -5
+		diffX2[0,0] = 1
+		diffX2[0,1] = -5
+		mpl.contourf(diffX.T,50,vmin=-5,vmax=1)
+		mpl.clim(-5,1)
+		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
 		mpl.axis("image")
 		mpl.xlabel("X-directional displacement")
-		mpl.colorbar()
+		#mpl.colorbar()
 		mpl.gca().invert_yaxis()
 	
-		mpl.title(filename.split('/')[-1])
+		mpl.suptitle(filename.split('/')[-1])
 	
 		mpl.subplot(2,2,2)
-		mpl.contourf(diffY.T,50)
+		diffY2 = diffY
+		diffY2[diffY >= 1] = 1
+		diffY2[diffY <= -5] = -5
+		diffY2[0,0] = 1
+		diffY2[0,1] = -5
+		mpl.contourf(diffY.T,50,vmin=-5,vmax=1)
+		mpl.clim(-5,1)
+		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
 		mpl.axis("image")
 		mpl.xlabel("Y-directional displacement")
-		mpl.colorbar()
+ 	        #mpl.colorbar()
 		mpl.gca().invert_yaxis()
 
+		#mpl.subplot(2,2,3)
+		#mpl.contourf(strainXX.T,50)
+		#mpl.axis("image")
+		#mpl.xlabel("X-directional strain")
+		#mpl.colorbar()
+		#mpl.gca().invert_yaxis()
+
 		mpl.subplot(2,2,3)
-		mpl.contourf(strainXX.T,50)
+		strainXX2 = strainXX
+		strainXX2[strainXX >= 1] = 1
+		strainXX2[strainXX <= -5] = -5
+		strainXX2[0,0] = -5
+		strainXX2[0,1] = 1
+		mpl.contourf(strainXX.T,50,vmin=-5,vmax=1)
+		mpl.clim(-5,1)		
+		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])
 		mpl.axis("image")
 		mpl.xlabel("X-directional strain")
-		mpl.colorbar()
-		mpl.gca().invert_yaxis()
+		mpl.gca().invert_yaxis()		
 
 		mpl.subplot(2,2,4)
 		strainYY2 = strainYY
-		strainYY2[strainYY >= 5] = 5
-		strainYY2[strainYY <= -20] = -20
-		strainYY2[0,0] = -20
-		strainYY2[0,1] = 5
-		mpl.contourf(strainYY.T,50,vmin=-20,vmax=5)
-		mpl.clim(-20,5)		
-		c = mpl.colorbar(ticks = [-20,-15,-10,-5,0,5])
-
+		strainYY2[strainYY >= 1] = 1
+		strainYY2[strainYY <= -5] = -5
+		strainYY2[0,0] = -5
+		strainYY2[0,1] = 1
+		mpl.contourf(strainYY.T,50,vmin=-5,vmax=1)
+		mpl.clim(-5,1)		
+		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
 		mpl.plot([51,51,51,51,51,51],[10,20,30,40,50,60],'ko',markersize=5)
 		mpl.axis("image")
 		mpl.xlabel("Y-directional strain")
@@ -207,7 +233,7 @@ if __name__=="__main__":
 	
 	if len(sys.argv) < 2:
 		print "usage: dff-plotter, see __init__ for details"
-		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat"
+		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat rawImageName"
 		sys.exit()
 	
 	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3])
