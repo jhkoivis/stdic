@@ -9,11 +9,13 @@ class PlotDff:
 	def __init__(	self, 
 					filename, 
 					saveString	= None,
-			                datString       = None):
+			                datString       = None,
+			                rawImage        = None):
 		
 		self.filename 	= filename
 		self.saveString = saveString
 		self.datString  = datString
+		self.rawImage   = rawImage
 		
 		########################################	
 		diffX, diffY = self.readData(filename)
@@ -45,74 +47,78 @@ class PlotDff:
 				      strainXX,
 				      strainYY,
 				      self.filename,
-				      self.saveString)
+				      self.saveString,
+				      self.rawImage)
 		
-	def plotDisplStrain(self, diffX, diffY, strainXX, strainYY, filename, savestring):
+	def plotDisplStrain(self, diffX, diffY, strainXX, strainYY, filename, savestring, rawImage):
 		"""
 			plots u and v (diffX and diffY retruned by readData) as contourplots.
 		"""
-		#print savestring
 		mpl.figure(1)
+		mpl.suptitle(filename.split('/')[-1])
+
+		plotScaleMin = -25
+		plotScaleMax =  5
+		#plotTicks    = [-5,-4,-3,-2,-1,0,1]
+		plotTicks    = [-25,-20,-15,-10,-5,0,5]
+		#plotTicks    = map(lambda x: x*plotScaleMax,plotTicks)
+
 		
 		mpl.subplot(2,2,1)
 		diffX2 = diffX
-		diffX2[diffX >= 1] = 1
-		diffX2[diffX <= -5] = -5
-		diffX2[0,0] = 1
-		diffX2[0,1] = -5
-		mpl.contourf(diffX.T,50,vmin=-5,vmax=1)
-		mpl.clim(-5,1)
-		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
+		diffX2[diffX >= plotScaleMax] = plotScaleMax
+		diffX2[diffX <= plotScaleMin] = plotScaleMin
+		diffX2[0,0] = plotScaleMax
+		diffX2[0,1] = plotScaleMin
+		mpl.contourf(diffX.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)
+		c = mpl.colorbar(ticks = plotTicks)	
 		mpl.axis("image")
 		mpl.xlabel("X-directional displacement")
 		#mpl.colorbar()
 		mpl.gca().invert_yaxis()
 	
-		mpl.suptitle(filename.split('/')[-1])
-	
+			
 		mpl.subplot(2,2,2)
 		diffY2 = diffY
-		diffY2[diffY >= 1] = 1
-		diffY2[diffY <= -5] = -5
-		diffY2[0,0] = 1
-		diffY2[0,1] = -5
-		mpl.contourf(diffY.T,50,vmin=-5,vmax=1)
-		mpl.clim(-5,1)
-		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
+		diffY2[diffY >= plotScaleMax] = plotScaleMax
+		diffY2[diffY <= plotScaleMin] = plotScaleMin
+		diffY2[0,0] = plotScaleMax
+		diffY2[0,1] = plotScaleMin
+		mpl.contourf(diffY.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)
+		c = mpl.colorbar(ticks = plotTicks)	
 		mpl.axis("image")
 		mpl.xlabel("Y-directional displacement")
  	        #mpl.colorbar()
 		mpl.gca().invert_yaxis()
 
+		mpl.subplot(2,2,3)
+		img = mpl.imread(rawImage)
+		mpl.imshow(img,cmap=mpl.cm.binary)
+
 		#mpl.subplot(2,2,3)
-		#mpl.contourf(strainXX.T,50)
+		#strainXX2 = strainXX
+		#strainXX2[strainXX >= plotScaleMax] = plotScaleMax
+		#strainXX2[strainXX <= plotScaleMin] = plotScaleMin
+		#strainXX2[0,0] = plotScaleMin
+		#strainXX2[0,1] = plotScaleMax
+		#mpl.contourf(strainXX.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		#mpl.clim(plotScaleMin,plotScaleMax)		
+		#c = mpl.colorbar(ticks = plotTicks)
 		#mpl.axis("image")
 		#mpl.xlabel("X-directional strain")
-		#mpl.colorbar()
-		#mpl.gca().invert_yaxis()
-
-		mpl.subplot(2,2,3)
-		strainXX2 = strainXX
-		strainXX2[strainXX >= 1] = 1
-		strainXX2[strainXX <= -5] = -5
-		strainXX2[0,0] = -5
-		strainXX2[0,1] = 1
-		mpl.contourf(strainXX.T,50,vmin=-5,vmax=1)
-		mpl.clim(-5,1)		
-		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])
-		mpl.axis("image")
-		mpl.xlabel("X-directional strain")
-		mpl.gca().invert_yaxis()		
+		#mpl.gca().invert_yaxis()		
 
 		mpl.subplot(2,2,4)
 		strainYY2 = strainYY
-		strainYY2[strainYY >= 1] = 1
-		strainYY2[strainYY <= -5] = -5
-		strainYY2[0,0] = -5
-		strainYY2[0,1] = 1
-		mpl.contourf(strainYY.T,50,vmin=-5,vmax=1)
-		mpl.clim(-5,1)		
-		c = mpl.colorbar(ticks = [-5,-4,-3,-2,-1,0,1])	
+		strainYY2[strainYY >= plotScaleMax ] = plotScaleMax
+		strainYY2[strainYY <= plotScaleMin ] = plotScaleMin
+		strainYY2[0,0] = plotScaleMin
+		strainYY2[0,1] = plotScaleMax
+		mpl.contourf(strainYY.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)		
+		c = mpl.colorbar(ticks = plotTicks)	
 		mpl.plot([51,51,51,51,51,51],[10,20,30,40,50,60],'ko',markersize=5)
 		mpl.axis("image")
 		mpl.xlabel("Y-directional strain")
@@ -231,9 +237,9 @@ class PlotDff:
 
 if __name__=="__main__":
 	
-	if len(sys.argv) < 2:
+	if len(sys.argv) < 4:
 		print "usage: dff-plotter, see __init__ for details"
 		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat rawImageName"
 		sys.exit()
 	
-	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3])
+	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3], rawImage = sys.argv[4])
