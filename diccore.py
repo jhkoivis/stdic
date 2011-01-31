@@ -33,7 +33,7 @@ class Dic:
 				firstImg = bigtools.ImageToArrayWithCrop(firstImg, crop)
 				secondImg = bigtools.ImageToArrayWithCrop(secondImg, crop)
 		except:
-			raise Exception("Could not read images.")
+			raise
 		par = bigtools.Parameters(self.parameters, override={'refimg':firstImg,
 												'testimg':secondImg})
 		warpingProblem = bigfelreg.MultigridableWarpingProblemBase(par=par)
