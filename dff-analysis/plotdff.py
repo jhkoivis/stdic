@@ -95,7 +95,7 @@ class PlotDff:
 
 		mpl.subplot(2,2,3)
 		img = mpl.imread(rawImage)
-		mpl.imshow(img,cmap=mpl.cm.binary)
+		mpl.imshow(img,cmap=mpl.cm.gray)
 
 		#mpl.subplot(2,2,3)
 		#strainXX2 = strainXX
