@@ -62,8 +62,8 @@ class ConfigObject:
     def getSubs(self):
         
         selfvaluedict   = self.__dict__
-        subdict = dict()
+        subs = []
         for key, value in selfvaluedict.iteritems():
             if isinstance(value, ConfigObject):
-                subdict[key] = value
-        return subdict
+                subs.append(value)
+        return subs
