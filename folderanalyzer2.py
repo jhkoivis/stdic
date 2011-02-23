@@ -33,9 +33,13 @@ class FolderAnalyzer:
             outputformat        = "dff-%s-%s.dff"
         
         try:
-            filtconfig          = configuration.filters
+            filtconfig = dict()
+            for sub in configuration.filters.getSubs():
+                values = sub.getValues()
+                name = values.pop('name')
+                filtconfig[name] = values
         except AttributeError:
-            filtconfig          = ConfigObject('null')
+            filtconfig          = dict()
         
         orderconfig             = configuration.order.getValues()
         ordername               = orderconfig.pop('name')

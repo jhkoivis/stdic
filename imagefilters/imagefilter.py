@@ -19,12 +19,8 @@ class ImageFilterFactory:
                                            "PictureNumber":PictureNumberFilter
                                            })
         
-    def getImageFilters(self, configobject):
-        filterconfigs = configobject.getSubs()
+    def getImageFilters(self, configurationdict):
         filters = []
-        filters.append(self.imageFilterDictionary["True"]())
-        for filterconfig in filterconfigs.values():
-            configdict = filterconfig.getValues()
-            filtername = configdict.pop('name')
-            filters.append(self.imageFilterDictionary[filtername](configdict))
+        for key, value in configurationdict.items():
+            filters.append(self.imageFilterDictionary[key](value))
         return filters
