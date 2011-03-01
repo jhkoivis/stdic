@@ -27,21 +27,21 @@ NUMPYINCLUDE=$(PYTHONLIBRARY)/dist-packages/numpy/core/include/numpy
 endif
 INCLUDES=-I$(PYTHONINCLUDE) -I$(NUMPYINCLUDE)
 LDFLAGS=-lm
-LDSHARED=ld -G
+LD=ld -G
 CFLAGS=-Wall -fPIC -O2 $(INCLUDES) -DBIGSPLINES
 CC=gcc
 
-VPATH=src
+VPATH=lib/src
 OBJECTS=BIGsplines.o fiir.o splninterp.o bsplneval.o ffir.o bigsdcgr.o
 
 # generic compile rule
 .c.o:	$(HEADERS)	
-	$(CC) -c $(CFLAGS) $^ -o $@
+	$(CC) -c $(CFLAGS) $^ -o $(VPATH)/$@
 
 all: BIGsplines.so
 
 BIGsplines.so: $(OBJECTS)
-	$(LDSHARED) $^ $(LDFLAGS) -o BIGsplines.so
+	$(LD) $^ $(LDFLAGS) -o lib/BIGsplines.so
 
 clean:
-	rm $(OBJECTS) BIGsplines.so
+	rm $(VPATH)/*.o lib/BIGsplines.so

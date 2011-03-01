@@ -5,7 +5,7 @@ from pairiterators.pairiterator import PairIteratorFactory
 from imagefilters.imagefilter import ImageFilterFactory
 from sequencefilters.sequencefilter import SequenceFilterFactory
 from sequencefilters.imageorder import ImageOrderFactory
-from configobject import *
+from configparser import ConfigParser
 from imagelist import ImageList
 from imageobject import ImageObject
 from dic import Dic
@@ -21,48 +21,44 @@ class FolderAnalyzer:
         # Configuration parsing
         #--------------------------------------------------------
         
-        configurationparser     = ConfigObjectParser(configurationfile)
-        configuration           = configurationparser.parse('configuration')
+        configurationparser     = ConfigParser()
+        config                  = configurationparser.parseFile(configurationfile)
         
-        regexp                  = configuration.regularexpression._value
+        regexp                  = config['imageformat']
         
         try:
-            outputconfig        = configuration.output.getValues()
-            outputformat        = outputconfig.pop('format')
+            outputconfig        = config['output']
+            outputformat        = outputconfig['format']
         except:
             outputformat        = "dff-%s-%s.dff"
         
         try:
-            filtconfig = dict()
-            for sub in configuration.filters.getSubs():
-                values = sub.getValues()
-                name = values.pop('name')
-                filtconfig[name] = values
+            filtconfig          = config["imagefilters"]
         except AttributeError:
             filtconfig          = dict()
         
-        orderconfig             = configuration.order.getValues()
+        orderconfig             = config["order"]
         ordername               = orderconfig.pop('name')
         
-        seqconfig               = configuration.sequence.getValues()
+        seqconfig               = config["sequence"]
         seqname                 = seqconfig.pop('name')
         
-        self.pairiteratorconfig = configuration.pairiterator.getValues()
-        pairiteratorname        = self.pairiteratorconfig.pop('name')
+        pairiteratorconfig      = config["pairiterator"]
+        pairiteratorname        = pairiteratorconfig.pop('name')
             
         try:
-            dicconfig           = configuration.dic.getValues()
+            dicconfig           = config["dic"]
         except AttributeError:
             dicconfig           = dict()
         
         try:
-            exporterconfig      = configuration.dff.getValues()
+            exporterconfig      = config["dff"]
         except AttributeError:
             exporterconfig      = dict({'name':'DffExporter'})
             
         exportername            = exporterconfig.pop('name')
         
-        self.overwrite          = configuration.overwrite._value
+        self.overwrite          = config["overwrite"]
         
         #--------------------------------------------------------
         # Creation of pairiterator
@@ -81,7 +77,7 @@ class FolderAnalyzer:
         
         imagelist               = ImageList(folder_object, imageclass, sequencefilter, imagefilters, regexp)
                 
-        self.pairiterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, self.pairiteratorconfig)
+        self.pairiterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, pairiteratorconfig)
         
         #--------------------------------------------------------
         # Creation of other objects and classes
