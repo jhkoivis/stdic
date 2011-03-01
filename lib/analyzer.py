@@ -7,49 +7,81 @@ from sequencefilters.sequencefilter import SequenceFilterFactory
 from sequencefilters.imageorder import ImageOrderFactory
 from configparser import ConfigParser
 from imagelist import ImageList
-from imageobject import ImageObject
 from dic import Dic
 from exporters.exporter import ExporterClassFactory
 from exporters.dffexporter import DffExportParameters
 from dfftools import *
 
-class FolderAnalyzer:
+class Analyzer:
     
-    def __init__(self, folder, dfffolder, configurationfile):
+    def __init__(self, filelist, dfffolder, config):
         
         #--------------------------------------------------------
-        # Configuration parsing
+        # Generate image filters
         #--------------------------------------------------------
-        
-        configurationparser     = ConfigParser()
-        config                  = configurationparser.parseFile(configurationfile)
-        
-        regexp                  = config['imageformat']
-        
-        try:
-            outputconfig        = config['output']
-            outputformat        = outputconfig['format']
-        except:
-            outputformat        = "dff-%s-%s.dff"
         
         try:
             filtconfig          = config["imagefilters"]
         except AttributeError:
             filtconfig          = dict()
         
+        imagefilters            = ImageFilterFactory().getImageFilters(filtconfig)
+        
+        #--------------------------------------------------------
+        # Generate ordering
+        #--------------------------------------------------------
+        
         orderconfig             = config["order"]
         ordername               = orderconfig.pop('name')
+        
+        order                   = ImageOrderFactory().getImageOrder(ordername, orderconfig)
+
+        #--------------------------------------------------------
+        # Generate sequence with ordering
+        #--------------------------------------------------------
         
         seqconfig               = config["sequence"]
         seqname                 = seqconfig.pop('name')
         
+        sequencefilter          = SequenceFilterFactory().getSequenceFilter(seqname, order, seqconfig)
+        
+        #--------------------------------------------------------
+        # Generate imagelist from filelist, imagefilters and sequence
+        #--------------------------------------------------------
+        
+        if len(filelist) < 2:
+            raise Exception("Filelist too short.")
+        
+        try:
+            regexp              = config['imageformat']
+        except AttributeError:
+            regexp              = None
+        
+        imagelist               = ImageList(filelist, sequencefilter, imagefilters, regexp)
+         
+        #--------------------------------------------------------
+        # Generate pairiterator from imagelist
+        #--------------------------------------------------------
+        
         pairiteratorconfig      = config["pairiterator"]
-        pairiteratorname        = pairiteratorconfig.pop('name')
+        pairiteratorname        = pairiteratorconfig.pop('name')  
+        
+        self.pairiterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, pairiteratorconfig)
+        
+        #--------------------------------------------------------
+        # Generate DIC
+        #--------------------------------------------------------
             
         try:
             dicconfig           = config["dic"]
         except AttributeError:
             dicconfig           = dict()
+            
+        self.dic                = Dic(**dicconfig)
+        
+        #--------------------------------------------------------
+        # Generate Exporter and analysis parameters
+        #--------------------------------------------------------
         
         try:
             exporterconfig      = config["dff"]
@@ -57,39 +89,22 @@ class FolderAnalyzer:
             exporterconfig      = dict({'name':'DffExporter'})
             
         exportername            = exporterconfig.pop('name')
+            
+        self.exporter           = ExporterClassFactory().getExporterClass(exportername)
         
         self.overwrite          = config["overwrite"]
         
-        #--------------------------------------------------------
-        # Creation of pairiterator
-        #--------------------------------------------------------
-                
-        folder_object = ExpressionFolder(folder)
-        folder_object.findWithExpression(regexp)
+        try:
+            outputconfig        = config['output']
+            outputformat        = outputconfig['format']
+        except:
+            outputformat        = "dff-%s-%s.dff" 
         
-        if len(folder_object.filelist) < 2:
-            raise Exception("Could not find two pictures from folder: %s" % folder)
-
-        imagefilters            = ImageFilterFactory().getImageFilters(filtconfig)
-        order                   = ImageOrderFactory().getImageOrder(ordername, orderconfig)
-        sequencefilter          = SequenceFilterFactory().getSequenceFilter(seqname, order, seqconfig)
-        imageclass              = ImageObject
-        
-        imagelist               = ImageList(folder_object, imageclass, sequencefilter, imagefilters, regexp)
-                
-        self.pairiterator       = PairIteratorFactory().getPairIterator(pairiteratorname, imagelist, pairiteratorconfig)
-        
-        #--------------------------------------------------------
-        # Creation of other objects and classes
-        #--------------------------------------------------------
+        self.namegenerator      = PictureNumberDffname(dfffolder, outputformat)
         
         self.exportparameters   = DffExportParameters(dicconfig = dicconfig, **exporterconfig)
         
-        self.exporter           = ExporterClassFactory().getExporterClass(exportername)
-        
-        self.namegenerator      = PictureNumberDffname(dfffolder, outputformat)
         self.dffchecker         = CheckDffExistence()
-        self.dic                = Dic(**dicconfig)
         
     def analyze(self):
         

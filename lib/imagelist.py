@@ -1,15 +1,17 @@
 
+from imageobject import ImageObject
+
 class ImageList:
     
-    def __init__(self, folderobject, imageClass, seqFilter,  imgFilters, regExpression=None):
-        unorderedList = self._getFilteredFolder(folderobject, imgFilters, imageClass, regExpression)
+    def __init__(self, folderobject, seqFilter,  imgFilters, regExpression=None):
+        unorderedList = self._getFilteredFolder(folderobject, imgFilters, regExpression)
         self.imagelist = seqFilter.filter(unorderedList)
         
-    def _getFilteredFolder(self, folderobject, imgFilters, imageClass, regExpression=None):
+    def _getFilteredFolder(self, folderobject, imgFilters, regExpression=None):
                 
         imagelist = []
         for filename in folderobject:
-            imageObject = imageClass(filename, regExpression)
+            imageObject = ImageObject(filename, regExpression)
             appendBoolean = True
             for imageFilter in imgFilters:
                 if not imageFilter.filter(imageObject):
