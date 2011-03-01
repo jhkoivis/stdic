@@ -20,10 +20,10 @@ PYTHONVERSION=$(shell python -c "import sys; print sys.version[0:3]")
 
 PYTHONINCLUDE=$(INCLUDEDIR)/python$(PYTHONVERSION)
 PYTHONLIBRARY=$(LIBDIR)/python$(PYTHONVERSION)
-ifeq ($PYTHONVERSION, "2.6")
-NUMPYINCLUDE=$(PYTHONLIBRARY)/dist-packages/numpy/core/include/numpy
-else
+ifeq ($(PYTHONVERSION), 2.4)
 NUMPYINCLUDE=$(PYTHONLIBRARY)/site-packages/numpy/core/include/numpy
+else
+NUMPYINCLUDE=$(PYTHONLIBRARY)/dist-packages/numpy/core/include/numpy
 endif
 INCLUDES=-I$(PYTHONINCLUDE) -I$(NUMPYINCLUDE)
 LDFLAGS=-lm
@@ -41,7 +41,7 @@ OBJECTS=BIGsplines.o fiir.o splninterp.o bsplneval.o ffir.o bigsdcgr.o
 all: BIGsplines.so
 
 BIGsplines.so: $(OBJECTS)
-	$(LD) $^ $(LDFLAGS) -o lib/BIGsplines.so
+	$(LD) $^ $(LDFLAGS) -o lib/dic/BIGsplines.so
 
 clean:
-	rm $(VPATH)/*.o lib/BIGsplines.so
+	rm $(VPATH)/*.o lib/dic/BIGsplines.so

@@ -1,6 +1,4 @@
-import bigtools
-import bigoptimize
-import bigfelreg
+from dic import *
 import numpy as np
 
 class Dic:
