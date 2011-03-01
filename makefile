@@ -31,12 +31,15 @@ LD=ld -G
 CFLAGS=-Wall -fPIC -O2 $(INCLUDES) -DBIGSPLINES
 CC=gcc
 
-VPATH=lib/src
-OBJECTS=BIGsplines.o fiir.o splninterp.o bsplneval.o ffir.o bigsdcgr.o
+vpath %.c src
+vpath %.o src
+vpath %.so lib/dic
+SOURCES=BIGsplines.c fiir.c splninterp.c bsplneval.c ffir.c bigsdcgr.c
+OBJECTS=$(addprefix src/,$(SOURCES:.c=.o))
 
 # generic compile rule
 .c.o:	$(HEADERS)	
-	$(CC) -c $(CFLAGS) $^ -o $(VPATH)/$@
+	$(CC) -c $(CFLAGS) $^ -o $@
 
 all: BIGsplines.so
 
@@ -44,4 +47,4 @@ BIGsplines.so: $(OBJECTS)
 	$(LD) $^ $(LDFLAGS) -o lib/dic/BIGsplines.so
 
 clean:
-	rm $(VPATH)/*.o lib/dic/BIGsplines.so
+	rm $(OBJECTS) lib/dic/BIGsplines.so
