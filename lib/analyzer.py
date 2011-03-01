@@ -6,7 +6,7 @@ from sequencefilters.sequencefilter import SequenceFilterFactory
 from sequencefilters.imageorder import ImageOrderFactory
 from configparser import ConfigParser
 from imagelist import ImageList
-from dic import Dic
+from diccontroller import DICController
 from exporters.exporter import ExporterClassFactory
 from exporters.dffexporter import DffExportParameters
 from dfftools import *
@@ -76,7 +76,7 @@ class Analyzer:
         except KeyError:
             dicconfig           = dict()
             
-        self.dic                = Dic(**dicconfig)
+        self.dic                = DICController(**dicconfig)
         
         #--------------------------------------------------------
         # Generate Exporter and analysis parameters

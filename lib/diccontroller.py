@@ -1,7 +1,7 @@
 from dic import *
 import numpy as np
 
-class Dic:
+class DICController:
 
     def __init__(self, verbose=0, xtol=0.05, degf=3, degc=3, crate=(16,16), xstart=0, xend=-1, ystart=0, yend=-1):
         self.parameters = {"verbose": verbose, "xtol":xtol, 

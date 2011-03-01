@@ -1,15 +1,9 @@
 #!/usr/bin/python
 """
 
-    Simo Tuomisto, 2010
+    Simo Tuomisto, 2011
 
 """
-
-from folderanalyzer import FolderAnalyzer
-from configparser import ConfigParser
-from masterdata import MasterData
-
-import sys
 
 
 from lib.analyzer import Analyzer
@@ -33,14 +27,14 @@ class Register:
         folder = FolderScan(folder)
         filelist = folder.findWithExpression(imageformat)
                 
-        analyzer = Analyzer(filelist, dfffolder, config)
+        self.analyzer = Analyzer(filelist, dfffolder, config)
 
     def run(self):
         self.analyzer.analyze()
 
 if __name__ == "__main__":
     
-    if len(sys.argv) != 3:
+    if len(sys.argv[1:]) != 3:
         print "Usage: imagefolder dfffolder configfile"
     else:
         folder = sys.argv[1]
