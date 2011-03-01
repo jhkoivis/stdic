@@ -81,41 +81,41 @@ class Analyzer:
         #--------------------------------------------------------
         # Generate Exporter and analysis parameters
         #--------------------------------------------------------
-        
-        try:
-            exporterconfig      = config["dff"]
-        except KeyError:
-            exporterconfig      = dict({'name':'DffExporter'})
-            
-        exportername            = exporterconfig.pop('name')
-            
-        self.exporter           = ExporterClassFactory().getExporterClass(exportername)
-        
+                
         self.overwrite          = config["overwrite"]
         
         try:
             outputconfig        = config['output']
-            outputformat        = outputconfig['format']
         except KeyError:
-            outputformat        = "dff-%s-%s.dff" 
+            outputconfig        = dict()
+        try:
+            outputformat        = outputconfig.pop('format')
+        except KeyError:
+            outputformat        = "dff-%s-%s.dff"
+        try:
+        	exportername        = outputconfig.pop('name')
+        except KeyError:
+            exportername    	= 'DffExporter'
+            
+        self.exporter           = ExporterClassFactory().getExporterClass(exportername)
         
         self.namegenerator      = PictureNumberNamer(dfffolder, outputformat)
         
-        self.exporterparameters = ExporterParameters(dicconfig = dicconfig, **exporterconfig)
+        self.exporterparameters = ExporterParameters(dicconfig = dicconfig, **outputconfig)
         
         self.checker            = CheckExistence()
         
     def analyze(self):
         
         for (image1, image2) in self.pairiterator:
-            try:
-                print "Analyzing pictures number %s and %s." % (image1.picturenumber, image2.picturenumber)
-            except AttributeError:
-                pass
             dffname = self.namegenerator.generatename(image1, image2)
             if not self.overwrite:
                 if self.checker.checkExistence(dffname):
                     continue
+            try:
+                print "Analyzing pictures number %s and %s." % (image1.picturenumber, image2.picturenumber)
+            except AttributeError:
+                pass
             self.dic.analyze(image1.getImage(), image2.getImage())
             exporterinstance = self.exporter(image1, image2, self.dic, self.exporterparameters, dffname)
             exporterinstance.export()
