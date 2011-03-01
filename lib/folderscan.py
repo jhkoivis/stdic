@@ -11,7 +11,7 @@ class FolderScan:
     def findWithExpression(self, regexpression):
         
         filelist = []
-        
+                
         filenamelist = map(path.basename, self.filelist)
         
         pattern = re.compile(regexpression)

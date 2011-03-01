@@ -3,14 +3,14 @@ from formatters import FormatterFactory
 class ConfigParser:
     
     def __init__(self):
-        self.formatterFactory = FormatterFactory()
+        self.formatterfactory = FormatterFactory()
         
     def parseFile(self,filename):
         
-        file = open(self.file, 'r')
-        lines = file.readlines()
+        configfile = open(filename, 'r')
+        lines = configfile.readlines()
         
-        return parse(lines)
+        return self.parse(lines)
         
     def parse(self, lines):
         
@@ -28,6 +28,6 @@ class ConfigParser:
                 if subconfig not in dictionary:
                     dictionary[subconfig] = dict()
                 dictionary = dictionary[subconfig]
-            dictionary[configkey] = value
-
+            dictionary[configkey] = self.formatterfactory.getFormatted(value.strip())
+            
         return config

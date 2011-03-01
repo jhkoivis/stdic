@@ -15,12 +15,13 @@ class ImageOrderFactory:
         from filenameorder import FilenameOrder
         
         self.imageOrderDictionary = dict({
-                                            "PictureNumber":PictureNumberOrder,
-                                            "Filename":FilenameOrder
-                                            })
+                                          "picturenumber":PictureNumberOrder,
+                                          "filename":FilenameOrder
+                                          })
     
     def getImageOrder(self, name, configdict=dict()):
         
+        name=name.lower()
         return self.imageOrderDictionary[name](**configdict)
     
     

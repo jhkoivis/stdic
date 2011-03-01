@@ -15,12 +15,13 @@ class ImageFilterFactory:
         from picturenumberfilter import PictureNumberFilter
     
         self.imageFilterDictionary = dict({
-                                           "True":TrueFilter,
-                                           "PictureNumber":PictureNumberFilter
+                                           "true":TrueFilter,
+                                           "picturenumber":PictureNumberFilter
                                            })
         
     def getImageFilters(self, configurationdict):
         filters = []
         for key, value in configurationdict.items():
-            filters.append(self.imageFilterDictionary[key](value))
+            name = key.lower()
+            filters.append(self.imageFilterDictionary[name](value))
         return filters

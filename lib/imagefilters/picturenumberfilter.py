@@ -11,11 +11,11 @@ class PictureNumberFilter(ImageFilter):
         if 'firstpicturenumber' in configdict:
             self.firstpicturenumber = configdict['firstpicturenumber']
         else:
-            self.firstpicturenumber = 1e100
+            self.firstpicturenumber = -1e100
         if 'lastpicturenumber' in configdict:
             self.lastpicturenumber = configdict['lastpicturenumber']
         else:
-            self.lastpicturenumber = -1e100
+            self.lastpicturenumber = 1e100
         
     def filter(self, image):
         picturenumber = int(image.picturenumber)

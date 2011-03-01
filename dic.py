@@ -8,7 +8,7 @@ if __name__=="__main__":
     
         folder = sys.argv[1]
         dfffolder = sys.argv[2]
-        configuration = sys.argv[3]
+        configurationfile = sys.argv[3]
         
         #--------------------------------------------------------
         # Configuration parsing
@@ -21,6 +21,6 @@ if __name__=="__main__":
 
         folder = FolderScan(folder)
         filelist = folder.findWithExpression(imageformat)
-        
-        analyzer = Analyzer(filelist, dfffolder, configuration)
+                
+        analyzer = Analyzer(filelist, dfffolder, config)
         analyzer.analyze()

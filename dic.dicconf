@@ -1,8 +1,8 @@
 # Filter configuration
-imagefilters.picturenumber.name = "PictureNumber"
-#imagefilters.picturenumber.analyzepicturenumber = -1
-#imagefilters.picturenumber.firstpicturenumber = -1
-#imagefilters.picturenumber.lastpicturenumber = -1
+#imagefilters.PictureNumber.name = "PictureNumber"
+#imagefilters.PictureNumber.analyzepicturenumber = -1
+#imagefilters.PictureNumber.firstpicturenumber = -1
+#imagefilters.PictureNumber.lastpicturenumber = -1
 
 # Sequence
 sequence.name = "Linear"
@@ -25,14 +25,14 @@ dic.crate = (16,16)
 order.name = "PictureNumber"
 
 # PairIterator
-pairiterator.name = "First"
+pairiterator.name = "Previous"
 
 # Exporter
 dff.name = "DffExporter"
 dff.dffstep = 10
 
 # Imageformat regular expression
-imageformat = <<ignore>-<picturenumber>.tiff>
+imageformat = <<ignore>-1-<picturenumber>-0000-<ignore>.tiff>
 
 # Overwrite
 overwrite = "True"

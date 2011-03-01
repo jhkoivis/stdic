@@ -25,5 +25,4 @@ class ImageList:
         return self.imageiterator.next()
     
     def __iter__(self):
-        self.imageiterator = iter(self.imagelist)
-        return self
+        return iter(self.imagelist)

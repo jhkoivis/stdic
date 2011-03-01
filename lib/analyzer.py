@@ -1,6 +1,5 @@
 
 from sys import argv
-from expressionfolder import ExpressionFolder
 from pairiterators.pairiterator import PairIteratorFactory
 from imagefilters.imagefilter import ImageFilterFactory
 from sequencefilters.sequencefilter import SequenceFilterFactory
@@ -22,7 +21,7 @@ class Analyzer:
         
         try:
             filtconfig          = config["imagefilters"]
-        except AttributeError:
+        except KeyError:
             filtconfig          = dict()
         
         imagefilters            = ImageFilterFactory().getImageFilters(filtconfig)
@@ -54,7 +53,7 @@ class Analyzer:
         
         try:
             regexp              = config['imageformat']
-        except AttributeError:
+        except KeyError:
             regexp              = None
         
         imagelist               = ImageList(filelist, sequencefilter, imagefilters, regexp)
@@ -74,7 +73,7 @@ class Analyzer:
             
         try:
             dicconfig           = config["dic"]
-        except AttributeError:
+        except KeyError:
             dicconfig           = dict()
             
         self.dic                = Dic(**dicconfig)
@@ -85,7 +84,7 @@ class Analyzer:
         
         try:
             exporterconfig      = config["dff"]
-        except AttributeError:
+        except KeyError:
             exporterconfig      = dict({'name':'DffExporter'})
             
         exportername            = exporterconfig.pop('name')
@@ -97,7 +96,7 @@ class Analyzer:
         try:
             outputconfig        = config['output']
             outputformat        = outputconfig['format']
-        except:
+        except KeyError:
             outputformat        = "dff-%s-%s.dff" 
         
         self.namegenerator      = PictureNumberDffname(dfffolder, outputformat)
@@ -120,8 +119,3 @@ class Analyzer:
             self.dic.analyze(image1.getImage(), image2.getImage())
             exporterinstance = self.exporter(image1, image2, self.dic, self.exportparameters, dffname)
             exporterinstance.export()
-            
-if __name__=="__main__":
-    
-    analyzer = FolderAnalyzer(*argv[1:])
-    analyzer.analyze()
