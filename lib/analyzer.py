@@ -8,8 +8,8 @@ from configparser import ConfigParser
 from imagelist import ImageList
 from diccontroller import DICController
 from exporters.exporter import ExporterClassFactory
-from exporters.dffexporter import DffExportParameters
-from dfftools import *
+from exporters.exporter import ExporterParameters
+from outputtools import *
 
 class Analyzer:
     
@@ -99,11 +99,11 @@ class Analyzer:
         except KeyError:
             outputformat        = "dff-%s-%s.dff" 
         
-        self.namegenerator      = PictureNumberDffname(dfffolder, outputformat)
+        self.namegenerator      = PictureNumberNamer(dfffolder, outputformat)
         
-        self.exportparameters   = DffExportParameters(dicconfig = dicconfig, **exporterconfig)
+        self.exporterparameters = ExporterParameters(dicconfig = dicconfig, **exporterconfig)
         
-        self.dffchecker         = CheckDffExistence()
+        self.checker            = CheckExistence()
         
     def analyze(self):
         
@@ -114,8 +114,8 @@ class Analyzer:
                 pass
             dffname = self.namegenerator.generatename(image1, image2)
             if not self.overwrite:
-                if self.dffchecker.checkExistence(dffname):
+                if self.checker.checkExistence(dffname):
                     continue
             self.dic.analyze(image1.getImage(), image2.getImage())
-            exporterinstance = self.exporter(image1, image2, self.dic, self.exportparameters, dffname)
+            exporterinstance = self.exporter(image1, image2, self.dic, self.exporterparameters, dffname)
             exporterinstance.export()

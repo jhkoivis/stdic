@@ -1,7 +1,7 @@
 from os import path
 from os import makedirs
 
-class PictureNumberDffname:
+class PictureNumberNamer:
 
 	def __init__(self, folder, format):
 		self.string = path.join(folder,format)
@@ -9,7 +9,7 @@ class PictureNumberDffname:
 	def generatename(self, image1, image2):
 		return self.string % (image1.picturenumber, image2.picturenumber)
 	
-class CheckDffExistence:
+class CheckExistence:
 		
 	def checkExistence(self, dffname):
 		if not path.exists(path.dirname(dffname)):

@@ -23,3 +23,9 @@ class ExporterClassFactory:
     def getExporterClass(self, name):
         
         return self.exporterDictionary[name]
+       
+class ExporterParameters:
+
+    def __init__(self, step=10, dicconfig=dict()):
+        self.step = step
+        self.dicconfig = dicconfig

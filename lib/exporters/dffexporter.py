@@ -3,12 +3,6 @@ from numpy import save as npsave
 
 import os
 
-class DffExportParameters:
-
-	def __init__(self, dffstep=10, dicconfig=dict()):
-		self.dffstep = dffstep
-		self.dicconfig = dicconfig
-
 class DffExporter(Exporter):
 	""" 
 		Exports a deformation using single ASCII format as an output. 
@@ -45,7 +39,7 @@ class DffExporter(Exporter):
 	def writeDeformationData(self):
 		""" deformation data """
 		pointarray = []
-		step = self.exportparameters.dffstep
+		step = self.exportparameters.step
 		for x in xrange(0, self.deformation.shape[1], step):
 			for y in xrange(0, self.deformation.shape[0], step):
 				pointarray.append([y,x])
