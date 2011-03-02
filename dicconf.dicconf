@@ -1,0 +1,33 @@
+[stdic.py]
+
+Analyze				= "True"
+AnalyzeTo			= "Previous" # "First" / "Previous" /  "Picture Name"
+#FirstPicture		= "Picture Name"
+#LastPicture		= "Picture Name"
+PictureSkip			= 0
+#AnalyzesMax		= 100000 # Maximum number of analyses.
+OverwriteDffs		= "False"
+WriteCoefs			= "False"
+
+Verbose				= 4
+
+DffStep				= 10
+
+[deformdata.py]
+
+Crop				= "False"
+CropXStart			= 300
+CropXEnd			= 600
+CropYStart			= 50
+CropYEnd			= 250
+
+CrateTuple			= (16,16)
+Verbose				= 3
+Xtol				= 0.05
+DegF				= 3
+DegC				= 3
+
+[all]
+
+PictureForm = <<Dummy>_0_<PictureNumber>.tif>
+
