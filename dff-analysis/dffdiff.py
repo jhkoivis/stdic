@@ -9,10 +9,10 @@ class DffDiff:
         reader1 = DffReader(dff1)
         reader2 = DffReader(dff2)
         
-        self.defX1 = reader1.defX
-        self.defX2 = reader2.defX
-        self.defY1 = reader1.defY
-        self.defY2 = reader2.defY
+        self.defX1 = reader1.defX[10:-10,10:-10]
+        self.defX2 = reader2.defX[10:-10,10:-10]
+        self.defY1 = reader1.defY[10:-10,10:-10]
+        self.defY2 = reader2.defY[10:-10,10:-10]
         
     def supremums(self):
         
