@@ -37,6 +37,20 @@ vpath %.so lib/dic
 SOURCES=BIGsplines.c fiir.c splninterp.c bsplneval.c ffir.c bigsdcgr.c
 OBJECTS=$(addprefix src/,$(SOURCES:.c=.o))
 
+#############################
+# osx compilation
+ISDARWIN=$(shell uname)
+ifeq ($(ISDARWIN), Darwin)
+OSXPREFIX=/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Python.framework/Versions/2.6/
+INCLUDE1=$(OSXPREFIX)/Extras/lib/python/numpy/core/include/numpy/
+INCLUDE2=$(OSXPREFIX)/include/python2.6/
+INCLUDES=-I $(INCLUDE1) -I $(INCLUDE2)
+CFLAGS=-Wall -fPIC -O2 $(INCLUDES) -DBIGSPLINES -DDARWIN
+LD=gcc -Wl,-undefined,dynamic_lookup
+endif
+############################
+
+
 # generic compile rule
 .c.o:	$(HEADERS)	
 	$(CC) -c $(CFLAGS) $^ -o $@
@@ -48,3 +62,6 @@ BIGsplines.so: $(OBJECTS)
 
 clean:
 	rm $(OBJECTS) lib/dic/BIGsplines.so
+
+info:
+	echo $(ISDARWIN) 
