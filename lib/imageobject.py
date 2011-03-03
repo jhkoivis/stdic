@@ -1,4 +1,5 @@
 from PIL import Image
+from bz2 import BZ2File
 import re
 from os import path
 
@@ -15,4 +16,9 @@ class ImageObject:
                 setattr(self,key, matchdictionary[key])
             
     def getImage(self):
-        return Image.open(self.filename)
+        suffix = self.filename.split('.')[-1]
+        if suffix == 'bz2':
+            imagefile = BZ2File(self.filename, 'r')
+        else:
+            imagefile = self.filename
+        return Image.open(imagefile,'r')
