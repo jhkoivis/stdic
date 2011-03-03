@@ -57,10 +57,10 @@ class PlotDff:
 		mpl.figure(1)
 		mpl.suptitle(filename.split('/')[-1])
 
-		plotScaleMin = -25
-		plotScaleMax =  5
-		#plotTicks    = [-5,-4,-3,-2,-1,0,1]
-		plotTicks    = [-25,-20,-15,-10,-5,0,5]
+		plotScaleMin = -1
+		plotScaleMax =  0.2
+		plotTicks    = [-1,-0.8,-0.6,-0.4,-0.2,0,0.2]
+		#plotTicks    = [-25,-20,-15,-10,-5,0,5]
 		#plotTicks    = map(lambda x: x*plotScaleMax,plotTicks)
 
 		
