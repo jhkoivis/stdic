@@ -33,17 +33,12 @@ class WarpableImageS:
 
     """
 
-    def __init__(self,imgs,defs=None,par=None,c=None,mask=None):
+    def __init__(self,imgs,defs=None,par=None,c=None):
         """ imgs is supposed to be MSplineSignal or an array,
             defs is either None, or a MSplineSignalList
             If imgs is an array, we convert it.
             The deformation defaults to identity, or it can be given
             by the MSplineSignal defs or the matrix c
-
-            If mask is not None it determines which pixel values are
-            going to be evaluated. It should have the same size as
-            the image imgs. For the moment, only the calculation
-            of the warped image is affected.
             """
         if type(imgs)==bigtools.ArrayType:
             self.dim=len(imgs.shape)
@@ -73,7 +68,6 @@ class WarpableImageS:
             self.setIdentity()
         else:
             self.defs.setXmax(self.xmax)
-        self.mask=mask
         self.dim=self.imgs.getDim()
 
 
@@ -121,9 +115,6 @@ class WarpableImageS:
     def getDeformation(self):
         """ Get the deformation function at all points, caching the
             results.
-
-            NOTE: mask could have been used here, but it is not,
-            as evalfract does not support it anyway.
             """
         if self.g is None:
             if self.defs is None:
@@ -175,9 +166,9 @@ class WarpableImageS:
             if g is None: g=self.getDeformation()
             if self.par.verbose>7:
                 self.w=bigtools.timeop(lambda self=self,g=g:
-                     self.imgs.evalat(g,mask=self.mask),"evalat in getWarped")            
+                     self.imgs.evalat(g),"evalat in getWarped")            
             else:
-                self.w=self.imgs.evalat(g,mask=self.mask)
+                self.w=self.imgs.evalat(g)
         return self.w
 
     def getDerivatives(self):
@@ -191,7 +182,7 @@ class WarpableImageS:
         if self.par.verbose>7:
                 time2=time.clock()
         for i in range(self.dim):
-            derw[i]=imgs.evalderat(g,i,mask=self.mask)
+            derw[i]=imgs.evalderat(g,i)
         if self.par.verbose>7:
                 print "evalder took ",time.clock()-time2, " s, ",\
                       "getDeform ",time2-time1, " s"
@@ -251,87 +242,63 @@ class WarpableImageS:
                                                    
 
 
-    def getWarpingIndex(self,c,mask=None):
+    def getWarpingIndex(self,c):
         """ Calculates the warping index (average geometric error) between
-        the current deformation and the deformation given by c.
-        The mask here is positive, i.e. 1 means consider, 0 do not consider
-        """
+        the current deformation and the deformation given by c."""
         c0=self.getCAsArray()    # remember the actual values
         g0=self.getDeformation() # find deformation
         self.setCFromArray(c)    # new deformation
         g1=self.getDeformation()
-        if mask is not None:
-            mask=mask.astype(ma.MaskType)
-            npix=bigtools.sumall(bigtools.int_array(mask))
-            mask=repeat(reshape(mask,[1]+list(mask.shape)),array((2,)))
-            g0=ma.MaskedArray(g0,mask=1-mask)
-            g0=((g0-g1)**2).filled(fill_value=0.0)
-            wi=math.sqrt(bigtools.sumall(g0)/npix)
-        else:
-            npix=bigtools.prodall(g0.shape)
-            g0=(g0-g1)**2
+        
+        npix=bigtools.prodall(g0.shape)
+        g0=(g0-g1)**2
         wi=math.sqrt(bigtools.sumall(g0)/npix)
             
         self.setCFromArray(c0)   # give back the old deformation
         return wi
 
-    def getWarpingIndexDefS(self,defs,par,mask=None):
+    def getWarpingIndexDefS(self,defs,par):
         """ Calculates the warping index (average geometric error) between
         the current deformation and deformation given by defs and
         par (from which crate, degc are taken) """
         g0=self.getDeformation()
-        wi=WarpableImageS(self.imgs,defs=defs,par=par,mask=mask)
+        wi=WarpableImageS(self.imgs,defs=defs,par=par)
         g1=wi.getDeformation()
-        if mask is not None:
-            mask=mask.astype(ma.MaskType)
-            npix=bigtools.sumall(bigtools.int_array(mask))
-            mask=repeat(reshape(mask,[1]+list(mask.shape)),array((2,)))
-            g0=ma.MaskedArray(g0,mask=1-mask)
-            g0=((g0-g1)**2).filled(fill_value=0.0)
-            wi=math.sqrt(bigtools.sumall(g0)/npix)
-        else:
-            npix=bigtools.prodall(g0.shape)
-            g0=(g0-g1)**2
+
+
+        npix=bigtools.prodall(g0.shape)
+        g0=(g0-g1)**2
+            
         wi=math.sqrt(bigtools.sumall(g0)/npix)
         return wi
 
-    def getWarpingIndexG(self,g0,mask=None):
+    def getWarpingIndexG(self,g0):
         """ Calculates the warping index (average geometric error) between
-        the current deformation and deformation given by g 
-        and mask """
+        the current deformation and deformation given by g
+        """
         par=bigtools.Parameters(self.par,override=
               {'crate':g0.shape[1:]/self.imgs.getShape()*self.par.crate})
         wi=WarpableImageS(bigsplines.MSplineSignal(xmax=array(g0.shape[1:])-1),
-                          defs=self.defs,par=par,mask=mask)
+                          defs=self.defs,par=par)
         g1=wi.getDeformation()
-        if mask is not None:
-            mask=mask.astype(ma.MaskType)
-            npix=bigtools.sumall(bigtools.int_array(mask))
-            mask=repeat(reshape(mask,[1]+list(mask.shape)),array((2,)))
-            g0=ma.MaskedArray(g0,mask=1-mask)
-            g0=((g0-g1)**2).filled(fill_value=0.0)
-            wi=math.sqrt(bigtools.sumall(g0)/npix)
-        else:
-            npix=bigtools.prodall(g0.shape)
-            g0=(g0-g1)**2
+
+        npix=bigtools.prodall(g0.shape)
+        g0=(g0-g1)**2
+        
         wi=math.sqrt(bigtools.sumall(g0)/npix)
         return wi
 
-    def setMask(self,mask):
-        """ DOCUMENT """
-        self.mask=mask
-
-    def setProjection(self,g0,mask=None):
+    def setProjection(self,g0):
         """ Given a conforming deformation table g0, set coefficients
         of the deformation so that it is as close as possible (in the
         warping index sense) to g0 """
-        p=DProjProblem(self,g0,mask)
+        p=DProjProblem(self,g0)
         #bigoptimize.test_evproblem(p)
-        #print "windexbefore=",self.getWarpingIndexG(g0,mask)
+        #print "windexbefore=",self.getWarpingIndexG(g0)
         o=bigoptimize.OptimizerGdesQ(p,par=bigtools.Parameters(self.par,
                        override={'xtol':1e-4}))
         o.smoothToConvergence()
-        #print "windexafter=",self.getWarpingIndexG(g0,mask)
+        #print "windexafter=",self.getWarpingIndexG(g0)
    
 # ----------------------------------------------------------------------
 
@@ -349,7 +316,7 @@ class WarpingProblemS(bigoptimize.EvaluableProblem):
 
     """
 
-    def __init__(self,refimg,testimg=None,testw=None,par=None,mask=None):
+    def __init__(self,refimg,testimg=None,testw=None,par=None):
         """ refimg is an array, testimg a MSplineSignal
             or an array. Alternatively, you can specify testw
             (a WarpableImageS) directly """
@@ -361,13 +328,9 @@ class WarpingProblemS(bigoptimize.EvaluableProblem):
         else:
             self.testw=WarpableImageS(testimg,par=par)
             
-        if mask is None:
-            self.npix=multiply.reduce(self.refimg.shape)        
-        else:
-            self.npix=bigtools.sumall(mask.astype(int))
-        self.dim=len(refimg.shape)
+        self.npix=multiply.reduce(self.refimg.shape)
         
-        self.mask=mask ; self.testw.setMask(mask)
+        self.dim=len(refimg.shape)
         
     def getInitialX(self):
         """ Return the initial state of the deformation.
@@ -394,11 +357,7 @@ class WarpingProblemS(bigoptimize.EvaluableProblem):
         self.difwtrefimg=self.wt-self.refimg
 
         #bigtools.printtofile(self.difwtrefimg, 'difkuva.tif')
-             
-        #if self.mask is not None:
-        #    # WARNING: a hack, apparently Masked arrays do not work with **2
-        #    self.difwtrefimg.set_fill_value(v=0.0)
-        #    self.difwtrefimg=array(self.difwtrefimg)
+
         E=bigtools.sumall(self.difwtrefimg**2) # the data part
         E/=self.npix
         return E
@@ -409,9 +368,7 @@ class WarpingProblemS(bigoptimize.EvaluableProblem):
         derw=self.testw.getDerivatives()
         # multiply all directional derivatives at each pixel
         # by F', where F is the criterion function
-         #if self.mask is not None:
-         #    # Temporary hack: get a regular array out of a masked one
-         #    derw=array(derw)
+
         derwp=2.0*self.difwtrefimg[newaxis,:]*derw
         gr=zeros(c.shape,float)
         # the next step is to convolve each component of derwp by
@@ -452,9 +409,6 @@ class MultigridableWarpingProblemSDataPart(WarpingProblemS):
     Remark: For the moment, we consider only uniform coarsening
     of the deformation grid
 
-    If grmask is nonzero, gradient mask is automatically computed at
-    each level with this percentage of active pixels.
-
     It is not intended to be run independently. Instead it will be
     a part of a WarpingProblemS object, together with other parts
     of the criteria.
@@ -469,7 +423,7 @@ class MultigridableWarpingProblemSDataPart(WarpingProblemS):
         self.par=bigtools.Parameters(par,
                    default={'minimgsize':16, 'degc':3,
                             'degf':3, 'alternatered':1,
-                            'grmask':0,'reducedimg':0,'reduceddef':0,
+                            'reducedimg':0,'reduceddef':0,
                             'refimg':None,'testimg':None,'testw':None})
         self.reducedimg=self.par.reducedimg # the flag to know what to do next
         self.reduceddef=self.par.reduceddef # and how to come back
@@ -484,13 +438,9 @@ class MultigridableWarpingProblemSDataPart(WarpingProblemS):
             self.refimgs=refimg
             refimg=self.refimgs.evalint() # get the image values
 
-        if self.par.grmask>0: # we want to use a gradient mask
-            mask=self.getGradientMask(pct=self.par.grmask)
-        else:
-            mask=None
         # call parent
         WarpingProblemS.__init__(self,refimg,testimg=testimg,
-                                 testw=testw,par=self.par,mask=mask)
+                                 testw=testw,par=self.par)
 
         #print "bigfelreg, line 506"
         #print "refimg: ", refimg
@@ -630,21 +580,6 @@ class MultigridableWarpingProblemSDataPart(WarpingProblemS):
         """ Converse of getXstate() or getXcopy() """
         self.testw.setDefS(x)
         return self
-
-    def getGradientMask(self,pct=10):
-        """  Calculates a mask of refimg, such that it contains 'pct'
-        pixels with the highest gradient values
-
-        NOTE: This is not very efficient, as we generate the WarpableImageS
-        first
-        """
-        wi=WarpableImageS(self.refimgs,par=self.par)
-        derw=wi.getDerivatives()
-        dera=sum(derw*derw) # calculate the norm of the gradient (squared)
-        sdera=sort(ravel(dera)) # sort the derivative amplitudes
-        trsh=sdera[-(sdera.shape[0]*pct)/100] # threshold for 'pct'% of pixels
-        mask=(dera>trsh).astype(ma.MaskType)
-        return mask
 
 # ----------------------------------------------------------------------
 
