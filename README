@@ -139,7 +139,7 @@ Installation:
 	
 	Values used by the program:
 	
-		[stdic.py]
+		[register.py]
 			
 		REQUIRED:
 						
@@ -267,7 +267,7 @@ Installation:
 			
 			Console:
 				
-				python stdic.py {picture folder} {dff folder} {configuration file}
+				python register.py {picture folder} {dff folder} {configuration file}
 					
 			Script:
 					
