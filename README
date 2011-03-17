@@ -21,23 +21,10 @@ Installation:
 		
 	Compiling:
 		
-		Depending on your system configuration (Python version number and processor
-		architecture, use the appropriate makefile.
+		To compile the program run
 		
-		Commands:
-			
-		x86 (32bit) and Python 2.4:
-			make -f Makefile32
-		
-		x86-64 (64bit) and Python 2.4:
-			make -f Makefile64
-					
-		x86 (32bit) and Python 2.6:
-			make -f Makefile32-python26
-				
-		x86-64 (64bit) and Python 2.6:
-			make -f Makefile64-python26
-						
+		make
+
 	Testing:
 		
 		Tests on the program can be run by running testsuite.py at program directory. If all
