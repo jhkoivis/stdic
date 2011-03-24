@@ -79,8 +79,8 @@ class SliceDff:
 		# get time difference between pictures
 		#(line.split('-0000-'))[1].split('-8bit')[0]
 
-		time1 = dfflines[0].split('-0000-')[1].split('-8bit')[0]
-		time2 = dfflines[3].split('-0000-')[1].split('-8bit')[0]
+		time1 = dfflines[3].split('-0000-')[1].split('-8bit')[0]
+		time2 = dfflines[4].split('-0000-')[1].split('-8bit')[0]
 		deltat = float(time2) - float(time1)
 		
 		# parse the data
