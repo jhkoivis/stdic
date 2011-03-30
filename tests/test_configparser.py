@@ -1,6 +1,10 @@
 
+import os,sys
+sys.path.append(os.path.abspath('../lib/'))
+
+import unittest
 from configparser import ConfigParser
-from masterdata import MasterData
+#from masterdata import MasterData
 from unittest import TestCase
 
 import os
@@ -10,10 +14,10 @@ class test_configparser(TestCase):
 	
 	def setUp(self):
 		folder	= os.path.join("testsuite","test_masterdata")
-		self.configurationdata = MasterData()
-		self.configparser = ConfigParser(os.path.join(folder,"test_masterdata1.dicconf"), 
-										 self.configurationdata, 'test_masterdata.py')
-		self.configparser.parse()
+		#self.configurationdata = MasterData()
+		self.configparser = ConfigParser()
+		fn = os.path.join(folder,"test_masterdata1.dicconf")
+		self.configurationdata = self.configparser.parseFile(fn)
 
 	def testIntegers(self):
 		self.assertEquals(self.configurationdata.get("int"), 5)
@@ -30,7 +34,6 @@ class test_configparser(TestCase):
 		self.assertEquals(self.configurationdata.get("tupleWithWhitespace"), (42.11322,32))
 		self.assertEquals(self.configurationdata.get("tupleWithComment"), (11
 																    ,27))
-
 	def testStrings(self):
 		self.assertEquals(self.configurationdata.get("string"), "3.14 = about pii")
 		self.assertEquals(self.configurationdata.get("stringWithWhitespace"), "	whitespace   ")
@@ -44,6 +47,9 @@ class test_configparser(TestCase):
 	def testGetandSet(self):
 		key = "number"
 		value = 75.25
-		self.configurationdata.set(key, value)
+		self.configurationdata[key] = value
 		self.assertAlmostEqual(self.configurationdata.get(key), 75.25)
 
+if __name__ == "__main__":
+    unittest.main()
+   
