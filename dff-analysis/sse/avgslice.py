@@ -27,7 +27,7 @@ class SliceDff:
 			(x,y) = strainYY.shape
 			x1 = int(np.ceil(x/4))
 			x2 = x-x1
-			avgCutSYY = np.mean(strainYY[x1:x2,:])
+			avgCutSYY = np.mean(strainYY[x1:x2,:],0)
 			# Y-coordinates corresponding the derivative values are
 			y = np.arange(self.lag,y+self.lag)*10
 			# Save to file
@@ -38,7 +38,7 @@ class SliceDff:
 			mpl.figure(1)
 			mpl.clf()
 			mpl.plot(y,avgCutSYY)
-			mpl.xlim(100,1020)
+			mpl.xlim(100,y)
 			mpl.ylim(-0.02,0.002)
 			outFig = dffFile + '_avgslice.png'
 			mpl.savefig(outFig)

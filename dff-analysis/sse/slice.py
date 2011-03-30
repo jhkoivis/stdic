@@ -37,7 +37,7 @@ class SliceDff:
 			mpl.figure(1)
 			mpl.clf()
 			mpl.plot(y,hCutSYY)
-			mpl.xlim(100,1020)
+			mpl.xlim(100,y)
 			mpl.ylim(-0.02,0.002)
 			outFig = dffFile + '_hCutSYY.png'
 			mpl.savefig(outFig)
