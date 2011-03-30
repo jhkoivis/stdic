@@ -9,7 +9,8 @@ class DffExporter(Exporter):
 	
 		XXX: Describe format here.
 	"""
-	def __init__(self, image1, image2, deformation, exportparameters, outputfilename):
+	def __init__(	self, image1, image2, deformation, 
+					exportparameters, outputfilename):
 		self.image1	= image1
 		self.image2 = image2
 		self.deformation = deformation
