@@ -116,6 +116,9 @@ class Analyzer:
                 print "Analyzing pictures number %s and %s." % (image1.picturenumber, image2.picturenumber)
             except AttributeError:
                 pass
-            self.dic.analyze(image1.getImage(), image2.getImage())
-            exporterinstance = self.exporter(image1, image2, self.dic, self.exporterparameters, dffname)
-            exporterinstance.export()
+            try:
+                self.dic.analyze(image1.getImage(), image2.getImage())
+                exporterinstance = self.exporter(image1, image2, self.dic, self.exporterparameters, dffname)
+                exporterinstance.export()
+            except ValueError:
+                print "ValueError"

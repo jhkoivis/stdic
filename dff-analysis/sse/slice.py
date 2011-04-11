@@ -11,7 +11,7 @@ class SliceDff:
 
 		self.stepy = None
 		self.dffDir  = dffDir
-		self.lag = 10
+		self.lag = 4
 
 
 		# Read in paths to the .dff files
@@ -26,9 +26,10 @@ class SliceDff:
 			strainYY = ( diffY[:,self.lag:] - diffY[:,:-self.lag] )/( self.lag*self.stepy*deltat )
 			(x,y) = strainYY.shape
 			x = int(np.ceil(x/2))
+			#ymax=diffY.shape[0]
 			hCutSYY = strainYY[x,:]
 			# Y-coordinates corresponding the derivative values are
-			y = np.arange(self.lag,y+self.lag)*10
+			y = np.arange(0,y)*10
 			# Save to file
 			out = np.array(zip(y, hCutSYY), dtype=[('int', int),('float', float)])
 			outFile = dffFile + '_hCutSYY.dat'
@@ -37,7 +38,7 @@ class SliceDff:
 			mpl.figure(1)
 			mpl.clf()
 			mpl.plot(y,hCutSYY)
-			mpl.xlim(100,y)
+			#mpl.xlim(0,ymax*10)
 			mpl.ylim(-0.03,0.01)
 			outFig = dffFile + '_hCutSYY.png'
 			mpl.savefig(outFig)
