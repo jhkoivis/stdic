@@ -1,83 +1,155 @@
 
-*******************************************************************************************
+************************************************************************************************
 
-					README
+README
 									
-			Digital image correlation (DIC) program
+Digital image correlation (DIC) program
 
-
-					 				
 ***************************************************************************************************
 
 Installation:
-		
-	Dependancies:
-				
-		Program requires installation of Python 2.4 or Python 2.6. Development packages are
-		needed as Python.h must be present. In addition NumPy must be installed (version 
-		needed unknown, latest recommended).
-				
-		The python packages PIL and numpy are required.
-		
-	Compiling:
-		
-		Depending on your system configuration (Python version number and processor
-		architecture, use the appropriate makefile.
-		
-		Commands:
-			
-		x86 (32bit) and Python 2.4:
-			make -f Makefile32
-		
-		x86-64 (64bit) and Python 2.4:
-			make -f Makefile64
-					
-		x86 (32bit) and Python 2.6:
-			make -f Makefile32-python26
-				
-		x86-64 (64bit) and Python 2.6:
-			make -f Makefile64-python26
-						
-	Testing:
-		
-		Tests on the program can be run by running testsuite.py at program directory. If all
-		tests are passed, the program is usable.
-			
-	Commands:
 
-		python run_testsuite.py
+  Dependancies:
 				
-		Accuracy tests:
+    Program requires installation of Python 2.4 or Python 2.6. Development packages are
+    needed as Python.h must be present. In addition NumPy must be installed (version 
+    needed unknown, latest recommended).
+				
+    The python packages PIL and numpy are required.
+		
+  Compiling:
+		
+    To compile the program run
+		
+      make
+
+Running:
+  
+  From command line type:
+  
+    python register.py $picture_folder $dff_folder $configuration_file
+
+  where $picture_folder is the folder containing pictures, $dff_folder is
+  the output folder and $configuration_file is the file containing 
+  configuration.
+
+Configuring:
+
+  Example configuration is in register.conf. The idea is as follows.
+  
+  1. edit the input and output variables (imageFormat.X and output.X)
+  2. create a sequence with "sequence.X" variables
+  3. create pairs with "pairiterator.X" variables
+  4. define deformation convergense criterias with "dic.X" variables
+  
+  imageformat:
+    
+    Algorithm needs to parse the image number in order to make the
+    sequences. Thus, <picturenumber> tag is mandatory.
+    
+    Regexp:
+      <Kuva-<picturenumber>.<ignore>-<TimeStamp>.png>
+    would, with picture 
+	  Kuva-281109.img-128991.png, 
+	match the expression and find keys: 
+	  {PictureNumber:281109, TimeStamp:128991}.
+	    					
+	And with picture 
+	  Kuva-212111.img-crop-128761.png,
+	it would find keys:
+	  {PictureNumber:212111, TimeStamp:128761}
+
+  output:
+    
+    output.format = "dff-%s-%s.dff"
+      naming convention for the output files. First and second %s
+      are the image numbers of first and second images. 
+      
+    output.name = "DffExporter"
+      name of the output file writer method.
+      
+    output.step = 10
+      Functions are evaluated in a grid. This is the grid spacing.
+
+  sequence:
+  
+   sequence.name = "Linear"
+     Name of the method creating the sequence.
+   
+   sequence.start = 0
+     Index of the first picture in sorted picturelist (order is 
+     <picturenumber>).
+     
+   sequence.skip = 1
+     number to add to the next picture in order to get to the second.
+     
+   sequence.end = 10
+     length of the sequence is end-1. (from N pictures you get N-1 pairs) 
+     
+  pairiterator:
+  
+    pairiterator.name = "Previous"
+      Name of the method forming pairs. In this case the reference picture
+      is the previous image in the sequence. Alternative is "First", which
+      means that the comparison is always done to the first picture in the
+      sequence.
+       
+  dic:
+    
+    convergence variables. We recommend studying the source code to see how
+    these work.
+    
+
+******************************************************************************    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+Testing:
+		
+    Tests on the program can be run by running testsuite.py at program directory. If all
+    tests are passed, the program is usable.
+			
+  Commands:
+
+    python run_testsuite.py
+				
+    Accuracy tests:
 	
-			The accuracy tests with custom transformations can be run by running
-			test_transformsuite.py at program directory. That writes errorarray{number 01-05}.txt
-			at directories {program directory}/test_transforms/test_at and 
-			{program directory}/test_transforms/test_poly. These arrays can be viewed by matlab by
-			running script showerror.m at the previous directories. The transformations can be
-			recreated by scripts makeat.m and makepoly.m at the same directories.
+      The accuracy tests with custom transformations can be run by running
+      test_transformsuite.py at program directory. That writes errorarray{number 01-05}.txt
+      at directories {program directory}/test_transforms/test_at and 
+      {program directory}/test_transforms/test_poly. These arrays can be viewed by matlab by
+      running script showerror.m at the previous directories. The transformations can be
+      recreated by scripts makeat.m and makepoly.m at the same directories.
 			
-		Commands:
-			
-			at {program directory}:
-				python run_transformsuite.py
+      Commands:
+        at {program directory}:
+          python run_transformsuite.py
 					
-			at matlab with directory {program directory}/test_transforms/test_at or
-						 {program directory}/test_transforms/test_poly:
-					showerror
+        at matlab with directory {program directory}/test_transforms/test_at or
+        {program directory}/test_transforms/test_poly:
+          showerror
 					
-			Optional:
-				
-				at matlab with directory {program directory}/test_transforms/test_at or
-								 {program directory}/test_transforms/test_poly:
-										 
-						makeat
-						or
-						makepoly
+       Optional:
+         at matlab with directory {program directory}/test_transforms/test_at or
+         {program directory}/test_transforms/test_poly:
+           
+           makeat
+         or
+           makepoly
 						
 					
-***************************************************************************************************
-	
-
+*******************************************************************************
+* Previous README starts here, use adaptive reading	
+*******************************************************************************
 	
 	Configuration:
 		
@@ -152,11 +224,13 @@ Installation:
 	
 	Values used by the program:
 	
-		[stdic.py]
+    [register.py]
 			
-		REQUIRED:
+    REQUIRED:
+			
+	  sequence.name = 
 						
-			Analyze = "True or False"
+      Analyze = "True or False"
 					Determines if the program will analyze the pictures. Default False
 	
 			AnalyzeTo = "First, Previous or Picture filename"
@@ -280,7 +354,7 @@ Installation:
 			
 			Console:
 				
-				python stdic.py {picture folder} {dff folder} {configuration file}
+				python register.py {picture folder} {dff folder} {configuration file}
 					
 			Script:
 					

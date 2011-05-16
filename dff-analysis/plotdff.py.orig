@@ -1,0 +1,116 @@
+import sys
+import numpy as np
+import matplotlib.pyplot as mpl
+from optparse import OptionParser
+from dffreader import DffReader
+
+class PlotDff:
+
+	def __init__(self, filename, subPlots):
+					
+		reader = DffReader(filename)
+		self.diffX = reader.defX - reader.origX
+		self.diffY = reader.defY - reader.origY
+		self.diffs = [self.diffY, self.diffX]
+		
+		if subPlots == 1:
+			self.columns = 1
+			self.rows = 1
+		else:
+			if subPlots%2 != 0:
+				subPlots += 1
+				
+			self.columns = subPlots/2
+			self.rows = 2
+			
+		self.figure = mpl.figure()
+		
+		self.currentPlot = 0
+		self.subPlots = subPlots
+			
+	def getNextPlot(self):
+	
+		self.currentPlot += 1
+		
+		if self.currentPlot > self.subPlots:
+			self.currentPlot = 1
+		
+		return mpl.subplot(self.rows, self.columns, self.currentPlot)
+		
+	def plotDDiff(self, displacement, axis, degree):
+		
+		# Plots the degree:th derivative of displacements calculated according to axis specified.
+		
+		self.getNextPlot()
+		
+		diff = self.diffs[displacement]
+		der = np.diff(diff, degree, axis)
+		
+		mpl.contourf(der,50)
+		mpl.axis("tight")
+		mpl.xlabel("Displacement:%d Axis:%d Derivative:%d" % (displacement, axis, degree))
+		mpl.colorbar()
+		mpl.gca().invert_yaxis()
+		mpl.draw()
+		
+	def show(self):
+		self.figure
+		mpl.show()
+
+if __name__ == "__main__":
+	
+	argparser = OptionParser()
+	
+	argparser.add_option("--xdiff", action="store_true", default=False, dest="xDiff")
+	argparser.add_option("--ydiff", action="store_true", default=False, dest="yDiff")
+	argparser.add_option("--xxdiff", action="store_true", default=False, dest="xx")
+	argparser.add_option("--xydiff", action="store_true", default=False, dest="xy")
+	argparser.add_option("--yxdiff", action="store_true", default=False, dest="yx")
+	argparser.add_option("--yydiff", action="store_true", default=False, dest="yy")
+	
+	(options, positionalArgs) = argparser.parse_args()
+	
+	subPlots = 0
+	
+	commands = []
+	
+	if options.yDiff:
+		subPlots += 1
+	if options.yy:
+		subPlots += 1
+	if options.yx:
+		subPlots += 1
+	if options.xDiff:
+		subPlots += 1
+	if options.xx:
+		subPlots += 1
+	if options.xy:
+		subPlots += 1
+		
+	filename = positionalArgs[0]
+	
+	if subPlots > 0:
+		plot = PlotDff(filename, subPlots)
+		if options.yDiff:
+			plot.plotDDiff(0,0,0)
+		if options.yy:
+			plot.plotDDiff(0,0,1)
+		if options.yx:
+			plot.plotDDiff(0,1,1)
+		if options.xDiff:
+			plot.plotDDiff(1,1,0)
+		if options.xx:
+			plot.plotDDiff(1,1,1)
+		if options.xy:
+			plot.plotDDiff(1,0,1)
+		plot.show()
+	else:
+		plot = PlotDff(filename, 4)
+		plot.plotDDiff(0,0,0)
+		plot.plotDDiff(1,1,0)
+		plot.plotDDiff(0,0,1)
+		plot.plotDDiff(1,1,1)
+		plot.show()
+		
+#------------------------------------------------------------------------------
+

@@ -5,14 +5,18 @@ import numpy as np
 import matplotlib.pyplot as mpl
 
 class PlotDff:
-	
-	def __init__(self, filename, saveString	= None, datString       = None, rawImage        = None):
-		
+
+	def __init__(	self, 
+					filename, 
+					saveString	= None,
+			                datString       = None,
+			                rawImage        = None):
+		self.stepy = None
 		self.filename 	= filename
 		self.saveString = saveString
 		self.datString  = datString
 		self.rawImage   = rawImage
-		
+		self.lag = 10		
 		########################################	
 		diffX, diffY = self.readData(filename)
 		#self.plotDisplacement(	diffX, 
@@ -21,29 +25,22 @@ class PlotDff:
 		#						self.imageName, 
 		#						self.saveString)
 		########################################
-		lag = 10
+
 		#print diffY.shape
-		
-		strainYY = diffY[:,lag:] - diffY[:,:-lag]
-		strainXX = diffY[lag:,:] - diffY[:-lag,:]
-		horizontalCutSYY = strainYY[:,20]
-		np.savetxt(self.datString, horizontalCutSYY)
-        
-        
-        #file = open(datString, 'a')
-		#file.write("%f, %f, %f, %f, %f, %f\n" % (strainYY[51,10],
-    	#		                                 strainYY[51,20],
-		#					 strainYY[51,30],
-		#					 strainYY[51,40],
-		#					 strainYY[51,50],
-		#					 strainYY[51,60]))
-		#file.close()
+		strainYY = ( diffY[:,self.lag:] - diffY[:,:-self.lag] )/( self.lag*self.stepy )
+		strainXX = ( diffY[self.lag:,:] - diffY[:-self.lag,:] )/( self.lag*self.stepy ) # Assuming same step
+		file = open(datString, 'a')
+		file.write("%f, %f, %f, %f, %f\n" % (strainYY[38,20],
+    			                             strainYY[38,30],
+						     strainYY[38,40],
+						     strainYY[38,50],
+						     strainYY[38,60]))
+		file.close()
 		
 		#for i in range(1,93,10):
 		#	print strainYY[i,38], " ",
 		#print ""
 		###########################################
-		
 		self.plotDisplStrain( diffX,
 				      diffY,
 				      strainXX,
@@ -60,21 +57,21 @@ class PlotDff:
 		mpl.suptitle(filename.split('/')[-1])
 
 		plotScaleMin = -5
-		plotScaleMax =  25
-		#plotTicks    = [-5,-4,-3,-2,-1,0,1]
-		plotTicks    = [-25,-20,-15,-10,-5,0,5]
+		plotScaleMax =  1
+		plotTicks    = [-5,-4,-3,-2,-1,0,1]
+		#plotTicks    = [-25,-20,-15,-10,-5,0,5]
 		#plotTicks    = map(lambda x: x*plotScaleMax,plotTicks)
 
 		
 		mpl.subplot(2,2,1)
 		diffX2 = diffX
-		#diffX2[diffX >= plotScaleMax] = plotScaleMax
-		#diffX2[diffX <= plotScaleMin] = plotScaleMin
-		#diffX2[0,0] = plotScaleMax
-		#diffX2[0,1] = plotScaleMin
-		mpl.contourf(diffX.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
-		#mpl.clim(plotScaleMin,plotScaleMax)
-		#c = mpl.colorbar(ticks = plotTicks)	
+		diffX2[diffX >= plotScaleMax] = plotScaleMax
+		diffX2[diffX <= plotScaleMin] = plotScaleMin
+		diffX2[0,0] = plotScaleMax
+		diffX2[0,1] = plotScaleMin
+		mpl.contourf(diffX.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)
+		c = mpl.colorbar(ticks = plotTicks)	
 		mpl.axis("image")
 		mpl.xlabel("X-directional displacement")
 		#mpl.colorbar()
@@ -83,29 +80,29 @@ class PlotDff:
 			
 		mpl.subplot(2,2,2)
 		diffY2 = diffY
-		#diffY2[diffY >= plotScaleMax] = plotScaleMax
-		#diffY2[diffY <= plotScaleMin] = plotScaleMin
-		#diffY2[0,0] = plotScaleMax
-		#diffY2[0,1] = plotScaleMin
-		mpl.contourf(diffY.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
-		#mpl.clim(plotScaleMin,plotScaleMax)
-		#c = mpl.colorbar(ticks = plotTicks)	
+		diffY2[diffY >= plotScaleMax] = plotScaleMax
+		diffY2[diffY <= plotScaleMin] = plotScaleMin
+		diffY2[0,0] = plotScaleMax
+		diffY2[0,1] = plotScaleMin
+		mpl.contourf(diffY.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)
+		c = mpl.colorbar(ticks = plotTicks)	
 		mpl.axis("image")
 		mpl.xlabel("Y-directional displacement")
  	        #mpl.colorbar()
 		mpl.gca().invert_yaxis()
 
 		mpl.subplot(2,2,3)
-		#img = mpl.imread(rawImage)
-		#mpl.imshow(img,cmap=mpl.cm.gray)
+		img = mpl.imread(rawImage)
+		mpl.imshow(img,cmap=mpl.cm.gray)
 
-		mpl.subplot(2,2,3)
+		#mpl.subplot(2,2,3)
 		#strainXX2 = strainXX
 		#strainXX2[strainXX >= plotScaleMax] = plotScaleMax
 		#strainXX2[strainXX <= plotScaleMin] = plotScaleMin
 		#strainXX2[0,0] = plotScaleMin
 		#strainXX2[0,1] = plotScaleMax
-		mpl.contourf(strainXX.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
+		#mpl.contourf(strainXX.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
 		#mpl.clim(plotScaleMin,plotScaleMax)		
 		#c = mpl.colorbar(ticks = plotTicks)
 		#mpl.axis("image")
@@ -114,14 +111,14 @@ class PlotDff:
 
 		mpl.subplot(2,2,4)
 		strainYY2 = strainYY
-		#strainYY2[strainYY >= plotScaleMax ] = plotScaleMax
-		#strainYY2[strainYY <= plotScaleMin ] = plotScaleMin
-		#strainYY2[0,0] = plotScaleMin
-		#strainYY2[0,1] = plotScaleMax
-		mpl.contourf(strainYY.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
-		#mpl.clim(plotScaleMin,plotScaleMax)		
-		#c = mpl.colorbar(ticks = plotTicks)	
-		#mpl.plot([51,51,51,51,51,51],[10,20,30,40,50,60],'ko',markersize=5)
+		strainYY2[strainYY >= plotScaleMax ] = plotScaleMax
+		strainYY2[strainYY <= plotScaleMin ] = plotScaleMin
+		strainYY2[0,0] = plotScaleMin
+		strainYY2[0,1] = plotScaleMax
+		mpl.contourf(strainYY.T,50,vmin=plotScaleMin,vmax=plotScaleMax)
+		mpl.clim(plotScaleMin,plotScaleMax)		
+		c = mpl.colorbar(ticks = plotTicks)	
+		mpl.plot([38,38,38,38,38],[20,30,40,50,60],'ko',markersize=5)
 		mpl.axis("image")
 		mpl.xlabel("Y-directional strain")
 		mpl.gca().invert_yaxis()		
@@ -134,50 +131,6 @@ class PlotDff:
 
 
 
-	def plotDisplacement(self, diffX, diffY, filename, imageName, savestring):
-		"""
-			plots u and v (diffX and diffY retruned by readData) as contourplots.
-		"""
-		print savestring
-		mpl.figure(1)
-		
-		mpl.subplot(2,2,1)
-		mpl.contourf(diffX.T,50)
-		mpl.axis("image")
-		mpl.xlabel("X-directional displacement")
-		mpl.colorbar()
-		mpl.gca().invert_yaxis()
-	
-		mpl.title(filename.split('/')[-1])
-	
-		mpl.subplot(2,2,2)
-		mpl.contourf(diffY.T,50)
-		mpl.axis("image")
-		mpl.xlabel("Y-directional displacement")
-		mpl.colorbar()
-		mpl.gca().invert_yaxis()
-		
-		if not imageName == None:
-			mpl.subplot(2,2,4)
-			mpl.figure(2)
-			mpl.axis("image")
-			a = mpl.imread(imageName)
-			a = np.array(a, dtype='float32')
-			a = a - np.min(a)
-			a = a/np.max(a)
-			#a = np.array(a, dtype='float32')
-			mpl.contourf(a, 100)
-			print a
-			#mpl.show()
-		
-		if savestring == None:
-			mpl.show()
-		else:
-			mpl.figure(1)
-			mpl.savefig(savestring)
-	
-
-	
 	def readData(self, filename):
 		"""
 			Reads dff to matrices: u,v (x-disp and y-disp)
@@ -201,6 +154,7 @@ class PlotDff:
 		lastlinesplit2 = lastline2.split()
 		last2_y	= int(lastlinesplit2[1])
 		step = last_y - last2_y
+		self.stepy = step
 		
 		# get number of points using stepsize
 		dffpointsx	= (last_x + step)/step
@@ -244,4 +198,4 @@ if __name__=="__main__":
 		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat rawImageName"
 		sys.exit()
 	
-	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3], rawImage = None)
+	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3], rawImage = sys.argv[4])
