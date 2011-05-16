@@ -11,7 +11,7 @@ class SliceDff:
 
 		self.stepy = None
 		self.dffDir  = dffDir
-		self.lag = 4
+		self.lag = 10
 
 
 		# Read in paths to the .dff files
@@ -25,22 +25,22 @@ class SliceDff:
 			# An approximate derivate with forward difference
 			strainYY = ( diffY[:,self.lag:] - diffY[:,:-self.lag] )/( self.lag*self.stepy*deltat )
 			(x,y) = strainYY.shape
-			x = int(np.ceil(x/2))
-			#ymax=diffY.shape[0]
-			hCutSYY = strainYY[x,:]
+			x1 = int(np.ceil(x/4))
+			x2 = x-x1
+			avgCutSYY = np.mean(strainYY[x1:x2,:],0)
 			# Y-coordinates corresponding the derivative values are
-			y = np.arange(0,y)*10
+			y = np.arange(self.lag,y+self.lag)*10
 			# Save to file
-			out = np.array(zip(y, hCutSYY), dtype=[('int', int),('float', float)])
-			outFile = dffFile + '_hCutSYY.dat'
+			out = np.array(zip(y, avgCutSYY), dtype=[('int', int),('float', float)])
+			outFile = dffFile + '_avgslice.dat'
 			np.savetxt(outFile, out, fmt='%i, %f')
 			# Plot StrainYY vs y
 			mpl.figure(1)
 			mpl.clf()
-			mpl.plot(y,hCutSYY)
-			#mpl.xlim(0,ymax*10)
-			mpl.ylim(-0.03,0.01)
-			outFig = dffFile + '_hCutSYY.png'
+			mpl.plot(y,avgCutSYY)
+			mpl.xlim(100,y)
+			mpl.ylim(-0.02,0.002)
+			outFig = dffFile + '_avgslice.png'
 			mpl.savefig(outFig)
 			i = i + 1
 			

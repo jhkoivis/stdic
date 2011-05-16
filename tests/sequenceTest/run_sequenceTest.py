@@ -8,55 +8,64 @@ import subprocess
 import time
 import os
 from glob import glob
+import sys
 
+
+
+print "sequencetest/sequenceTest.py"
+verbose = 1
 registerCmd = 'python ../../register.py'
 testFolder = 'testFolder'
 outputBase = '/tmp/'
 
-configBase = {	'sequence.name'		: '"Linear"',
-		'dic.xtol'		: '0.1',
-		'dic.degf'		: '3',
-		'dic.degc'		: '3',
-		'dic.verbose'		: '0',
-		'dic.crate'		: '(16,16)',
-		'order.name'		: '"PictureNumber"',
-		'pairiterator.name'	: '"First"',
-		'imageformat'		: '<<ignore>-<picturenumber>-time_<time>.tiff>',
-		'overwrite'		: '"False"',
-		'output.format'		: '"dff-%s-%s.dff"',
-		'output.name'		: '"DffExporter"',
-		'output.step'		: '10'}
+configBase = {    'sequence.name'        : '"Linear"',
+        'dic.xtol'        : '0.1',
+        'dic.degf'        : '3',
+        'dic.degc'        : '3',
+        'dic.verbose'        : '0',
+        'dic.crate'        : '(16,16)',
+        'order.name'        : '"PictureNumber"',
+        'pairiterator.name'    : '"First"',
+        'imageformat'        : '<<ignore>-<picturenumber>-time_<time>.tiff>',
+        'overwrite'        : '"False"',
+        'output.format'        : '"dff-%s-%s.dff"',
+        'output.name'        : '"DffExporter"',
+        'output.step'        : '10'}
 
 def makeConfigFile(confDict, fn):
 
-	outFile = open(fn,'w')
-	for key in confDict.keys():
-		 outFile.write("%s = %s\n" % (key, confDict[key]))
-	outFile.close()
+    outFile = open(fn,'w')
+    for key in confDict.keys():
+         outFile.write("%s = %s\n" % (key, confDict[key]))
+    outFile.close()
 
-def makeDefaultTest(	confDict, 
-			correctList,
-			outputBase,
-			testFolder):
-	outputDir = "%s/stdicTest_%lf" % (outputBase, time.time())
-	os.mkdir(outputDir)
-	configFn = outputDir + '/register.conf'
-	makeConfigFile(confDict, configFn)
+def makeDefaultTest(    confDict, 
+            correctList,
+            outputBase,
+            testFolder):
+    outputDir = "%s/stdicTest_%lf" % (outputBase, time.time())
+    os.mkdir(outputDir)
+    configFn = outputDir + '/register.conf'
+    makeConfigFile(confDict, configFn)
 
-	cmd = registerCmd + ' ' + testFolder + ' ' + outputDir + '/dff ' + configFn
-	subprocess.call(cmd, shell = True)
+    cmd = registerCmd + ' ' + testFolder + ' ' + outputDir + '/dff ' + configFn
+    cmd += "> /dev/null"
+    subprocess.call(cmd, shell = True)
 
-	currentList = glob(outputDir + '/dff/*')
+    currentList = glob(outputDir + '/dff/*')
 
-	fCount = 0
-	for fn in correctList:
-		if not currentList.__contains__(outputDir + '/dff/' + fn):
-			raise ValueError()
-		else:
-			fCount +=1
-	
-	print 'Test Completed: %d/%d correct filenames' % (fCount, len(correctList)) 
-		
+    fCount = 0
+    for fn in correctList:
+        if not currentList.__contains__(outputDir + '/dff/' + fn):
+            print "sequencetest/run_sequencetest.py failed" 
+            raise ValueError()
+        else:
+            fCount +=1
+    if verbose > 1:
+        print 'Test Completed: %d/%d correct filenames' % (fCount, len(correctList)) 
+    elif verbose > 0:
+        print '.',
+        sys.stdout.flush()
 
 ##############################################
 # test 1
@@ -157,7 +166,6 @@ correctList5 = ['dff-0014-0015.dff', 'dff-0015-0016.dff']
 
 makeDefaultTest(confDict, correctList5, outputBase, testFolder)
 
-
-
+print " passed"
 
 

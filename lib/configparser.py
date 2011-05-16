@@ -20,7 +20,7 @@ class ConfigParser:
             line = line.split('#', 1)[0].strip()
             if line == '':
                 continue
-            configline, value = line.split('=')
+            configline, value = line.split('=', 1)
             configtree = configline.strip().split('.')
             configkey = configtree.pop(-1)
             dictionary = config

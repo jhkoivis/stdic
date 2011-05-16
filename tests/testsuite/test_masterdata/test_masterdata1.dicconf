@@ -1,4 +1,4 @@
-[test_masterdata.py]
+#[test_masterdata.py]
 
 #	integers:
 
@@ -12,15 +12,9 @@ float=3.14
 		floatWithWhitespace  		= 	42.11322
 floatWithComment					=11.27    #comment
 
-#	Paragraph to show that configuration can be written with multiple paragraphs 
 
-[Paragraph]
-int=1
-tuple=(1,1)
-string="string"
-reg=<<reg>>
 
-[test_masterdata.py]
+#[test_masterdata.py]
 
 #	tuples:
 
