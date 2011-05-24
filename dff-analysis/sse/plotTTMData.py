@@ -23,8 +23,8 @@ from scipy import stats as sp
 #
 # This script writes:
 # a) yield points and other similar data to yield.csv
-# b) interpolated stress-strain data to dataFilename-interp.dat
-# c) coefficents of linear fits to dataFileName-coeff.dat
+# b) interpolated stress-strain data to dataFilename-interp.csv
+# c) coefficents of linear fits to dataFileName-slopes.csv
 # d) plots of the linear fits are saved in the subdirectory plots/
 #
 # Please note that in a) none of the values are translated by eps0
@@ -197,7 +197,7 @@ for fn in fnList:
 	if saveToFile==True:
 		# First save "fatigue vs" data
 		fat = int(fatigues[fn])
-		sf = "%d, %e, %e, %e, %e, %e, %e, %e, %e\n" % (fat,
+		sf = "%d, %e, %e, %e, %e, %e, %e, %e, %e, %e\n" % (fat,
 							       t_0,
 							       eps_0,
 							       eps_E,
