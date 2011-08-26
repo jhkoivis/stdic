@@ -1,0 +1,27 @@
+# This file is for cropping the images for the DIC.
+#
+# Format:
+# expname, rotAngle, maxImageNumber, x0, x1, y0, y1
+#
+### expname is the actually the name and path of the folder where the
+# images are located.
+#
+### If needed (like when camera or the sample is upside-down), you can
+# rotate the images with rotAngle. 0, 90, 180 and 270 degrees should
+# be safe.
+#
+### maxImageNumber tells what image is the last one. For example, even
+# if you take every 10th image from images 0-1000, this number is 1000,
+# not 100. WARNING! Despite the name, the "maxImageNumber" can't see
+# if there is less images than the maxImageNumber value is. It doesn't
+# understand  if the maxImageNumber is bigger than the amount of cropped
+# images...
+#
+### (x0,y0) is the pixel coordinate of the upper left corner of the
+# cropped area, and (x1,y1) is the lower right corner (taken from the
+# original image). Notice the ORDER OF COORDINATES in the format!
+#
+# Example
+# /archive/csm/sse2/raw/1104r1206-T7A, 0, 300, 100, 945, 190, 595
+#
+/media/matleena_csm_usb/Kuvat/IB7-1/IB7-1-F03-201106080853,180,1000,296,640,75,400

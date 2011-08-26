@@ -1,0 +1,66 @@
+# This data file is meant to be used with plotTTMData-2.0.py script and some other 
+# scripts. It contains dimensions of the sample, data for calculating theta angle etc.
+#
+# Format (fill every section!):
+#
+##################
+#
+# nameOfInstronDataFile, t_fat, x-dim,y-dim,z-dim, ax,ay,bx,by, r_0, realQuarter, isTidyCurve, comment
+#
+##################
+#
+### nameOfInstronDataFile is... well, you know.
+#
+### t_fat is the fatigue time, remain from Seppala's experiments. Myntti used here
+# just 0 all the times, but still saved this part for future use.
+#
+### x-dim, y-dim, and z-dim are the dimensions of the sample in millimeters. x-dim
+# is width of the sample from the annual ring face, y-dim is the depth, and z-dim is
+# the height.
+#
+### (ax, ay) and (bx, by) are coordinates of the end points of the annual ring piece
+# that is closest to the middle point of the sample's annual ring face. Measurements
+# are taken from the first of the camera pictures of the sample in pixels. (ax,ay),
+# aka point A, is located more clockwise than (bx,by), aka point B.
+#
+### r_0 is the distance between the board and the starting point of the annual rings
+# when theta_mm = 90 degrees. See more from my candidate assignment.
+# 
+### realQuarter is for checking if points A and B went in right order, and it can be
+# I, II, III and IV. I can say with experience that you mess them up easily. Use the
+# script inWhichQuarter.py to check if you put the points in right order. Or, then
+# put there just something if you don't want to check. (Messing up A and B or x and y
+# doesn't affect to theta_mm, but it affects to theta and theta_m.)
+#
+### isTidyCurve is actually added afterwards: first, put "y" (yes) to all lines. Then,
+# replace "y" with "n" (no) to the samples whose stress/strain curves are messy
+# (spikes, cracking, loops etc.) This is used for tagging "untidy" samples in the result
+# sheet and making, for example, angle vs plateu slope plotting more reliable.
+#
+### Set comments ALWAYS to be last ones! In other words, add new parameters second-last
+# one. If wanted, use underlines (_) instead of spaces to keep all the words in the
+# same cell in the SpreadSheet format (otherwise it puts each word in separate cells).
+# And _DO_NOT_ use commas (,) in the comments, it messes up the program!
+# 
+# Example:
+#
+# 201105241134_example12-201105241128, 0, 10.10,9.30,18.85, 655,485,360,295, 72.83035, III, y, This_is_a_comment.
+#
+# Attention about points A and B and inWhichQuarter script!
+#
+# If pictures are upside-down, you get right theta angles by swapping ay <-> by and
+# ax <-> bx. However, for revision, you should EITHER fix the revision script
+# (inWhichQuarter.py) OR put corresponding realQuarter there (II <-> IV and I <-> III),
+# but NOT BOTH! The first one is easier, if all of your pictures are upside-down (as
+# I had.) 
+#
+# You can add spaces to make the data easier to read, plotTTMData-2.0.py can clean them
+# away when needed. You can also make the script skip the comments by adding to the start
+# the line a '#' (without quotas).
+#
+################
+#
+# One actual example. The next line would be the only part of the program that the scripts
+# would be able to read. Add more samples on new lines.
+#
+201106080857_IB7-1-F03-201106080853, 0, 11.65,12.30,11.30, 590, 70, 325, 405,  39.680157, II, y, Upside-down_fat._Dimensions_weren't_measured_but_estimates_were_used.
