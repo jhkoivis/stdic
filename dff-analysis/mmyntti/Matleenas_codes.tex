@@ -77,6 +77,14 @@ the files that the scripts create.
 \item[x*] aveUyData.py
 \end{itemize}
 
+\subsubsection{Other handy scripts}
+
+\begin{itemize}
+\item[x*] averageDim.py
+\item[x*] averageR\_0Rad.py
+\item[x*] averageR\_0Tan.py
+\end{itemize}
+
 \section{Preparation for calculations}
 
 Since I didn't made any notable modifications to the experimental setup, 
@@ -304,6 +312,17 @@ As result, the script creates \textbf{different average graphs} made of data
 in -uy.dat files and puts them into am\_curves folder which is subfolder of 
 the current folder.
 
+\section{Other handy scripts}
+
+\textbf{averageDim.py} can be used for calculating the average dimensions of both 
+reference and fatigued samples and (with z dimension) calculating the scale for
+'transforming the $\theta_{mm}$ of fatigued sample into one before fatiguing' 
+(see plotTTMData-2.0.py). Needs dict.csv (of all samples) to work, chance the path. 
+Prints only to the terminal. Read more in the script.
+
+\textbf{averageR\_0Rad.py} and \textbf{averageR\_0Tan.py} are scripts for calculating
+$r_0$. Print only to the terminal. Read more in the scripts.
+
 \section{Good programs etc. with these scripts}
 
 To benefit from these scripts and their outputs better, it could be handy to 
@@ -319,6 +338,6 @@ easiest for me)
 \item Some Unix commands
 \end{itemize}
 
-The other people in CSM group can help you! :)
+The other people in CSM group can help you!
 
 \end{document}
