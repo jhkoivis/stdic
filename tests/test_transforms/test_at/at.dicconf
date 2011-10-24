@@ -1,0 +1,29 @@
+[stdic.py]
+
+Analyze				= "True"
+AnalyzeTo			= "First" # "First" / "Previous"
+PictureSkip			= 0
+OverwriteDffs		= "True"
+WriteCoefs			= "False"
+
+Verbose				= 4
+
+DffStep				= 10
+
+[deformdata.py]
+
+Crop				= "False"
+CropXStart			= 0
+CropXEnd			= 200
+CropYStart			= 0
+CropYEnd			= 795
+
+CrateTuple			= (16,16)
+Verbose				= 0
+Xtol				= 0.05
+DegF				= 3
+DegC				= 3
+
+[all]
+
+PictureForm			= <<ignore>-<PictureNumber>.tiff>
