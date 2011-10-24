@@ -1,0 +1,28 @@
+# This data file contains information for scaling the camera pictures
+# to real-life size and checking how much sample slanting affects to
+# the width of the sample.
+#
+# Format model
+# fileName,x_top,x_mid,x_bottom,angleLeft,angleRight,x_0r,x_0l
+#
+### fileName is the folder name of the camera pictures.
+#
+### x_top, x_mid and x_bottom are the horizontal widths of the sample
+# on top, mid and bottom of the sample as pixels. GIMP's measurement tool
+# is handy when taking them.
+#
+### angleLeft and angleRight are the angles of the left and right
+# vertical side of the samples (90 degrees is a straight side). In my
+# scripts, they aren't used in the calculations, but they are more like
+# notes for measuring x_0r and x_0l. They can be used for error
+# calculating, though. Again, GIMP's measuring tool is handy.
+#
+### x_0r and x_0l are "measured" widths of the sample, meaning those
+# pixel widths that are taken in the way that the measuring line is in
+# 90 degree compared to the each vertical side of the sample. This measure
+# implies how the x dimensions were actually measured before experiments.
+# Again, GIMP's measuring tool is handy.
+#
+# Example
+#
+/media/matleena_csm_usb/Kuvat/IB7-1/IB7-1-F03-201106080853,365,373,374,89.01,86.98,375.0,365.5
