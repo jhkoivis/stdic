@@ -3,6 +3,7 @@ class PairIterator:
     
     def __init__(self, imagelistobject):
         self.imagelist = imagelistobject
+        
 
 class PairIteratorFactory:
     

@@ -6,7 +6,10 @@ import matplotlib.pyplot as mpl
 
 class PlotDff:
 	
-	def __init__(self, filename, saveString	= None, datString       = None, rawImage        = None):
+	def __init__(self, filename, 
+				saveString	= None, 
+				datString 	= None, 
+				rawImage    = None):
 		
 		self.filename 	= filename
 		self.saveString = saveString

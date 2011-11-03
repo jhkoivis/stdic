@@ -4,7 +4,9 @@ from imageobject import ImageObject
 class ImageList:
     
     def __init__(self, folderobject, seqFilter,  imgFilters, regExpression=None):
-        unorderedList = self._getFilteredFolder(folderobject, imgFilters, regExpression)
+        unorderedList = self._getFilteredFolder(folderobject, 
+                                                imgFilters, 
+                                                regExpression)
         self.imagelist = seqFilter.filter(unorderedList)
         
     def _getFilteredFolder(self, folderobject, imgFilters, regExpression=None):

@@ -1,15 +1,23 @@
 from imageorder import ImageOrder
     
 class PictureNumberOrder(ImageOrder):
+    """
+        Contains _compare function for picture numbers. 
+        Image.picturenumber is typecast to float before comparing.  
+        
+        Image.picturenumber is a string. 
+        
+        "Order" function calls _order defined in parent. 
+    """
     
     def __init__(self):
         ImageOrder.__init__(self)
         
     def _compare(self, image1, image2):
         
-        if int(image1.picturenumber) < int(image2.picturenumber):
+        if float(image1.picturenumber) < float(image2.picturenumber):
             return -1
-        elif int(image1.picturenumber) > int(image2.picturenumber):
+        elif float(image1.picturenumber) > float(image2.picturenumber):
             return 1
         
         return 0

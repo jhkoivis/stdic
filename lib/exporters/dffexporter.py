@@ -2,6 +2,7 @@ from exporter import Exporter
 from numpy import save as npsave
 
 import os
+import errno
 
 class DffExporter(Exporter):
 	""" 
@@ -18,6 +19,15 @@ class DffExporter(Exporter):
 		self.outputfilename = outputfilename
 
 	def initialize(self):
+		pathname = os.path.dirname(self.outputfilename)
+		try:
+			if pathname:
+				os.mkdir(pathname)
+		except OSError as exc:
+			if exc.errno == errno.EEXIST:
+				pass
+			else: raise
+
 		self.outputfile = open(self.outputfilename, 'w')
 		return True
 

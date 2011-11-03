@@ -12,6 +12,10 @@ class PictureNumberNamer:
 class CheckExistence:
 		
 	def checkExistence(self, dffname):
+		"""
+			XXX: this is used to check if results exist. 
+			Why it tries to create folders?
+		"""
 		if not path.exists(path.dirname(dffname)):
 			makedirs(path.dirname(dffname))
 		elif path.exists(dffname):
