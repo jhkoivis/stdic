@@ -7,9 +7,9 @@ class PictureNumberOrder(ImageOrder):
         
     def _compare(self, image1, image2):
         
-        if image1.picturenumber < image2.picturenumber:
+        if int(image1.picturenumber) < int(image2.picturenumber):
             return -1
-        elif image1.picturenumber > image2.picturenumber:
+        elif int(image1.picturenumber) > int(image2.picturenumber):
             return 1
         
         return 0
