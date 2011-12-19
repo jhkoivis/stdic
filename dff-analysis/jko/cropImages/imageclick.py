@@ -31,6 +31,11 @@ class ImageClick:
         self.image.show()
         self.window.show()
         
+        self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        #self.window.set_position(0)
+        
+        #self.window.set_position((0,0))
+        
     def destroy(self, widget, data=None):
         ''' Quits gtk
         '''
@@ -47,12 +52,18 @@ class ImageClick:
             if self.x == None:
                 self.x = int(round(coords[0]))
                 self.y = int(round(coords[1]))
+                ###################################
+                print self.filename, self.x, self.y
+                self.destroy(self)
+                ####################################
             else:
                 self.x2 = int(round(coords[0]))
                 self.y2 = int(round(coords[1]))
-                self.printCommand()
-                self.destroy(self)
-
+                ##########################################3   
+                # self.printCommand()
+                # self.destroy(self)
+                ##########################################
+                
     def printCommand(self):
         
         w = self.x2 - self.x

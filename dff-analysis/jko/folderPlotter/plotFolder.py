@@ -7,7 +7,7 @@ import numpy
 #dffFolder = '/work/jko/angleCompression/IB7-1-R41-201106071247/cropped/dff/'
 #dffFolder = '/work/jko/angleCompression/Matleenan_dfft/IB7-1-R41-201106071247_skip_9/crop_IB7-1-R41-201106071247_dff'
 #dffFolder = '/work/jko/DIC-predict/emma/09021604/dff'
-dffFolder = '/work/jko/DIC-predict/jvi/05072603/dff'
+dffFolder = '/work/jko/DIC-predict/jvi/05061604/dff'
 
 jpgFolder = dffFolder + '/../jpg' 
 
