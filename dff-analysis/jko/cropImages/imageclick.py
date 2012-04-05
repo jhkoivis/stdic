@@ -31,10 +31,15 @@ class ImageClick:
         self.image.show()
         self.window.show()
         
-        self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        self.window.set_position(gtk.WIN_POS_CENTER)
+        
+        self.window.set_gravity(gtk.gdk.GRAVITY_NORTH_WEST)
+        self.width, self.height = self.window.get_size()
+        self.position = self.window.get_position()
+        #self.window.move(-int(self.width/2),-int(self.height/2))
         #self.window.set_position(0)
         
-        #self.window.set_position((0,0))
+        #self.window.set_position((-500,0))
         
     def destroy(self, widget, data=None):
         ''' Quits gtk
@@ -47,14 +52,13 @@ class ImageClick:
         ''' Event handler assigned to listener. Reads and sets coordinates.
         '''
         
-        if event.type == gtk.gdk.BUTTON_PRESS:
+        if event.type == gtk.gdk.BUTTON_PRESS and event.button == 1:
             coords = event.get_coords()
             if self.x == None:
                 self.x = int(round(coords[0]))
                 self.y = int(round(coords[1]))
                 ###################################
-                print self.filename, self.x, self.y
-                self.destroy(self)
+
                 ####################################
             else:
                 self.x2 = int(round(coords[0]))
@@ -63,6 +67,18 @@ class ImageClick:
                 # self.printCommand()
                 # self.destroy(self)
                 ##########################################
+                
+                print self.filename, self.x, self.y, self.x2, self.y2
+                self.destroy(self)
+                
+        if event.type == gtk.gdk.BUTTON_PRESS and event.button == 3:
+            coords = event.get_coords()
+            pos = self.window.get_position()
+            x = -int(coords[0]) + 500 #-self.width
+            y = -int(coords[1]) + 500 #-self.height
+            self.window.move(x,y)
+            #print pos, coords, x,y
+            
                 
     def printCommand(self):
         
@@ -83,3 +99,7 @@ class ImageClick:
         ''' Starts gtk.main()
         '''
         gtk.main()
+        
+        
+        
+        

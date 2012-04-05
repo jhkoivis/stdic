@@ -9,38 +9,29 @@ class PlotDff:
 	def __init__(self, filename, 
 				saveString	= None, 
 				datString 	= None, 
-				rawImage    = None):
+				rawImage	= None):
 		
 		self.filename 	= filename
 		self.saveString = saveString
 		self.datString  = datString
 		self.rawImage   = rawImage
-		
-		########################################	
-		diffX, diffY = self.readData(filename)
-		#self.plotDisplacement(	diffX, 
-		#						diffY, 
-		#						self.filename, 
-		#						self.imageName, 
-		#						self.saveString)
-		########################################
+			
+		self.diffX, self.diffY = self.readData(filename)
+
 		lag = 1
-		#print diffY.shape
 		
-		strainYY = diffY[:,lag:] - diffY[:,:-lag]
-		strainXX = diffY[lag:,:] - diffY[:-lag,:]
-		horizontalCutSYY = strainYY[:,10]
-		verticalCutSYY = strainYY[:,10]
-		#np.savetxt(self.datString, horizontalCutSYY)
-		np.savetxt(self.datString, diffY)
-        
-		self.plotDisplStrain( diffX,
-				      diffY,
-				      strainXX,
-				      strainYY,
-				      self.filename,
-				      self.saveString,
-				      self.rawImage)
+		self.strainYY = diffY[:,lag:] - diffY[:,:-lag]
+		self.strainXX = diffY[lag:,:] - diffY[:-lag,:]
+	
+	def run():
+		
+		self.plotDisplStrain(self.diffX,
+					  	self.diffY,
+					  	self.strainXX,
+					  	self.strainYY,
+					  	self.filename,
+					  	self.saveString,
+					  	self.rawImage)
 		
 	def plotDisplStrain(self, diffX, diffY, strainXX, strainYY, filename, savestring, rawImage):
 		"""
@@ -49,19 +40,15 @@ class PlotDff:
 		mpl.figure(1)
 		mpl.suptitle(filename.split('/')[-1])
 
-		plotScaleMin = -5
-		plotScaleMax =  25
-		#plotTicks    = [-5,-4,-3,-2,-1,0,1]
-		plotTicks    = [-25,-20,-15,-10,-5,0,5]
-		#plotTicks    = map(lambda x: x*plotScaleMax,plotTicks)
+		#plotScaleMin = -5
+		#plotScaleMax =  25
+		#plotTicks	= [-5,-4,-3,-2,-1,0,1]
+		#plotTicks	= [-25,-20,-15,-10,-5,0,5]
+		#plotTicks	= map(lambda x: x*plotScaleMax,plotTicks)
 
 		
 		mpl.subplot(2,2,1)
 		diffX2 = diffX
-		#diffX2[diffX >= plotScaleMax] = plotScaleMax
-		#diffX2[diffX <= plotScaleMin] = plotScaleMin
-		#diffX2[0,0] = plotScaleMax
-		#diffX2[0,1] = plotScaleMin
 		mpl.contourf(diffX.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
 		#mpl.clim(plotScaleMin,plotScaleMax)
 		#c = mpl.colorbar(ticks = plotTicks)	
@@ -82,7 +69,7 @@ class PlotDff:
 		#c = mpl.colorbar(ticks = plotTicks)	
 		mpl.axis("image")
 		mpl.xlabel("Y-directional displacement")
- 	        #mpl.colorbar()
+ 			#mpl.colorbar()
 		mpl.gca().invert_yaxis()
 
 		mpl.subplot(2,2,3)
@@ -111,7 +98,6 @@ class PlotDff:
 		mpl.contourf(strainYY.T,50) #,vmin=plotScaleMin,vmax=plotScaleMax)
 		#mpl.clim(plotScaleMin,plotScaleMax)		
 		#c = mpl.colorbar(ticks = plotTicks)	
-		#mpl.plot([51,51,51,51,51,51],[10,20,30,40,50,60],'ko',markersize=5)
 		mpl.axis("image")
 		mpl.xlabel("Y-directional strain")
 		mpl.gca().invert_yaxis()		
@@ -121,52 +107,6 @@ class PlotDff:
 		else:
 			mpl.figure(1)
 			mpl.savefig(savestring)
-
-
-
-	def plotDisplacement(self, diffX, diffY, filename, imageName, savestring):
-		"""
-			plots u and v (diffX and diffY retruned by readData) as contourplots.
-		"""
-		print savestring
-		mpl.figure(1)
-		
-		mpl.subplot(2,2,1)
-		mpl.contourf(diffX.T,50)
-		mpl.axis("image")
-		mpl.xlabel("X-directional displacement")
-		mpl.colorbar()
-		mpl.gca().invert_yaxis()
-	
-		mpl.title(filename.split('/')[-1])
-	
-		mpl.subplot(2,2,2)
-		mpl.contourf(diffY.T,50)
-		mpl.axis("image")
-		mpl.xlabel("Y-directional displacement")
-		mpl.colorbar()
-		mpl.gca().invert_yaxis()
-		
-		if not imageName == None:
-			mpl.subplot(2,2,4)
-			mpl.figure(2)
-			mpl.axis("image")
-			a = mpl.imread(imageName)
-			a = np.array(a, dtype='float32')
-			a = a - np.min(a)
-			a = a/np.max(a)
-			#a = np.array(a, dtype='float32')
-			mpl.contourf(a, 100)
-			print a
-			#mpl.show()
-		
-		if savestring == None:
-			mpl.show()
-		else:
-			mpl.figure(1)
-			mpl.savefig(savestring)
-	
-
 	
 	def readData(self, filename):
 		"""
@@ -231,7 +171,8 @@ if __name__=="__main__":
 	
 	if len(sys.argv) < 4:
 		print "usage: dff-plotter, see __init__ for details"
-		print "       python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat rawImageName"
+		print "	   python plotdff.py file.dff saveFilename.jpg saveDatFilename.dat rawImageName"
 		sys.exit()
 	
 	plot = PlotDff(sys.argv[1], saveString =  sys.argv[2], datString = sys.argv[3], rawImage = None)
+	plot.run()

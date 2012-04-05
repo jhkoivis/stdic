@@ -7,13 +7,12 @@ from glob import glob
 
 #folderName = '/work/jko/DIC-predict/jvi/05072603'
 
-folderName = '/work/jko/lyon/exp405_small'
+folderName = 'd:/lyonexps/cleaned/exp_402_2/'
 
-
-fnList = glob(folderName + '/*')
+fnList = glob(folderName + '/*.tiff')
 fnList.sort()
 fn = fnList[0]
-for fn in fnList[::10]:
+for fn in fnList[::100]:
     ic = ImageClick(fn)
     ic.main()
 
