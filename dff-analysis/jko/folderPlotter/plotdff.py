@@ -20,10 +20,10 @@ class PlotDff:
 
 		lag = 1
 		
-		self.strainYY = diffY[:,lag:] - diffY[:,:-lag]
-		self.strainXX = diffY[lag:,:] - diffY[:-lag,:]
+		self.strainYY = self.diffY[:,lag:] - self.diffY[:,:-lag]
+		self.strainXX = self.diffY[lag:,:] - self.diffY[:-lag,:]
 	
-	def run():
+	def run(self):
 		
 		self.plotDisplStrain(self.diffX,
 					  	self.diffY,
