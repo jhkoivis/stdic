@@ -87,7 +87,7 @@ class PlotDff:
 		#c = mpl.colorbar(ticks = plotTicks)
 		#mpl.axis("image")
 		#mpl.xlabel("X-directional strain")
-		#mpl.gca().invert_yaxis()		
+		mpl.gca().invert_yaxis()		
 
 		mpl.subplot(2,2,4)
 		strainYY2 = strainYY

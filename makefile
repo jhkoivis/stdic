@@ -20,12 +20,15 @@ PYTHONVERSION=$(shell python -c "import sys; print sys.version[0:3]")
 
 PYTHONINCLUDE=$(INCLUDEDIR)/python$(PYTHONVERSION)
 PYTHONLIBRARY=$(LIBDIR)/python$(PYTHONVERSION)
+
 ifeq ($(PYTHONVERSION), 2.4)
-NUMPYINCLUDE=$(PYTHONLIBRARY)/site-packages/numpy/core/include/numpy
+  NUMPYINCLUDE=$(PYTHONLIBRARY)/site-packages/numpy/core/include/numpy
 else
-NUMPYINCLUDE=$(PYTHONLIBRARY)/dist-packages/numpy/core/include/numpy
+  NUMPYINCLUDE=$(PYTHONLIBRARY)/dist-packages/numpy/core/include/numpy
 endif
-INCLUDES=-I$(PYTHONINCLUDE) -I$(NUMPYINCLUDE)
+ALTNUMPYINCLUDE=/usr/lib/pymodules/python2.7/numpy/core/include/numpy/
+
+INCLUDES=-I$(PYTHONINCLUDE) -I$(NUMPYINCLUDE) -I$(ALTNUMPYINCLUDE)
 LDFLAGS=-lm
 LD=ld -G
 CFLAGS=-Wall -fPIC -O2 $(INCLUDES) -DBIGSPLINES
