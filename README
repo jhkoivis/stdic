@@ -33,6 +33,11 @@ Running:
   the output folder and $configuration_file is the file containing 
   configuration.
 
+  Example:
+
+	python register.py tests/test_transforms/test_at /tmp/dff_out register.conf
+
+
 Configuring:
 
   Example configuration is in register.conf. The idea is as follows.

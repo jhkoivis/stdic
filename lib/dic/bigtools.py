@@ -47,8 +47,11 @@ def ImageToArray(iname):
 
 def OpenedImageToArray(i):
     """ converts greyscale or color image to (byte) array """
-
-    a=fromstring(i.tostring(),'B')
+    
+    try:
+        a=fromstring(i.tostring(),'B')
+    except:
+        a=fromstring(i.tobytes(), 'B')
     a.shape=i.im.size[1], i.im.size[0]
 
     return a
