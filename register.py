@@ -41,4 +41,5 @@ if __name__ == "__main__":
         dfffolder = sys.argv[2]
         configurationfile = sys.argv[3]
         register = Register(folder, dfffolder, configurationfile)
-        register.run()
+	register.run()
+	

@@ -129,8 +129,10 @@ def applyseparablewithcopy(x,oper,passdim=None):
 	x=array(x,'d')
 	y=None
 	dims = len(x.shape)
+        
+        dummy = zeros((10,10), 'd')
 
-	for dim in xrange(dims):
+        for dim in xrange(dims):
 		arrayshape = list(x.shape)
 		for i in xrange(arrayshape[1]):
 			if passdim:
@@ -140,9 +142,13 @@ def applyseparablewithcopy(x,oper,passdim=None):
 			if row.shape[0] != arrayshape[0]:
 				arrayshape[0] = row.shape[0]
 				y=zeros(arrayshape,'d')
-			elif y==None:
-				y=zeros(arrayshape,'d')
-			y[:,i] = row
+                        elif y.__class__ != dummy.__class__:
+# prevent evaluating <array> == None 
+# the evaluation changed to elementwise
+# which is not what we want
+                            if y==None:
+                                y=zeros(arrayshape,'d')
+                        y[:,i] = row
 		x = y.T
 
 	return x
