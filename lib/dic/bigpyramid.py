@@ -5,7 +5,8 @@
     $Id: bigpyramid.py,v 1.1 2005/10/07 15:45:06 eav Exp $
 """
 
-import bigsplines    # import B-spline routines
+#import bigsplines    # import B-spline routines
+import bigsplinespy as bigsplines    # .py and .so have to have different case inssentive names
 import BIGsplines    # import B-spline routines in C
 import bigtools
 import math

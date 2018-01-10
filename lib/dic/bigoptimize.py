@@ -12,7 +12,9 @@ import BIGsplines
 import bigtools
 import bigpyramid
 import time
-import bigsplines
+#import bigsplines
+import bigsplinespy as bigsplines   # .py and .so have to have different case inssentive names
+
 
 # --------------------------------------------------------------------
 

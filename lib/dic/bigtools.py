@@ -21,7 +21,9 @@ from PIL import Image
 from numpy import *
 import time
 import types
-import bigsplines
+#import bigsplines
+import bigsplinespy as bigsplines    # .py and .so have to have different case inssentive names
+
 
 
 # ----------------------------------------------------------------------

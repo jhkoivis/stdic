@@ -30,8 +30,9 @@ ALTNUMPYINCLUDE=/usr/lib/pymodules/python2.7/numpy/core/include/numpy/
 UBUNTUINCLUDE=/usr/lib/python2.7/dist-packages/numpy/core/include/numpy/
 
 INCLUDES=-I$(PYTHONINCLUDE) -I$(NUMPYINCLUDE) -I$(ALTNUMPYINCLUDE) -I$(UBUNTUINCLUDE)
-LDFLAGS=-lm
-LD=ld -G
+LDFLAGS=-lm -L/usr/lib/python2.7/config-x86_64-linux-gnu/ -lpython2.7
+#LD=ld -G
+LD=gcc -Wl,-undefined,dynamic_lookup -shared #ld -G
 CFLAGS=-Wall -fPIC -O2 $(INCLUDES) -DBIGSPLINES
 CC=gcc
 

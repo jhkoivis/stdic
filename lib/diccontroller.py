@@ -1,4 +1,9 @@
-from dic import *
+from dic import BIGsplines
+from dic import bigsplinespy as bigsplines
+from dic import bigtools
+from dic import bigfelreg
+from dic import bigoptimize
+
 import numpy as np
 
 class DICController:

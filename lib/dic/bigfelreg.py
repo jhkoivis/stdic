@@ -12,7 +12,7 @@
 
 import new,time,operator,types
 from numpy import *
-import bigsplines
+import bigsplinespy as bigsplines # .py and .so have to have different case inssentive names
 import bigtools
 import bigoptimize
 import BIGsplines
