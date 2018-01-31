@@ -35,7 +35,7 @@ class Register:
 if __name__ == "__main__":
     
     if len(sys.argv[1:]) != 3:
-        print "Usage: imagefolder dfffolder configfile"
+        print("Usage: imagefolder dfffolder configfile")
     else:
         folder = sys.argv[1]
         dfffolder = sys.argv[2]

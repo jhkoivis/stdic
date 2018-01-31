@@ -1,13 +1,16 @@
 
 from imageobject import ImageObject
+import copy
 
 class ImageList:
     
     def __init__(self, folderobject, seqFilter,  imgFilters, regExpression=None):
-        unorderedList = self._getFilteredFolder(folderobject, 
-                                                imgFilters, 
-                                                regExpression)
-        self.imagelist = seqFilter.filter(unorderedList)
+        # unordered list is static containing all images! do not modify!
+        self.unorderedList = self._getFilteredFolder(folderobject, 
+                                                     imgFilters, 
+                                                     regExpression)
+        
+        self.imagelist = seqFilter.filter(copy.copy(self.unorderedList))
         
     def _getFilteredFolder(self, folderobject, imgFilters, regExpression=None):
                 
@@ -22,6 +25,9 @@ class ImageList:
             if appendBoolean:
                 imagelist.append(imageObject)
         return imagelist
+    
+    def get_list_of_all_images_in_folder(self):
+        return self.unorderedList
             
     def next(self):
         return self.imageiterator.next()

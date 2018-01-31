@@ -43,7 +43,7 @@ class Analyzer:
         seqname                 = seqconfig.pop('name')
         
         sequencefilter          = SequenceFilterFactory().getSequenceFilter(seqname, order, seqconfig)
-        
+            
         #--------------------------------------------------------
         # Generate imagelist from filelist, imagefilters and sequence
         #--------------------------------------------------------
@@ -111,15 +111,15 @@ class Analyzer:
             dffname = self.namegenerator.generatename(image1, image2)
             if not self.overwrite:
                 if self.checker.checkExistence(dffname):
-                   print "Skipping image pair (%s, %s) : overwrite == False and .dff exists" % (image1.picturenumber, image2.picturenumber)
+                   print("Skipping image pair (%s, %s) : overwrite == False and .dff exists" % (image1.picturenumber, image2.picturenumber))
                    continue
             try:
-                print "Analyzing pictures number %s and %s." % (image1.picturenumber, image2.picturenumber)
+                print("Analyzing pictures number %s and %s." % (image1.picturenumber, image2.picturenumber))
             except AttributeError:
 		raise
             try:
                 self.dic.analyze(image1.getImage(), image2.getImage())
                 exporterinstance = self.exporter(image1, image2, self.dic, self.exporterparameters, dffname)
                 exporterinstance.export()
-            except ValueError:
-                print "ValueError"
+            except ValueError as e:
+                print("ValueError:", e)

@@ -13,7 +13,7 @@ import sys
 
 
 print "sequencetest/sequenceTest_02.py"
-verbose = 1
+verbose = 2
 registerCmd = 'python ../../register.py'
 testFolder = 'testFolder_02'
 outputBase = '/tmp/'
@@ -58,6 +58,8 @@ def makeDefaultTest(    confDict,
     for fn in correctList:
         if not currentList.__contains__(outputDir + '/dff/' + fn):
             print "sequencetest/run_sequencetest.py failed" 
+            print("Correct file list:", correctList)
+            print("output:", currentList)
             raise ValueError()
         else:
             fCount +=1
@@ -178,6 +180,48 @@ correctList5 = ['dff-4-5.dff', 'dff-5-6.dff']
 
 makeDefaultTest(confDict, correctList5, outputBase, testFolder)
 
-print " passed"
+#
+
+
+################################################
+# test 7
+#
+# test skip and lag
+# skip = 10
+# lag  = 3
+#
+################################################
+
+configDict = configBase.copy()
+configDict['pairiterator.name'] = '"Lag"'
+configDict['pairiterator.lag']	= "2"  
+configDict['sequence.start']	= "2"
+configDict['sequence.skip']	= "3"
+configDict['sequence.end']	= "3"
+
+correctList6 = ['dff-4-6.dff',
+		'dff-7-9.dff',
+		'dff-10-12.dff']
+
+makeDefaultTest(configDict, correctList6, outputBase, testFolder)
+
+print("sequencetest/sequenceTest_02.py passed")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -3,7 +3,7 @@ from itertools import tee
 
 class ToPreviousIterator(PairIterator):
 
-    def __init__(self, imagelistobject):
+    def __init__(self, imagelistobject, **kwargs):
         PairIterator.__init__(self, imagelistobject)
         
     def next(self):

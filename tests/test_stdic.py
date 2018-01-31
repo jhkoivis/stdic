@@ -26,7 +26,7 @@ class CreepExperimentTest(TestCase):
 		time2 = time.clock()
 		timetaken = time2 - time1
 		if self.showtimes:
-			print "Time taken: %s seconds." % timetaken
+			print("Time taken: %s seconds." % timetaken)
 		self.dffFilename	= glob.glob(path.join(self.folder,"*.dff"))[0]
 		dffFile 	= open(self.dffFilename,'r')
 		remove(self.dffFilename)

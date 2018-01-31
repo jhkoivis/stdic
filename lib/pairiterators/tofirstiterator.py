@@ -2,7 +2,7 @@ from pairiterator import PairIterator
 
 class ToFirstIterator(PairIterator):
 
-    def __init__(self, imagelistobject):
+    def __init__(self, imagelistobject, **kwargs):
         PairIterator.__init__(self, imagelistobject)
         
     def next(self):

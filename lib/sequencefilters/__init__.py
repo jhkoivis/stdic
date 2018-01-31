@@ -3,5 +3,6 @@ __all__=[
          "linearsequence",
          "imageorder",
          "filenameorder",
-         "picturenumberorder"
+         "picturenumberorder",
+         "linear_step_lag_sequence"
          ]
